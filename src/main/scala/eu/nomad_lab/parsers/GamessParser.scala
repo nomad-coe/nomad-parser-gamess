@@ -5,38 +5,42 @@ import eu.nomad_lab.DefaultPythonInterpreter
 import org.{ json4s => jn }
 import scala.collection.breakOut
 
-object GaussianParser extends SimpleExternalParserGenerator(
-  name = "GaussianParser",
+object GamessParser extends SimpleExternalParserGenerator(
+  name = "GamessParser",
   parserInfo = jn.JObject(
-    ("name" -> jn.JString("GaussianParser")) ::
-      ("parserId" -> jn.JString("GaussianParser" + lab.GaussianVersionInfo.version)) ::
+    ("name" -> jn.JString("GamessParser")) ::
+      ("parserId" -> jn.JString("GamessParser" + lab.GamessVersionInfo.version)) ::
       ("versionInfo" -> jn.JObject(
         ("nomadCoreVersion" -> jn.JObject(lab.NomadCoreVersionInfo.toMap.map {
           case (k, v) => k -> jn.JString(v.toString)
         }(breakOut): List[(String, jn.JString)])) ::
-          (lab.GaussianVersionInfo.toMap.map {
+          (lab.GamessVersionInfo.toMap.map {
             case (key, value) =>
               (key -> jn.JString(value.toString))
           }(breakOut): List[(String, jn.JString)])
       )) :: Nil
   ),
   mainFileTypes = Seq("text/.*"),
-  mainFileRe = """\s*Gaussian, Inc\.  All Rights Reserved\.\s*
-\s*
-\s*This is part of the Gaussian\(R\) [0-9]* program.""".r,
-  cmd = Seq(DefaultPythonInterpreter.pythonExe(), "${envDir}/parsers/gaussian/parser/parser-gaussian/parser_gaussian.py",
+  mainFileRe = """
+\s*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\**\s*
+\s*\*\s*GAMESS VERSION =\s*(?<version>.*)\*\s*
+\s*\*\s*FROM IOWA STATE UNIVERSITY\s*\*\s*
+""".r,
+  cmd = Seq(DefaultPythonInterpreter.pythonExe(), "${envDir}/parsers/gamess/parser/parser-gamess/parser_gamess.py",
     "--uri", "${mainFileUri}", "${mainFilePath}"),
   resList = Seq(
-    "parser-gaussian/parser_gaussian.py",
-    "parser-gaussian/setup_paths.py",
+    "parser-gamess/parser_gamess.py",
+    "parser-gamess/setup_paths.py",
     "nomad_meta_info/public.nomadmetainfo.json",
     "nomad_meta_info/common.nomadmetainfo.json",
     "nomad_meta_info/meta_types.nomadmetainfo.json",
-    "nomad_meta_info/gaussian.nomadmetainfo.json"
+    "nomad_meta_info/gamess.nomadmetainfo.json"
   ) ++ DefaultPythonInterpreter.commonFiles(),
   dirMap = Map(
-    "parser-gaussian" -> "parsers/gaussian/parser/parser-gaussian",
+    "parser-gamess" -> "parsers/gamess/parser/parser-gamess",
     "nomad_meta_info" -> "nomad-meta-info/meta_info/nomad_meta_info",
     "python" -> "python-common/common/python/nomadcore"
-  ) ++ DefaultPythonInterpreter.commonDirMapping()
+  ) ++ DefaultPythonInterpreter.commonDirMapping(),
+  metaInfoEnv = Some(lab.meta.KnownMetaInfoEnvs.gamess)
+
 )
