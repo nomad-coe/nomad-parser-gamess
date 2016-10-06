@@ -36,8 +36,9 @@ mainFileDescription = SM(
            subMatchers = [
                SM(name = 'header',
                   startReStr = r"\s*GAMESS temporary binary files",
-                  forwardMatch = False,
+                  forwardMatch = True,
                   subMatchers = [
+                      SM(r"\s*GAMESS temporary binary files"),
                       SM(r"\s*\*\s*GAMESS VERSION \=\s*(?P<program_version>[0-9]+\s*[A-Z]+\s*[0-9]+)"),
                       SM(r"\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\s*(?P<x_gamess_program_implementation>[0-9]+\s*[A-Z]+\s*[A-Z]+\s*[A-Z]+)"),
                       SM(r"\s*EXECUTION OF GAMESS BEGUN\s*(?P<x_gamess_program_execution_date>[a-zA-Z]+\s*[a-zA-Z]+\s*[0-9]+\s*[0-9][0-9][:][[0-9][0-9][:][0-9][0-9]\s*[0-9]+)"),
@@ -48,40 +49,38 @@ mainFileDescription = SM(
                   forwardMatch = True,
                   subMatchers = [
                       SM(r"\s*(?P<x_gamess_memory>[0-9]+)\s*WORDS OF MEMORY AVAILABLE"),
+                      SM(r"\s*ATOM      ATOMIC"),
+#                      SM(r"\s*[A-Z0-9?]+\s+(?P<x_gamess_atomic_number>\d+\.\d)\s+(?P<x_gamess_atom_x_coord_initial__bohr>[-+0-9.]+)\s+(?P<x_gamess_atom_y_coord_initial__bohr>[-+0-9.]+)\s+(?P<x_gamess_atom_z_coord_initial__bohr>[-+0-9.]+)",repeats = True),
                       SM(r"\s*BASIS OPTIONS"),
                       SM(r"\s*GBASIS=(?P<x_gamess_basis_set_gbasis>[A-Z0-9-]+)\s*IGAUSS=\s*(?P<x_gamess_basis_set_igauss>[0-9]+)\s*POLAR=(?P<x_gamess_basis_set_polar>[A-Z]+)"),
                       SM(r"\s*NDFUNC=\s*(?P<x_gamess_basis_set_ndfunc>[0-9]+)\s*NFFUNC=\s*(?P<x_gamess_basis_set_nffunc>[0-9]+)\s*DIFFSP=\s*(?P<x_gamess_basis_set_diffsp>[TF])"),
                       SM(r"\s*NPFUNC=\s*(?P<x_gamess_basis_set_npfunc>[0-9]+)\s*DIFFS=\s*(?P<x_gamess_basis_set_diffs>[TF])"),
-                      SM(r"\s*THE MOMENTS OF INERTIA ARE"),
-                      SM(r"\s*IXX=\s*(?P<x_gamess_moment_of_inertia_X>[0-9.]+)\s*IYY=\s*(?P<x_gamess_moment_of_inertia_Y>[0-9.]+)\s*IZZ=\s*(?P<x_gamess_moment_of_inertia_Z>[0-9.]+)"),
-                      SM(r"\s*ATOM      ATOMIC"),
-                      SM(r"\s*CHARGE         X"),
-                      SM(r"\s*[A-Z0-9]+\s+(?P<x_gamess_atomic_number>[0-9.]+)\s+(?P<x_gamess_atom_x_coord__bohr>(\-?\d+\.\d{10}))\s+(?P<x_gamess_atom_y_coord__bohr>(\-?\d+\.\d{10}))\s+(?P<x_gamess_atom_z_coord__bohr>(\-?\d+\.\d{10}))",repeats = True),
+                      SM(r"\s*[A-Z0-9?]+\s+(?P<x_gamess_atomic_number>\d+\.\d)\s+(?P<x_gamess_atom_x_coord_initial__bohr>[-+0-9.]+)\s+(?P<x_gamess_atom_y_coord_initial__bohr>[-+0-9.]+)\s+(?P<x_gamess_atom_z_coord_initial__bohr>[-+0-9.]+)",repeats = True),
+                      SM(r"\s*INTERNUCLEAR DISTANCES"),
                       SM(r"\s*NUMBER OF ELECTRONS\s*=\s*(?P<number_of_electrons>[0-9]+)"),
-                      SM(r"\s*CHARGE OF MOLECULE\s*=\s*(?P<x_gaussian_total_charge>[0-9-]+)"),
+                      SM(r"\s*CHARGE OF MOLECULE\s*=\s*(?P<x_gamess_total_charge>[0-9-]+)"),
                       SM(r"\s*SPIN MULTIPLICITY\s*=\s*(?P<x_gamess_spin_target_multiplicity>[0-9]+)"),
-                      SM(r"\s*TOTAL NUMBER OF ATOMS\s*=\s*(?P<number_of_atoms>[0-9]+)")
+                      SM(r"\s*TOTAL NUMBER OF ATOMS\s*=\s*(?P<number_of_atoms>[0-9]+)"),
                       ]
              ),
             SM (name = 'SingleConfigurationCalculationWithSystemDescription',
-                startReStr = r"\s*BEGINNING GEOMETRY SEARCH POINT NSERCH=",
+                startReStr = r"\s*COORDINATES OF ALL ATOMS",
                 repeats = False,
                 forwardMatch = True,
                 subMatchers = [
                 SM (name = 'SingleConfigurationCalculation',
-                  startReStr = r"\s*COORDINATES OF SYMMETRY UNIQUE ATOMS",
+                  startReStr = r"\s*COORDINATES OF ALL ATOMS",
                   repeats = True,
-                  forwardMatch = False,
+                  forwardMatch = True,
                   sections = ['section_single_configuration_calculation'],
                   subMatchers = [
                   SM(name = 'geometry',
-                   sections  = ['section_system'],
+                   sections  = ['x_gamess_section_geometry'],
                    startReStr = r"\s*COORDINATES OF ALL ATOMS",
+                   endReStr = r"\s*THE CURRENT FULLY SUBSTITUTED Z-MATRIX IS",
                       subMatchers = [
-                      SM(r"\s*ATOM   CHARGE       X"),
-                      SM(r"\s*------------------------------------------------------------"),
-                      SM(r"\s*[A-Z0-9?]+\s+(?P<x_gamess_atomic_number>[0-9.]+)\s+(?P<x_gamess_atom_x_coord__angstrom>[-+0-9.]+)\s+(?P<x_gamess_atom_y_coord__angstrom>[-+0-9.]+)\s+(?P<x_gamess_atom_z_coord__angstrom>[-+0-9.]+)",repeats = True),
-                      SM(r"\s*INTERNAL COORDINATES"),
+                      SM(r"\s*[A-Z]+\s+[0-9.]+\s+(?P<x_gamess_atom_x_coord__angstrom>[-+0-9.]+)\s+(?P<x_gamess_atom_y_coord__angstrom>[-+0-9.]+)\s+(?P<x_gamess_atom_z_coord__angstrom>[-+0-9.]+)",repeats = True),
+                      SM(r"\s*THE CURRENT FULLY SUBSTITUTED Z-MATRIX IS"),
                     ]
                 ),
           ])
@@ -138,12 +137,11 @@ class GAMESSParserContext(object):
         # allows to reset values if the same superContext is used to parse different files
         self.initialize_values()
 
-      def onClose_section_system(self, backend, gIndex, section):
+      def onClose_x_gamess_section_geometry(self, backend, gIndex, section):
 
         xCoord = section["x_gamess_atom_x_coord"]
         yCoord = section["x_gamess_atom_y_coord"]
         zCoord = section["x_gamess_atom_z_coord"]
-        numbers = section["x_gamess_atomic_number"]
         atom_coords = np.zeros((len(xCoord),3), dtype=float)
         atom_numbers = np.zeros(len(xCoord), dtype=int)
         atomic_symbols = np.empty((len(xCoord)), dtype=object)
@@ -151,15 +149,30 @@ class GAMESSParserContext(object):
            atom_coords[i,0] = xCoord[i]
            atom_coords[i,1] = yCoord[i]
            atom_coords[i,2] = zCoord[i]
-        for i in range(len(xCoord)):
-          atom_numbers[i] = numbers[i]
-          atomic_symbols[i] = ase.data.chemical_symbols[atom_numbers[i]]
-        backend.addArrayValues("atom_labels", atomic_symbols)
-        backend.addArrayValues("atom_positions", atom_coords)
+        backend.addArrayValues("x_gamess_atom_positions", atom_coords)
 
-        #density functionals
+      def onClose_section_system(self, backend, gIndex, section):
 
-        xcDict = {
+       xCoord = section["x_gamess_atom_x_coord_initial"]
+       yCoord = section["x_gamess_atom_y_coord_initial"]
+       zCoord = section["x_gamess_atom_z_coord_initial"]
+       numbers = section["x_gamess_atomic_number"]
+       atom_coords = np.zeros((len(xCoord),3), dtype=float)
+       atom_numbers = np.zeros(len(xCoord), dtype=int)
+       atomic_symbols = np.empty((len(xCoord)), dtype=object)
+       for i in range(len(xCoord)):
+          atom_coords[i,0] = xCoord[i]
+          atom_coords[i,1] = yCoord[i]
+          atom_coords[i,2] = zCoord[i]
+       for i in range(len(xCoord)):
+         atom_numbers[i] = numbers[i]
+         atomic_symbols[i] = ase.data.chemical_symbols[atom_numbers[i]]
+       backend.addArrayValues("atom_labels", atomic_symbols)
+       backend.addArrayValues("x_gamess_atom_positions_initial", atom_coords)
+
+       #density functionals
+
+       xcDict = {
               'SLATER':     [{'name': 'LDA_X'}],
               'VWN':        [{'name': 'LDA_C_VWN_5'}],
               'VWN3':       [{'name': 'LDA_C_VWN_3'}],
@@ -309,7 +322,7 @@ class GAMESSParserContext(object):
 
         #basis sets
 
-        basissetDict = {
+       basissetDict = {
               'STO':        [{'name': 'STO-2G'}],
               'STO':        [{'name': 'STO-3G'}],
               'STO':        [{'name': 'STO-4G'}],
@@ -425,7 +438,7 @@ class GAMESSParserContext(object):
               'DFTB':     [{'name': 'SLATER-DFTB'}]
              }
 
-        methodDict = {
+       methodDict = {
               'AMBER':     [{'name': 'Amber'}],
               'DREIDING':  [{'name': 'Dreiding'}],
               'UFF':       [{'name': 'UFF'}],
@@ -494,17 +507,21 @@ class GAMESSParserContext(object):
               'W1RO':      [{'name': 'W1RO'}],
              }
 
-        global basisset, basissetWrite, basissetreal, basissetname, nrofdfunctions, nrofffunctions, spdiffuselogical, nrofpfunctionslight, sdiffuselightlogical
-        basisset = None
-        basissetWrite = False
-        basissetreal = None
-        basissetname = None
-        nrofgaussians = 0
-        nrofdfunctions = 0
-        nrofffunctions = 0
-        spdiffuselogical = 'F'
-        sdiffuselightlogical = 'F'
-        nrofpfunctionslight = 0
+       global basisset, basissetWrite, basissetreal, basissetname, nrofdfunctions, nrofffunctions, spdiffuselogical, nrofpfunctionslight, sdiffuselightlogical
+       basisset = None
+       basissetWrite = False
+       basissetreal = None
+       basissetname = None
+       nrofgaussians = 0
+       nrofdfunctions = 0
+       nrofffunctions = 0
+       spdiffuselogical = 'F'
+       sdiffuselightlogical = 'F'
+       nrofpfunctionslight = 0
+
+       basissetreal = basissetDict.get([basisset][-1])
+
+       if(section['x_gamess_basis_set_gbasis']):
 
         basisset = str(section['x_gamess_basis_set_gbasis']).replace("[","").replace("]","").replace("'","").upper()
         nrofgaussians = str(section['x_gamess_basis_set_igauss']).replace("[","").replace("]","").replace("'","") 
@@ -513,8 +530,6 @@ class GAMESSParserContext(object):
         spdiffuselogical = str(section['x_gamess_basis_set_diffsp']).replace("[","").replace("]","").replace("'","")
         nrofpfunctionslight = int(str(section['x_gamess_basis_set_npfunc']).replace("[","").replace("]","").replace("'",""))
         sdiffuselightlogical = str(section['x_gamess_basis_set_diffs']).replace("[","").replace("]","").replace("'","") 
-
-        basissetreal = basissetDict.get([basisset][-1])
 
         if(basisset == 'STO'):
             symbol = 'G'
@@ -690,11 +705,11 @@ class GAMESSParserContext(object):
                        if(sdiffuselightlogical == 'T' or sdiffuselightlogical == 'TRUE'):
                            basissetreal = nrofgaussians + '-' + basissetname + '++' + symbol + '(3d,3p)'
 
-        basissetWrite = True
+       basissetWrite = True
 
         #Write basis sets to metadata
 
-        if basisset is not None:
+       if basisset is not None:
           # check if only one method keyword was found in output
           if len([basisset]) > 1:
               logger.error("Found %d settings for the basis set: %s. This leads to an undefined behavior of the calculation and no metadata can be written for the basis set." % (len(method), method))
@@ -721,7 +736,12 @@ class GAMESSParserContext(object):
 
 cachingLevelForMetaName = {
         "basis_set_atom_centered_short_name": CachingLevel.ForwardAndCache,
-        "section_basis_set_atom_centered": CachingLevel.Forward
+        "section_basis_set_atom_centered": CachingLevel.Forward,
+        "x_gamess_atom_x_coord": CachingLevel.Cache,
+        "x_gamess_atom_y_coord": CachingLevel.Cache,
+        "x_gamess_atom_z_coord": CachingLevel.Cache,
+        "x_gamess_atomic_number": CachingLevel.Cache,
+        "x_gamess_section_geometry": CachingLevel.Forward,
 }
 
 if __name__ == "__main__":
