@@ -1,0 +1,555 @@
+                             Running on host I7
+
+          ******************************************************
+          *      Firefly version 8.2.0, build number 10203     *
+          *   Compiled on    Friday,    16-09-2016, 21:20:07   *
+          *Code development and Intel/AMD specific optimization*
+          *  Copyright (c) 1994, 2016 by  Alex A. Granovsky,   *
+          *          Firefly Project, Moscow, Russia.          *
+          *   Some parts of this program include code due to   *
+          * work of Jim Kress, Peter Burger, and Robert Ponec. *
+          ******************************************************
+          *             Firefly Project homepage:              *
+          * http://classic.chem.msu.su/gran/firefly/index.html *
+          *                      e-mail:                       *
+          *               gran@classic.chem.msu.su             *
+          *This program is not a free software and is provided *
+          *exclusively to its registered users under the terms *
+          *       of Firefly package license agreement         *
+          * Unauthorized use of Firefly is strongly prohibited *
+          *   This program may not be redistributed without    *
+          * the specific, written permission of its developers.*
+          ******************************************************
+
+          ******************************************************
+          *  PARTIALLY BASED ON  US GAMESS VERSION 6 JUN 1999, *
+          *   US GAMESS VERSIONS  6 SEP 2001 AND 12 DEC 2003   *
+          *             FROM IOWA STATE UNIVERSITY             *
+          * M.W.SCHMIDT, K.K.BALDRIDGE, J.A.BOATZ, S.T.ELBERT, *
+          *   M.S.GORDON, J.H.JENSEN, S.KOSEKI, N.MATSUNAGA,   *
+          *          K.A.NGUYEN, S.J.SU, T.L.WINDUS,           *
+          *       TOGETHER WITH M.DUPUIS, J.A.MONTGOMERY       *
+          *         J.COMPUT.CHEM.  14, 1347-1363(1993)        *
+          ******************************************************
+
+
+ Core i7    / Win32  Firefly version running under Windows NT
+ Running on Intel CPU:  Brand ID  0, Family  6, Model  26, Stepping  4
+ CPU Brand String    :  Intel(R) Core(TM) i7 CPU         940  @ 2.93GHz 
+ CPU Features        :  x87 FPU, CMOV, MMX, SSE, SSE2, SSE3, SSSE3, SSE4.1, SSE4.2, HTT, EM64T
+ Data cache size     :  L1 32 KB, L2  256 KB, L3  8192 KB
+ max    # of   cores/package :   8
+ max    # of threads/package :  16
+ max     cache sharing level :  16
+ actual # of   cores/package :   4
+ actual # of threads/package :   8
+ actual # of threads/core    :   2
+ Operating System successfully passed SSE support test.
+
+
+ PARALLEL VERSION (UNIFIED) RUNNING IN SERIAL MODE USING SINGLE PROCESS
+
+ EXECUTION OF FIREFLY BEGUN 16:58:55 17-SEP-2016    
+
+            ECHO OF THE FIRST FEW INPUT CARDS -
+ INPUT CARD>! EXAM 14.                                                                      
+ INPUT CARD>!                                                                               
+ INPUT CARD>! CI transition moments.  Water, using RHF/STO-3G MOs.                          
+ INPUT CARD>! All orbitals are occupied, transition is 1-1A1 to 2-1A1.                      
+ INPUT CARD>!                                                                               
+ INPUT CARD>! E(STATE 1)= -75.0101113548, E(STATE 2)= -74.3945819375                        
+ INPUT CARD>!                                                                               
+ INPUT CARD>! Dipole LENGTH is <Q>=0.392614                                                 
+ INPUT CARD>! Dipole VELOCITY is <d/dQ>=0.368205                                            
+ INPUT CARD>!                                                                               
+ INPUT CARD> $CONTRL SCFTYP=NONE CITYP=GUGA RUNTYP=TRANSITN UNITS=BOHR $END                 
+ INPUT CARD> $SYSTEM TIMLIM=1 MEMORY=100000 $END                                            
+ INPUT CARD> $BASIS  GBASIS=STO  NGAUSS=3 $END                                              
+ INPUT CARD>! standard SD-CI calculation                                                    
+ INPUT CARD> $CIDRT1 GROUP=C2V IEXCIT=2 NFZC=1 NDOC=4 NVAL=2 $END                           
+ INPUT CARD> $TRANST IROOTS(1)=1,2 $END                                                     
+ INPUT CARD> $DATA                                                                          
+ INPUT CARD>WATER MOLECULE...STO-3G...TRANSITION MOMENT                                     
+ INPUT CARD>CNV      2                                                                      
+ INPUT CARD>                                                                                
+ INPUT CARD>OXYGEN      8.0   0.0   0.0      0.0                                            
+ INPUT CARD>HYDROGEN    1.0   0.0   1.428   -1.096                                          
+ INPUT CARD> $END                                                                           
+ INPUT CARD>! RHF ORBITALS, WATER MOLECULE...STO-3G...                                      
+ INPUT CARD> $VEC1                                                                          
+ INPUT CARD> 1  1 9.94117078E-01 2.66680164E-02 0.00000000E+00 0.00000000E+00-4.37663441E-03
+ INPUT CARD> 1  2-6.02779209E-03-6.02779209E-03                                             
+ INPUT CARD> 2  1-2.32646075E-01 8.31899807E-01 0.00000000E+00 0.00000000E+00-1.30711442E-01
+ INPUT CARD> 2  2 1.59112113E-01 1.59112113E-01                                             
+ INPUT CARD> 3  1 0.00000000E+00 0.00000000E+00 0.00000000E+00 6.05977383E-01 0.00000000E+00
+ INPUT CARD> 3  2-4.44410026E-01 4.44410026E-01                                             
+ INPUT CARD> 4  1-1.03107214E-01 5.36888546E-01 0.00000000E+00 0.00000000E+00 7.79238006E-01
+ INPUT CARD> 4  2-2.75438667E-01-2.75438667E-01                                             
+ INPUT CARD> 5  1 0.00000000E+00 0.00000000E+00-1.00000000E+00 0.00000000E+00 0.00000000E+00
+ INPUT CARD> 5  2 0.00000000E+00 0.00000000E+00                                             
+ INPUT CARD> 6  1-1.33255319E-01 8.93987858E-01 0.00000000E+00 0.00000000E+00-7.40007314E-01
+ INPUT CARD> 6  2-8.01069824E-01-8.01069824E-01                                             
+ INPUT CARD> 7  1 0.00000000E+00 0.00000000E+00 0.00000000E+00-9.94651519E-01 0.00000000E+00
+ INPUT CARD> 7  2-8.42653177E-01 8.42653177E-01                                             
+ INPUT CARD> $END                                                                           
+     400000 WORDS OF MEMORY AVAILABLE
+
+ This job is executing on     1 unique host(s)
+ Minimum number of processes per host is:    1
+ Maximum number of processes per host is:    1
+
+ On master's host, detected    8 CPU core(s) in aggregate
+
+ Warning: HTT is enabled, bitmask of physically unique cores is 0x000000AA
+
+ SMT aware parts of program will use              2 threads.
+
+ Creating thread pool to serve up to            128 threads.
+
+ Activating Call64 option.
+
+ Using 64-bit DGEMM by default.
+
+     BASIS OPTIONS
+     -------------
+     GBASIS=STO          IGAUSS=       3      POLAR=NONE    
+     NDFUNC=       0     NFFUNC=       0     DIFFSP=       F
+     NPFUNC=       0      DIFFS=       F
+
+
+     RUN TITLE
+     ---------
+ WATER MOLECULE...STO-3G...TRANSITION MOMENT                                     
+
+ THE POINT GROUP OF THE MOLECULE IS CNV     
+ THE ORDER OF THE PRINCIPAL AXIS IS     2
+
+ ATOM      ATOMIC                      COORDINATES (BOHR)
+           CHARGE         X                   Y                   Z
+ OXYGEN      8.0     0.0000000000        0.0000000000        0.0000000000
+ HYDROGEN    1.0     0.0000000000       -1.4280000000       -1.0960000000
+ HYDROGEN    1.0     0.0000000000        1.4280000000       -1.0960000000
+
+          INTERNUCLEAR DISTANCES (ANGS.)
+          ------------------------------
+
+                    OXYGEN         HYDROGEN       HYDROGEN  
+
+  1  OXYGEN          0.0000000      0.9525778 *    0.9525778 *  
+  2  HYDROGEN        0.9525778 *    0.0000000      1.5113301 *  
+  3  HYDROGEN        0.9525778 *    1.5113301 *    0.0000000    
+
+  * ... LESS THAN  3.000
+
+
+     ATOMIC BASIS SET
+     ----------------
+ THE CONTRACTED PRIMITIVE FUNCTIONS HAVE BEEN UNNORMALIZED
+ THE CONTRACTED BASIS FUNCTIONS ARE NOW NORMALIZED TO UNITY
+
+ SHELL TYPE PRIM    EXPONENT          CONTRACTION COEFFICIENTS
+
+ OXYGEN    
+
+   1   S    1     130.709321    4.251943 (  0.154329) 
+   1   S    2      23.808866    4.112294 (  0.535328) 
+   1   S    3       6.443608    1.281623 (  0.444635) 
+
+   2   L    4       5.033151   -0.239413 ( -0.099967)     1.675450 (  0.155916) 
+   2   L    5       1.169596    0.320234 (  0.399513)     1.053568 (  0.607684) 
+   2   L    6       0.380389    0.241686 (  0.700115)     0.166903 (  0.391957) 
+
+ HYDROGEN  
+
+   4   S    7       3.425251    0.276934 (  0.154329) 
+   4   S    8       0.623914    0.267839 (  0.535328) 
+   4   S    9       0.168855    0.083474 (  0.444635) 
+
+ TOTAL NUMBER OF SHELLS              =    4
+ TOTAL NUMBER OF BASIS FUNCTIONS     =    7
+ NUMBER OF ELECTRONS                 =   10
+ CHARGE OF MOLECULE                  =    0
+ STATE MULTIPLICITY                  =    1
+ NUMBER OF OCCUPIED ORBITALS (ALPHA) =    5
+ NUMBER OF OCCUPIED ORBITALS (BETA ) =    5
+ TOTAL NUMBER OF ATOMS               =    3
+ THE NUCLEAR REPULSION ENERGY IS        9.2384802989
+
+     $CONTRL OPTIONS
+     ---------------
+     SCFTYP=NONE         RUNTYP=TRANSITN     EXETYP=RUN     
+     MPLEVL=       0     LOCAL =NONE         UNITS =BOHR    
+     MULT  =       1     ICHARG=       0     MAXIT =      30
+     NPRINT=       7     IREST =       0     COORD =UNIQUE  
+     ECP   =NONE         NORMF =       0     NORMP =       0
+     ITOL  =      20     ICUT  =       9     NZVAR =       0
+     NOSYM =       0     INTTYP=POPLE        GEOM  =INPUT   
+     PLTORB=       F     MOLPLT=       F     RPAC  =       F
+     AIMPAC=       0     FRIEND=             CITYP =GUGA    
+     DFTTYP=NONE    
+
+     $SYSTEM OPTIONS
+     ---------------
+     KDIAG =       0     MEMORY=   400000     TIMLIM=       60.0 SEC.
+     COREFL=       F     PTIME =        F     XDR   =       F
+     BALTYP=LOOP         CBASE = 00401000     FBASE = 714610C0
+
+          ----------------
+          PROPERTIES INPUT
+          ----------------
+
+     MOMENTS            FIELD           POTENTIAL          DENSITY
+ IEMOM =       1   IEFLD =       0   IEPOT =       0   IEDEN =       0
+ WHERE =COMASS     WHERE =NUCLEI     WHERE =NUCLEI     WHERE =NUCLEI  
+ OUTPUT=BOTH       OUTPUT=BOTH       OUTPUT=BOTH       OUTPUT=BOTH    
+ IEMINT=       0   IEFINT=       0                     IEDINT=       0
+                                                       MORB  =       0
+
+
+          ----------------------
+          INTEGRAL INPUT OPTIONS
+          ----------------------
+ NOPK  =       1 NORDER=       0 SCHWRZ=       T
+
+ ATTENTION! AO INTEGRALS WILL BE PACKED.
+ THRESHOLD FOR PACKING PKTHR =  0.10000000D-01
+
+     -------------------------------
+     INTEGRAL TRANSFORMATION OPTIONS
+     -------------------------------
+     NWORD  =       0     CUTTRF = 1.0E-09
+     MPTRAN =       0     DIRTRF =       F
+     AOINTS =DUP          IREST  =       0
+
+     ------------------------------------------
+     THE POINT GROUP IS CNV, NAXIS= 2, ORDER= 4
+     ------------------------------------------
+
+     DIMENSIONS OF THE SYMMETRY SUBSPACES ARE
+ A1  =   4      A2  =   0      B1  =   1      B2  =   2
+
+ ..... DONE SETTING UP THE RUN .....
+
+ CPU        TIME:   STEP =      0.02 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.02 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =     88.51%,  TOTAL =     177.02%
+
+     ---------------------------
+     RADIATIVE TRANSITION MOMENT
+     ---------------------------
+
+     NFZC  =         7
+     NUMVEC=         1
+     NUMCI =         1
+     NOCC  =         7
+     SELECT=     NORMAL  
+     IROOTS=      1  2
+
+
+
+          ********************
+          1 ELECTRON INTEGRALS
+          ********************
+ ...... END OF ONE-ELECTRON INTEGRALS ......
+
+ CPU        TIME:   STEP =      0.00 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.00 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =      0.00%,  TOTAL =     172.10%
+
+ LOG10 OF CONDITION NUMBER OF OVERLAP MATRIX IS:  8.75029495E-01
+
+
+          ----------------------
+          CORRESPONDING ORBITALS
+          ----------------------
+ THE CORRESPONDING ORBITAL OVERLAPS ARE
+  1.0000000000 1.0000000000 1.0000000000 1.0000000000 1.0000000000
+  1.0000000000 1.0000000000
+ ...... END OF ORBITAL SELECTION ......
+
+ CPU        TIME:   STEP =      0.00 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.00 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =      0.00%,  TOTAL =     154.74%
+
+          --------------------
+          2 ELECTRON INTEGRALS
+          --------------------
+
+ THE -PK- OPTION IS OFF, THE INTEGRALS ARE NOT IN SUPERMATRIX FORM.
+ STORING    4998 INTEGRALS/RECORD ON DISK, USING 12 BYTES/INTEGRAL.
+ TWO ELECTRON INTEGRAL EVALUATION REQUIRES   34408 WORDS OF MEMORY.
+ SCHWARZ INEQUALITY OVERHEAD:        28 INTEGRALS, CPU TIME=        0.00
+ II,JST,KST,LST =  1  1  1  1 NREC =         1 INTLOC =    1
+ II,JST,KST,LST =  2  1  1  1 NREC =         1 INTLOC =    2
+ II,JST,KST,LST =  3  1  1  1 NREC =         1 INTLOC =   34
+ II,JST,KST,LST =  4  1  1  1 NREC =         1 INTLOC =   34
+ SCHWARZ INEQUALITY TEST SKIPPED         0 INTEGRAL BLOCKS.
+ TOTAL NUMBER OF NONZERO TWO-ELECTRON INTEGRALS =                 141
+          1 INTEGRAL RECORDS WERE STORED ON DISK FILE  8.
+ ...... END OF TWO-ELECTRON INTEGRALS .....
+
+ CPU        TIME:   STEP =      0.00 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.00 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =      0.00%,  TOTAL =     138.02%
+
+
+     --------------------
+     FIRST CI CALCULATION
+     --------------------
+
+          -----------------------     ----------------------------
+          GUGA DISTINCT ROW TABLE     WRITTEN BY B.R.BROOKS,P.SAXE
+          -----------------------     ----------------------------
+
+      GROUP=C2V          NPRT=       0
+       FORS=       F   INTACT=       F
+       FOCI=       F   MXNINT=   20000
+       SOCI=       F   MXNEME=    7500
+     IEXCIT=       2   NWORD =  180018
+
+      -CORE-    -INTERNAL-  -EXTERNAL-
+     NFZC=   1   NDOC=   4   NEXT=   0
+     NMCC=   0   NAOS=   0   NFZV=   0
+                 NBOS=   0
+                 NALP=   0
+                 NVAL=   2
+
+ THE MAXIMUM ELECTRON EXCITATION WILL BE   2
+
+ SYMMETRIES FOR THE   1 CORE,   6 ACTIVE,   0 EXTERNAL MO-S ARE
+     CORE= A1  
+   ACTIVE= A1    B2    A1    B1    A1    B2  
+           DOC   DOC   DOC   DOC   VAL   VAL 
+
+ MOLECULAR CHARGE          =    0
+ NUMBER OF ALPHA ELECTRONS =    5
+ NUMBER OF  BETA ELECTRONS =    5
+
+ THE ELECTRONIC STATE IS  1-A1  
+
+ THE DISTINCT ROW TABLE HAS        23 ROWS.
+ THE WAVEFUNCTION  CONTAINS        18 WALKS (CSF-S).
+
+ TOTAL NUMBER OF INTEGRALS =        106
+ NUMBER OF INTEGRALS/GROUP =        106
+ NUMBER OF INTEGRAL GROUPS =          1
+ MAXIMUM RECORD SIZES ARE      8225 FOR UNIT 11        22 FOR UNIT 12
+                              15001 FOR UNIT 15     22501 FOR UNIT 16
+ ...... END OF -DRT- GENERATION ...... 
+
+ CPU        TIME:   STEP =      0.00 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.00 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =      0.00%,  TOTAL =     117.27%
+
+     -------------------------------
+     PARTIAL INTEGRAL TRANSFORMATION
+     -------------------------------
+
+ NUMBER OF CORE MOLECULAR ORBITALS     =    1
+ NUMBER OF OCCUPIED MOLECULAR ORBITALS =    7
+ TOTAL NUMBER OF MOLECULAR ORBITALS    =    7
+ TOTAL NUMBER OF ATOMIC ORBITALS       =    7
+ THRESHOLD FOR KEEPING TRANSFORMED 2E- INTEGRALS = 1.000E-09
+ AO INTEGRALS WILL BE READ IN FROM DISK...
+ EVALUATING THE FROZEN CORE ENERGY...
+ ----- FROZEN CORE ENERGY =       -60.6727618653
+ # OF WORDS AVAILABLE =     400000
+ # OF WORDS NEEDED    =      21404 FOR IN MEMORY TRANSFORMATION
+
+ CHOOSING IN MEMORY PARTIAL TRANSFORMATION...
+ TOTAL NUMBER OF TRANSFORMED 2E- INTEGRALS KEPT =        85
+ ... END OF INTEGRAL TRANSFORMATION ...
+
+ CPU        TIME:   STEP =      0.00 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.00 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =      0.00%,  TOTAL =     105.22%
+
+          ------------------------
+          GUGA-CI INTEGRAL SORTING
+          ------------------------
+
+     30108 WORDS NEEDED TO SORT            106 GUGA INTEGRALS IN MEMORY
+    400000 WORDS ARE AVAILABLE
+ CHOOSING IN-MEMORY SORTING...
+ IN CORE ALGORITHM SORTED             10 NON-ZERO 1E- INTEGRALS
+ IN CORE ALGORITHM SORTED             85 NON-ZERO 2E- INTEGRALS
+ ...... END OF INTEGRAL SORTING ......
+
+ CPU        TIME:   STEP =      0.00 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.00 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =      0.00%,  TOTAL =     100.07%
+
+ -------------------------     ---------------------------------------
+ ENERGY MATRIX CALCULATION     WRITTEN BY B.R.BROOKS,W.D.LAIDIG,P.SAXE
+ -------------------------     ---------------------------------------
+
+ COMPUTING THE HAMILTONIAN FOR THE        18 CSF-S...
+
+         301 IS THE TOTAL NUMBER OF GENERATED LOOPS
+         301 WERE CREATED BY THE LOOP-DRIVEN ALGORITHM
+           0 WERE CREATED IMPLICITLY
+
+         301 IS THE TOTAL NUMBER OF PROCESSED LOOPS
+         135     DIAGONAL LOOPS ARE STORED ON WORK15 IN       1 BUFFERS OF   7500 ELEMENTS.
+         166 OFF DIAGONAL LOOPS ARE STORED ON WORK16 IN       1 BUFFERS OF   7500 ELEMENTS.
+ ...... END OF ENERGY MATRIX CALCULATION ...... 
+
+ CPU        TIME:   STEP =      0.00 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.00 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =      0.00%,  TOTAL =      96.79%
+
+          -----------------------------------------
+          DAVIDSON METHOD CI-MATRIX DIAGONALIZATION
+            PROGRAM WRITTEN BY ALEX A. GRANOVSKY
+          -----------------------------------------
+ NUMBER OF STATES REQUESTED =     2
+ MAX. NUMB. OF EXPAN. VEC   =    30
+ MAX. NUMB. IMPROVED STATES =     2
+ MAX. NUMB. OF ITERATIONS   =    50
+ CONVERGENCE CRITERION      =    1.0E-05
+
+ CHOOSING TO SOLVE SECULAR EQUATION IN MEMORY
+ NUMBER OF WORDS AVAILABLE =     400000
+ NUMBER OF WORDS USED      =      20103
+ ENERGY MATRIX BUFFER SIZE =       7500
+
+     4 LOWEST DIAGONAL ELEMENTS OF HAMILTONIAN ARE
+    -74.9620540 (CSF        1)    -74.3141072 (CSF        8)    -73.8991875 (CSF        2)
+    -73.7615587 (CSF       14)
+
+ SOLUTION FOUND WITH DIRECT METHOD
+
+ STATE #    1  ENERGY =     -75.010111355
+
+      CSF      COEF    OCCUPANCY (IGNORING CORE)
+      ---      ----    --------- --------- -----
+        1    0.987461  222200
+        4   -0.075304  202202
+       12    0.078293  211211
+       13    0.050742  112211
+
+ STATE #    2  ENERGY =     -74.394581937
+
+      CSF      COEF    OCCUPANCY (IGNORING CORE)
+      ---      ----    --------- --------- -----
+        2   -0.216997  212201
+        5    0.084809  220202
+        8   -0.948395  221210
+        9    0.077501  122210
+       10   -0.052169  211211
+       12   -0.129069  211211
+       15   -0.061253  202220
+       16    0.102544  220220
+
+ RENORMALIZED DAVIDSON CORRECTION FOR     1-REFERENCE CI.
+ C0SQ= 0.975079 EREF=      -74.962054 E-E(REF)=   0.048057 E(Q)=   0.001228
+ GIVES A E(SD+Q) ESTIMATE OF      -75.0113396092
+ ...... END OF CI-MATRIX DIAGONALIZATION ......
+
+ CPU        TIME:   STEP =      0.00 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.00 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =      0.00%,  TOTAL =      91.64%
+
+          ---------------------
+          STORE CSF INFORMATION
+          --------------------
+
+ READING THE DRT FILE
+ TITLE=CIDRT1  16:58:55 17-SEP-2016                                                    
+ NUMBER OF CONFIGURATIONS =         18
+
+ READING THE CI VECTOR FILE
+ DRT TITLE=CIDRT1  16:58:55 17-SEP-2016                                                    
+     2 STATES WERE COMPUTED, NWKS=        18
+
+ STORING CSF AND CI COEF. INFORMATION FOR    2 STATES ON FILE  17.
+     ENERGIES ARE ...
+     -75.0101114    -74.3945819
+ ...... DONE STORING CSF INFORMATION ......
+
+ CPU        TIME:   STEP =      0.00 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.00 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =      0.00%,  TOTAL =      89.29%
+
+          ---------------------
+          STORE CSF INFORMATION
+          --------------------
+
+ READING THE DRT FILE
+ TITLE=CIDRT1  16:58:55 17-SEP-2016                                                    
+ NUMBER OF CONFIGURATIONS =         18
+
+ READING THE CI VECTOR FILE
+ DRT TITLE=CIDRT1  16:58:55 17-SEP-2016                                                    
+     2 STATES WERE COMPUTED, NWKS=        18
+
+ STORING CSF AND CI COEF. INFORMATION FOR    2 STATES ON FILE  12.
+     ENERGIES ARE ...
+     -75.0101114    -74.3945819
+ ...... DONE STORING CSF INFORMATION ......
+
+ CPU        TIME:   STEP =      0.00 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.00 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =      0.00%,  TOTAL =      87.48%
+
+ ...... DONE WITH DIPOLE INTEGRALS ......
+
+ CPU        TIME:   STEP =      0.00 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.00 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =      0.00%,  TOTAL =      86.61%
+
+ ...... DONE WITH DIPOLE VELOCITY INTEGRALS ......
+
+ CPU        TIME:   STEP =      0.00 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.00 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =      0.00%,  TOTAL =      85.91%
+
+          ------------------
+          TRANSITION MOMENTS
+          ------------------
+
+        674 WORDS OF MEMORY ARE REQUIRED.
+ RECOVER CI INFORMATION OF STATE 1.  IROOTS=    1
+ RECOVER CI INFORMATION OF STATE 2.  IROOTS=    2
+
+          ---- LENGTH FORM ----
+
+ CI STATE NUMBER=  1  2 : STATE MULTIPLICITY= 1 1 : NUMBER OF CSF-S=   18   18
+ STATE ENERGIES          -75.0101113548      -74.3945819375
+ TRANSITION ENERGY=  4.0500E+15 [1/SEC] =   135089.97 [1/CM] =       16.75 [EV]
+                          X           Y           Z           NORM
+ CENTER OF MASS    =    0.000000    0.000000   -0.122659             BOHR
+ TRANSITION DIPOLE =    0.000000    0.000000   -0.392614    0.392614 E*BOHR
+ TRANSITION DIPOLE =    0.000000    0.000000   -0.997932    0.997932 DEBYE
+ OSCILLATOR STRENGTH =    0.063254
+ EINSTEIN COEFFICIENTS: A=  7.6996E+08 1/SEC; B=  6.2555E+07 SEC/G
+
+ CPU        TIME:   STEP =      0.00 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.00 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =      0.00%,  TOTAL =      84.10%
+
+          ---- VELOCITY FORM ----
+
+ CI STATE NUMBER=  1  2 : STATE MULTIPLICITY= 1 1 : NUMBER OF CSF-S=   18   18
+ STATE ENERGIES          -75.0101113548      -74.3945819375
+ TRANSITION ENERGY=  4.0500E+15 [1/SEC] =   135089.97 [1/CM] =       16.75 [EV]
+                               X         Y         Z         NORM
+ DIPOLE VELOCITY <D/DQ> =  0.000000  0.000000 -0.368205  0.368205 E/BOHR
+ OSCILLATOR STRENGTH IS    0.146838
+
+ CPU        TIME:   STEP =      0.00 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.00 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =      0.00%,  TOTAL =      83.47%
+
+ ...... DONE WITH TRANSITION MOMENTS ......
+
+ CPU        TIME:   STEP =      0.00 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.00 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =      0.00%,  TOTAL =      82.83%
+
+                         I/O STATISTICS:
+ DATA READ TOTAL =        1.645 MB,  DATA WRITTEN TOTAL =        0.827 MB
+
+      396849 WORDS OF    DYNAMIC MEMORY USED
+      636827 BYTES OF    HEAP MEMORY    USED,      255337 BYTES REMAIN IN USE
+ EXECUTION OF FIREFLY TERMINATED NORMALLY 16:58:55 17-SEP-2016    

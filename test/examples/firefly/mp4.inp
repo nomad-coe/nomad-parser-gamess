@@ -1,0 +1,41 @@
+! This sample will execute the (T) part of MP4-SDTQ job on a GPU
+! It requires at least four core system, otherwise it should be modified a bit
+
+ $contrl scftyp=rhf mplevl=4 runtyp=energy icharg=-1 $end                       
+
+! to use four CPU cores
+
+ $system mwords=150 mklnp=4 np=4 $end
+
+! to allow use of CUDA
+
+ $smp cuda=.t. $end
+
+! to request four GPU-controlling threads for the first CUDA device.
+! Note, the line below is commented out because some CUDA drivers do not allow 
+! use of several CPU threads per GPU.
+!
+! $cuda nthdev(1)=4 $end
+
+! to disable concurrent use of CPU cores and GPUs
+
+ $cuda nocpu=.t. $end
+
+ $basis gbasis=n311 ngauss=6 npfunc=2 ndfunc=2 diffsp=.t. $end                  
+ $scf dirscf=.t. $end                                                             
+ $mp4 trpmet=12 sdtq=.t. $end                                 
+ $data                                                                          
+                                                                                
+ C1                                                                             
+ CL         17.0  -0.3520333657  -0.1650980028  -0.0471638329                   
+ H           1.0   0.7972862956  -1.4281273262  -1.2294694043                   
+ H           1.0  -1.5889984100   1.0741294712  -1.1576600606                   
+ H           1.0  -1.5392863051  -1.2871081468   1.2265482694                   
+ H           1.0   0.7428387888   0.9385578775   1.0969088438                   
+ F           9.0   1.3109647391  -2.0051605917  -1.7641455975                   
+ F           9.0  -2.1531089472   1.6362757807  -1.6569055973                   
+ F           9.0  -2.0787314212  -1.7943015141   1.8058474018                   
+ F           9.0   1.2619562758   1.4885572294   1.6876526453                   
+ H           1.0   2.8342698106   1.9875432625   1.3734980540                   
+ F           9.0   3.7058425393   2.3127319602   1.2848892783                   
+ $end                                                                           

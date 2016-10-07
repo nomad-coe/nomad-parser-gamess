@@ -1,0 +1,34 @@
+! Bench 12.
+!
+! RHF gradient calculation on puckered ADSbO.
+! There are 110 AOs in the 3-21G* basis set.
+!
+! The FINAL energy is -6642.1898264568 after 13 iterations.
+! The Cartesian RMS gradient is 0.000082750.
+!
+ $CONTRL SCFTYP=RHF   RUNTYP=GRADIENT   NZVAR=30   UNITS=BOHR $END
+ $SYSTEM TIMLIM=3000 MEMORY=700000 $END
+ $BASIS  GBASIS=N21 NGAUSS=3 NDFUNC=1 $END
+ $GUESS  GUESS=HUCKEL  $END
+ $ZMAT   IZMAT(1)=1,1,2       1,2,3       1,3,5  1,5,7
+         2,5,3,2     2,7,5,3       2,3,2,1
+         1,3,9       2,9,3,2       1,5,11
+         2,11,5,3    3,3,2,1,7     3,5,3,2,1
+         3,9,3,2,1   3,11,5,3,2    1,2,4
+         1,4,6       1,6,8         2,6,4,2
+         2,8,6,4     2,4,2,1       1,4,10
+         2,10,4,2    1,6,12        2,12,6,4
+         3,4,2,1,8   3,6,4,2,1     3,10,4,2,1
+         3,12,6,4,2  3,4,2,1,7                $END
+ $DATA
+PUCKERED ADSBO...CS SYMMETRY...RHF/3-21G*//RHF/3-21G*
+CS
+ 
+ANTIMONY    51.   -1.8433476877       -0.5240796014        0.0000000000
+NITROGEN     7.    1.9677694222       -1.2596167352        0.0000000000
+CARBON       6.    3.0574129817       -0.2457886820       -2.3007192723
+CARBON       6.    1.5780753428        1.1491377083       -3.7343146243
+OXYGEN       8.   -0.9516551352        1.4623048388       -3.0245465915
+HYDROGEN     1.    4.9916494784       -0.6483538433       -2.7128100383
+HYDROGEN     1.    2.0957190284        2.0335640765       -5.4696869691
+ $END

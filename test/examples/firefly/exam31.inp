@@ -1,0 +1,50 @@
+! EXAM31.                                                  
+!
+! Water in PCM water...RHF geometry optimization           
+! 
+! FINAL E = -74.9677086914, 12 ITERS, RMS GRAD = 0.0320051
+! FINAL E = -74.9497164248,  8 ITERS, RMS GRAD = 0.0646154
+! FINAL E = -74.9695492442,  7 ITERS, RMS GRAD = 0.0218028
+! FINAL E = -74.9713039186,  7 ITERS, RMS GRAD = 0.0073420
+! FINAL E = -74.9715416289,  8 ITERS, RMS GRAD = 0.0021420
+! FINAL E = -74.9715483014,  6 ITERS, RMS GRAD = 0.0004166
+! FINAL E = -74.9715554354,  5 ITERS, RMS GRAD = 0.0002346
+! FINAL E = -74.9715554234,  3 ITERS, RMS GRAD = 0.0002233
+! FINAL E = -74.9715548552,  4 ITERS, RMS GRAD = 0.0001425
+! FINAL E = -74.9715549922,  4 ITERS, RMS GRAD = 0.0000233
+!                                                          
+! The final geometry is not symmetric:
+! O                                                       
+! H      1    0.9871331                                   
+! H      1    0.9869464  2   100.0001846                  
+!                                                          
+!      ----------------------------------------------
+!      ------   RESULTS OF D-PCM CALCULATION  -------
+!      ----------------------------------------------
+!
+! FREE ENERGY IN SOLVENT       =      -74.9715549922 A.U.
+! INTERNAL ENERGY IN SOLVENT   =      -74.9655698911 A.U.
+! DELTA INTERNAL ENERGY        =        0.0000000000 A.U.
+! ELECTROSTATIC INTERACTION    =       -0.0059851011 A.U.
+! PIEROTTI CAVITATION ENERGY   =        0.0000000000 A.U.
+! DISPERSION FREE ENERGY       =        0.0000000000 A.U.
+! REPULSION FREE ENERGY        =        0.0000000000 A.U.
+! TOTAL INTERACTION            =       -0.0059851011 A.U.
+! TOTAL FREE ENERGY IN SOLVENT =      -74.9715549922 A.U.
+!                                                          
+ $contrl scftyp=rhf runtyp=optimize coord=zmt $end         
+ $system memory=8000000 $end                               
+ $basis  gbasis=sto ngauss=3 $end                          
+ $guess  guess=huckel $end                                 
+ $pcm    solvnt=water $end                                 
+ $data                                                     
+a water molecule solvated by PCM water                     
+Cnv 2                                                      
+                                                           
+O                                                          
+H 1 rOH                                                    
+H 1 rOH 2 aHOH                                             
+                                                           
+rOH=0.95                                                   
+aHOH=104.5                                                 
+ $end                                                      

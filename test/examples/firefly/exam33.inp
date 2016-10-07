@@ -1,0 +1,55 @@
+! EXAM33.
+!
+! 3-A-2 H3CN   Frozen core RMP2/6-31G*//UHF/6-31G*
+!
+! RMP2 high spin open shell PT2 geometry optimization using numerical gradients.
+!
+! At the initial geometry:
+!
+! The FINAL ROHF energy = -93.9955428384 after 11 iters.
+! E(RMP2) = -94.2315039044
+!
+! RMS GRADIENT = 0.0032358
+!
+! FULLY SUBSTITUTED Z-MATRIX IS:
+! N   
+! C        1   1.4329216
+! H        2   1.0876477    1   110.2192800
+! H        2   1.0876477    1   110.2192800    3   120.0000000    0
+! H        2   1.0876477    1   110.2192800    3  -120.0000000    0
+!
+!------------------------------------------------------------------------------
+!
+! After 5 steps at the optimized geometry:
+!
+! The FINAL ROHF energy = -93.9953296075 after 5 iters.   
+! E(RMP2) = -94.2316728331
+!
+! RMS GRADIENT = 0.0000080
+!
+! FULLY SUBSTITUTED Z-MATRIX IS:
+! N   
+! C        1   1.4317803
+! H        2   1.0970784    1   110.1959282
+! H        2   1.0970784    1   110.1959282    3   120.0000000    0
+! H        2   1.0970784    1   110.1959282    3  -120.0000000    0
+!
+ $CONTRL SCFTYP=ROHF MULT=3 RUNTYP=OPTIMIZE MPLEVL=2 COORD=ZMT NUMDER=.T. $END
+ $SYSTEM TIMLIM=30 MEMORY=300000 $END
+ $BASIS  GBASIS=N31 NGAUSS=6 NDFUNC=1 NPFUNC=0 $END
+ $GUESS  GUESS=HUCKEL $END
+ $MP2 METHOD=1 OSPT=RMP $END
+ $DATA
+Methylnitrene...UHF/6-31G* structure
+Cnv 3
+
+N
+C  1  rCN
+H  2  rCH  1  aHCN
+H  2  rCH  1  aHCN  3  120.0
+H  2  rCH  1  aHCN  3 -120.0
+
+rCN=1.4329216
+rCH=1.0876477
+aHCN=110.21928
+ $END

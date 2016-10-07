@@ -1,0 +1,37 @@
+! EXAM38.
+!
+! This is integral-direct frozen core MP3/6-31G* energy run on silacyclobutane, 
+! with 80 AOs.
+!
+! E(RHF)               =      -407.1472108451
+!
+! E(D,2,SYMMETRIC)     =        -0.3091238209
+! E(D,2,ANTISYMMETRIC) =        -0.1623290259
+! E(D,2,TOTAL)         =        -0.4714528468
+! E(MP2)               =      -407.6186636919
+!
+! E(D,3,SYMMETRIC)     =        -0.0455071404
+! E(D,3,ANTISYMMETRIC) =         0.0050158833
+! E(D,3,TOTAL)         =        -0.0404912571
+! E(D,2+3,TOTAL)       =        -0.5119441039
+! E(MP3)               =      -407.6591549490
+!
+ $CONTRL SCFTYP=RHF  RUNTYP=ENERGY  UNITS=ANGS MPLEVL=3 $END
+ $SYSTEM TIMLIM=600 MEMORY=1000000 $END
+ $BASIS  GBASIS=N31 NGAUSS=6 NDFUNC=1 $END
+ $GUESS  GUESS=HUCKEL $END
+ $SCF DIRSCF=.T. $END
+ $DATA
+MP3/6-31G*//RHF/3-21G* Silacyclobutane
+CS
+
+SILICON    14.0    -0.081722       1.055710
+CARBON      6.0    -0.081722      -0.395331       1.217568
+CARBON      6.0     0.319935      -1.329102
+HYDROGEN    1.0    -1.222554       1.998369
+HYDROGEN    1.0     1.168317       1.848237
+HYDROGEN    1.0     0.604981      -0.419640       2.052727
+HYDROGEN    1.0    -1.077445      -0.641554       1.572232
+HYDROGEN    1.0     1.388834      -1.500162
+HYDROGEN    1.0    -0.184517      -2.285408
+ $END

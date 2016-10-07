@@ -1,0 +1,578 @@
+                             Running on host I7
+
+          ******************************************************
+          *      Firefly version 8.2.0, build number 10203     *
+          *   Compiled on    Friday,    16-09-2016, 21:20:07   *
+          *Code development and Intel/AMD specific optimization*
+          *  Copyright (c) 1994, 2016 by  Alex A. Granovsky,   *
+          *          Firefly Project, Moscow, Russia.          *
+          *   Some parts of this program include code due to   *
+          * work of Jim Kress, Peter Burger, and Robert Ponec. *
+          ******************************************************
+          *             Firefly Project homepage:              *
+          * http://classic.chem.msu.su/gran/firefly/index.html *
+          *                      e-mail:                       *
+          *               gran@classic.chem.msu.su             *
+          *This program is not a free software and is provided *
+          *exclusively to its registered users under the terms *
+          *       of Firefly package license agreement         *
+          * Unauthorized use of Firefly is strongly prohibited *
+          *   This program may not be redistributed without    *
+          * the specific, written permission of its developers.*
+          ******************************************************
+
+          ******************************************************
+          *  PARTIALLY BASED ON  US GAMESS VERSION 6 JUN 1999, *
+          *   US GAMESS VERSIONS  6 SEP 2001 AND 12 DEC 2003   *
+          *             FROM IOWA STATE UNIVERSITY             *
+          * M.W.SCHMIDT, K.K.BALDRIDGE, J.A.BOATZ, S.T.ELBERT, *
+          *   M.S.GORDON, J.H.JENSEN, S.KOSEKI, N.MATSUNAGA,   *
+          *          K.A.NGUYEN, S.J.SU, T.L.WINDUS,           *
+          *       TOGETHER WITH M.DUPUIS, J.A.MONTGOMERY       *
+          *         J.COMPUT.CHEM.  14, 1347-1363(1993)        *
+          ******************************************************
+
+
+ Core i7    / Win32  Firefly version running under Windows NT
+ Running on Intel CPU:  Brand ID  0, Family  6, Model  26, Stepping  4
+ CPU Brand String    :  Intel(R) Core(TM) i7 CPU         940  @ 2.93GHz 
+ CPU Features        :  x87 FPU, CMOV, MMX, SSE, SSE2, SSE3, SSSE3, SSE4.1, SSE4.2, HTT, EM64T
+ Data cache size     :  L1 32 KB, L2  256 KB, L3  8192 KB
+ max    # of   cores/package :   8
+ max    # of threads/package :  16
+ max     cache sharing level :  16
+ actual # of   cores/package :   4
+ actual # of threads/package :   8
+ actual # of threads/core    :   2
+ Operating System successfully passed SSE support test.
+
+
+ PARALLEL VERSION (UNIFIED) RUNNING IN SERIAL MODE USING SINGLE PROCESS
+
+ EXECUTION OF FIREFLY BEGUN 16:58:54 17-SEP-2016    
+
+            ECHO OF THE FIRST FEW INPUT CARDS -
+ INPUT CARD>! EXAM04.                                                                       
+ INPUT CARD>!                                                                               
+ INPUT CARD>! 1-A-1 CH2    TCSCF calculation on methylene.                                  
+ INPUT CARD>! The wavefunction has two configurations, exciting                             
+ INPUT CARD>! the carbon sigma lone pair into the out of plane p.                           
+ INPUT CARD>!                                                                               
+ INPUT CARD>! Note that the Z-matrix used to input the molecule                             
+ INPUT CARD>! can include identifying integers after the element                            
+ INPUT CARD>! symbol, and that the connectivity can then be given                           
+ INPUT CARD>! using these labels rather than integers.                                      
+ INPUT CARD>!                                                                               
+ INPUT CARD>! This job tests the GVB wavefunction and gradient.                             
+ INPUT CARD>!                                                                               
+ INPUT CARD>! The initial GVB-PP(1) energy is -37.187342660                                 
+ INPUT CARD>! The FINAL energy is -37.256202065 after 10 iters.                             
+ INPUT CARD>! The GVB CI coefs are 0.977505 and -0.210911, giving                           
+ INPUT CARD>! a pair overlap of 0.64506.                                                    
+ INPUT CARD>! Mulliken, Lowdin charges for C are 0.020810, 0.055203.                        
+ INPUT CARD>! The dipole moment is 1.249835.                                                
+ INPUT CARD>! The RMS gradient = 0.019618427.                                               
+ INPUT CARD>!                                                                               
+ INPUT CARD> $CONTRL SCFTYP=GVB  RUNTYP=GRADIENT  COORD=ZMT  $END                           
+ INPUT CARD> $SYSTEM TIMLIM=1 MEMORY=100000 $END                                            
+ INPUT CARD> $BASIS  GBASIS=STO NGAUSS=2 $END                                               
+ INPUT CARD>! normally a GVB-PP calculation will use GUESS=MOREAD                           
+ INPUT CARD> $GUESS  GUESS=HUCKEL  $END                                                     
+ INPUT CARD> $SCF    NCO=3  NSETO=0  NPAIR=1  $END                                          
+ INPUT CARD> $DATA                                                                          
+ INPUT CARD>Methylene...1-A-1 state...GVB...one geminal pair...STO-2G                       
+ INPUT CARD>Cnv  2                                                                          
+ INPUT CARD>                                                                                
+ INPUT CARD>C1                                                                              
+ INPUT CARD>H1  C1 rCH                                                                      
+ INPUT CARD>H2  C1 rCH  H1 aHCH                                                             
+ INPUT CARD>                                                                                
+ INPUT CARD>rCH=1.09                                                                        
+ INPUT CARD>aHCH=99.0                                                                       
+ INPUT CARD> $END                                                                           
+     400000 WORDS OF MEMORY AVAILABLE
+
+ This job is executing on     1 unique host(s)
+ Minimum number of processes per host is:    1
+ Maximum number of processes per host is:    1
+
+ On master's host, detected    8 CPU core(s) in aggregate
+
+ Warning: HTT is enabled, bitmask of physically unique cores is 0x000000AA
+
+ SMT aware parts of program will use              2 threads.
+
+ Creating thread pool to serve up to            128 threads.
+
+ Activating Call64 option.
+
+ Using 64-bit DGEMM by default.
+
+     BASIS OPTIONS
+     -------------
+     GBASIS=STO          IGAUSS=       2      POLAR=NONE    
+     NDFUNC=       0     NFFUNC=       0     DIFFSP=       F
+     NPFUNC=       0      DIFFS=       F
+
+
+     RUN TITLE
+     ---------
+ Methylene...1-A-1 state...GVB...one geminal pair...STO-2G                       
+
+ THE POINT GROUP OF THE MOLECULE IS CNV     
+ THE ORDER OF THE PRINCIPAL AXIS IS     2
+
+ YOUR FULLY SUBSTITUTED Z-MATRIX IS
+ C1  
+ H1       1   1.0900000
+ H2       1   1.0900000    2    99.0000000
+
+ THE MOMENTS OF INERTIA ARE (AMU-ANGSTROM**2)
+ IXX=       0.865   IYY=       1.385   IZZ=       2.250
+
+ ATOM      ATOMIC                      COORDINATES (BOHR)
+           CHARGE         X                   Y                   Z
+ C1          6.0     0.0000000000        0.0000000000       -0.1923852005
+ H1          1.0    -1.5662853309        0.0000000000        1.1453488485
+ H1          1.0     1.5662853309        0.0000000000        1.1453488485
+
+          INTERNUCLEAR DISTANCES (ANGS.)
+          ------------------------------
+
+                    C1             H1             H1        
+
+  1  C1              0.0000000      1.0900000 *    1.0900000 *  
+  2  H1              1.0900000 *    0.0000000      1.6576850 *  
+  3  H1              1.0900000 *    1.6576850 *    0.0000000    
+
+  * ... LESS THAN  3.000
+
+
+     ATOMIC BASIS SET
+     ----------------
+ THE CONTRACTED PRIMITIVE FUNCTIONS HAVE BEEN UNNORMALIZED
+ THE CONTRACTED BASIS FUNCTIONS ARE NOW NORMALIZED TO UNITY
+
+ SHELL TYPE PRIM    EXPONENT          CONTRACTION COEFFICIENTS
+
+ C1        
+
+   1   S    1      27.385033    3.669807 (  0.430128) 
+   1   S    2       4.874522    1.587353 (  0.678914) 
+
+   2   L    3       1.136748    0.038816 (  0.049472)     0.855856 (  0.511541) 
+   2   L    4       0.288309    0.270261 (  0.963782)     0.184542 (  0.612820) 
+
+ H1        
+
+   4   S    5       1.309756    0.375320 (  0.430128) 
+   4   S    6       0.233136    0.162342 (  0.678914) 
+
+ TOTAL NUMBER OF SHELLS              =    4
+ TOTAL NUMBER OF BASIS FUNCTIONS     =    7
+ NUMBER OF ELECTRONS                 =    8
+ CHARGE OF MOLECULE                  =    0
+ STATE MULTIPLICITY                  =    1
+ NUMBER OF OCCUPIED ORBITALS (ALPHA) =    4
+ NUMBER OF OCCUPIED ORBITALS (BETA ) =    4
+ TOTAL NUMBER OF ATOMS               =    3
+ THE NUCLEAR REPULSION ENERGY IS        6.1450307920
+
+     $CONTRL OPTIONS
+     ---------------
+     SCFTYP=GVB          RUNTYP=GRADIENT     EXETYP=RUN     
+     MPLEVL=       0     LOCAL =NONE         UNITS =ANGS    
+     MULT  =       1     ICHARG=       0     MAXIT =      30
+     NPRINT=       7     IREST =       0     COORD =ZMT     
+     ECP   =NONE         NORMF =       0     NORMP =       0
+     ITOL  =      20     ICUT  =       9     NZVAR =       0
+     NOSYM =       0     INTTYP=POPLE        GEOM  =INPUT   
+     PLTORB=       F     MOLPLT=       F     RPAC  =       F
+     AIMPAC=       0     FRIEND=             CITYP =NONE    
+     DFTTYP=NONE    
+
+     $SYSTEM OPTIONS
+     ---------------
+     KDIAG =       0     MEMORY=   400000     TIMLIM=       60.0 SEC.
+     COREFL=       F     PTIME =        F     XDR   =       F
+     BALTYP=LOOP         CBASE = 00401000     FBASE = 714610C0
+
+          ----------------
+          PROPERTIES INPUT
+          ----------------
+
+     MOMENTS            FIELD           POTENTIAL          DENSITY
+ IEMOM =       1   IEFLD =       0   IEPOT =       0   IEDEN =       0
+ WHERE =COMASS     WHERE =NUCLEI     WHERE =NUCLEI     WHERE =NUCLEI  
+ OUTPUT=BOTH       OUTPUT=BOTH       OUTPUT=BOTH       OUTPUT=BOTH    
+ IEMINT=       0   IEFINT=       0                     IEDINT=       0
+                                                       MORB  =       0
+
+          EXTRAPOLATION IN EFFECT
+
+          *************************
+          ROHF-GVB INPUT PARAMETERS
+          *************************
+
+          NORB   =    5          NCO    =    3
+          NPAIR  =    1          NSETO  =    0
+          PAIR ORBITALS
+          PAIR    1 HAS ORBS    4    5
+
+          ----------------------------
+          ROHF-GVB COUPLING PARAMETERS
+          ----------------------------
+
+          F VECTOR (OCCUPANCIES)
+    1   1.0000000000
+    2   0.9529411765
+    3   0.0470588235
+          ALPHA COUPLING COEFFICEINTS
+
+             1           2           3
+
+    1    2.0000000
+    2    1.9058824   0.9529412
+    3    0.0941176   0.0000000   0.0470588
+           BETA COUPLING COEFFICIENTS
+
+             1           2           3
+
+    1   -1.0000000
+    2   -0.9529412   0.0000000
+    3   -0.0470588  -0.2117647   0.0000000
+
+          NATURAL ORBITAL COEFFICIENTS
+          N.O.                PAIR CICOEF-S
+            1        0.9761870602    -0.2169304578
+
+          ----------------------
+          INTEGRAL INPUT OPTIONS
+          ----------------------
+ NOPK  =       1 NORDER=       0 SCHWRZ=       T
+
+ ATTENTION! AO INTEGRALS WILL BE PACKED.
+ THRESHOLD FOR PACKING PKTHR =  0.10000000D-01
+
+     -------------------------------
+     INTEGRAL TRANSFORMATION OPTIONS
+     -------------------------------
+     NWORD  =       0     CUTTRF = 1.0E-09
+     MPTRAN =       0     DIRTRF =       F
+     AOINTS =DUP          IREST  =       0
+
+   --- ENCODED Z MATRIX ---
+ COORD    TYPE     I    J    K    L    M    N
+     1       1     3    1
+     2       1     2    1
+     3       2     2    1    3
+
+ THE DETERMINANT OF THE G MATRIX IS 10**(    -1)
+
+     ------------------------------------------
+     THE POINT GROUP IS CNV, NAXIS= 2, ORDER= 4
+     ------------------------------------------
+
+     DIMENSIONS OF THE SYMMETRY SUBSPACES ARE
+ A1  =   4      A2  =   0      B1  =   2      B2  =   1
+
+ ..... DONE SETTING UP THE RUN .....
+
+ CPU        TIME:   STEP =      0.03 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.03 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =     97.22%,  TOTAL =     145.83%
+
+                    --------------------------------
+                    SINGLE POINT ENERGY AND GRADIENT
+                    --------------------------------
+
+          ********************
+          1 ELECTRON INTEGRALS
+          ********************
+ ...... END OF ONE-ELECTRON INTEGRALS ......
+
+ CPU        TIME:   STEP =      0.00 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.00 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =      0.00%,  TOTAL =     144.20%
+
+          -------------
+          GUESS OPTIONS
+          -------------
+          GUESS =HUCKEL            NORB  =       0          NORDER=       0
+          MIX   =       F          PRTMO =       F          SYMDEN=       F
+          TOLZ  = 0.0E+00          TOLE  = 0.0E+00
+
+ INITIAL GUESS ORBITALS GENERATED BY HUCKEL   ROUTINE.
+ HUCKEL GUESS REQUIRES      2471 WORDS.
+
+ LOG10 OF CONDITION NUMBER OF OVERLAP MATRIX IS:  9.82210619E-01
+
+ SYMMETRIES FOR INITIAL GUESS ORBITALS FOLLOW.   BOTH SET(S).
+     5 ORBITALS ARE OCCUPIED (    1 CORE ORBITALS).
+     2=A1       3=B1       4=A1       5=B2       6=B1       7=A1  
+ ...... END OF INITIAL ORBITAL SELECTION ......
+
+ CPU        TIME:   STEP =      0.00 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.00 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =      0.00%,  TOTAL =     138.00%
+
+          --------------------
+          2 ELECTRON INTEGRALS
+          --------------------
+
+ THE -PK- OPTION IS OFF, THE INTEGRALS ARE NOT IN SUPERMATRIX FORM.
+ STORING    4998 INTEGRALS/RECORD ON DISK, USING 12 BYTES/INTEGRAL.
+ TWO ELECTRON INTEGRAL EVALUATION REQUIRES   34408 WORDS OF MEMORY.
+ SCHWARZ INEQUALITY OVERHEAD:        28 INTEGRALS, CPU TIME=        0.00
+ II,JST,KST,LST =  1  1  1  1 NREC =         1 INTLOC =    1
+ II,JST,KST,LST =  2  1  1  1 NREC =         1 INTLOC =    2
+ II,JST,KST,LST =  3  1  1  1 NREC =         1 INTLOC =   34
+ II,JST,KST,LST =  4  1  1  1 NREC =         1 INTLOC =   34
+ SCHWARZ INEQUALITY TEST SKIPPED         0 INTEGRAL BLOCKS.
+ TOTAL NUMBER OF NONZERO TWO-ELECTRON INTEGRALS =                 141
+          1 INTEGRAL RECORDS WERE STORED ON DISK FILE  8.
+ ...... END OF TWO-ELECTRON INTEGRALS .....
+
+ CPU        TIME:   STEP =      0.00 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.00 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =      0.00%,  TOTAL =     130.45%
+
+          ------------------------
+          ROHF-GVB SCF CALCULATION
+          ------------------------
+ GVB STEP WILL USE     40781 WORDS OF MEMORY.
+
+     MAXIT=  30   NPUNCH= 2   SQCDF TOL=1.0000E-05
+     NUCLEAR ENERGY=        6.1450307920
+     EXTRAP=T   DAMP=F   SHIFT=F   RSTRCT=F   DIIS=F  SOSCF=F
+
+ ITER EX   TOTAL ENERGY      E CHANGE        SQCDF       DIIS ERROR
+   0  0   -37.187342660   -37.187342660   0.171952566   0.000000000
+   1  1   -37.251386487    -0.064043828   0.117811749   0.000000000
+   2  2   -37.255332297    -0.003945810   0.079364374   0.000000000
+   3  3   -37.255969764    -0.000637466   0.050318107   0.000000000
+   4  0   -37.256197903    -0.000228140   0.004065504   0.000000000
+   5  1   -37.256201552    -0.000003649   0.001401388   0.000000000
+   6  2   -37.256201968    -0.000000416   0.000609593   0.000000000
+   7  3   -37.256202045    -0.000000077   0.000288838   0.000000000
+   8  0   -37.256202065    -0.000000020   0.000006205   0.000000000
+   9  1   -37.256202065     0.000000000   0.000003156   0.000000000
+  10  2   -37.256202065     0.000000000   0.000001750   0.000000000
+
+          -----------------
+          DENSITY CONVERGED
+          -----------------
+
+ FINAL ENERGY IS      -37.2562020654 AFTER  10 ITERATIONS
+
+          ----------------------------
+          SCF STATISTICS PER ITERATION
+          ----------------------------
+          NUMBER OF INTEGRAL PASSES       1
+          FOCK FORMATION TIME         0.000
+          GEMINAL OPT TIME            0.000
+          MIXORB  OPT TIME            0.002
+          OCBSE   OPT TIME            0.000
+
+          ----------------
+          PAIR INFORMATION
+          ----------------
+      ORBITAL   CI COEFFICIENTS    OCCUPATION NUMBERS   GVB      ENERGY
+ PAIR 1   2     ORB 1     ORB 2      ORB 1     ORB 2    OVERLAP  LOWERING
+  1   4   5    0.977505 -0.210911   1.91103   0.08897   0.64506  -0.02037
+
+     THE MAXIMUM LAGRANGIAN ASYMMETRY IS 6.5515813E-07
+
+          ------------
+          EIGENVECTORS
+          ------------
+
+                      1          2          3          4          5
+                  -10.6280    -0.7485    -0.4933    -0.3641    -0.0013
+                     A1         A1         B1         A1         B2  
+    1  C   1  S   0.985307  -0.153707   0.000000  -0.252558   0.000000
+    2  C   1  S   0.057862   0.320378   0.000000   0.887085   0.000000
+    3  C   1  X   0.000000   0.000000   0.536278   0.000000   0.000000
+    4  C   1  Y   0.000000   0.000000   0.000000   0.000000  -1.000000
+    5  C   1  Z   0.015921   0.445474   0.000000  -0.592120   0.000000
+    6  H   2  S  -0.015793   0.354371  -0.469736  -0.120156   0.000000
+    7  H   3  S  -0.015793   0.354371   0.469736  -0.120156   0.000000
+
+                      6          7
+                    0.7253     0.7641
+                     B1         A1  
+    1  C   1  S   0.000000   0.208933
+    2  C   1  S   0.000000  -1.087000
+    3  C   1  X   1.083232   0.000000
+    4  C   1  Y   0.000000   0.000000
+    5  C   1  Z   0.000000  -0.896422
+    6  H   2  S   0.830717   0.903032
+    7  H   3  S  -0.830717   0.903032
+
+          -----------
+          GI ORBITALS
+          -----------
+
+
+                    PAIR   1
+
+                      1          2
+
+    1  C   1  S  -0.229054   0.229054
+    2  C   1  S   0.804527  -0.804527
+    3  C   1  X   0.000000   0.000000
+    4  C   1  Y  -0.421274  -0.421274
+    5  C   1  Z  -0.537014   0.537014
+    6  H   2  S  -0.108974   0.108974
+    7  H   3  S  -0.108974   0.108974
+
+ ... END OF ROHF-GVB SCF CALCULATION ...
+
+ CPU        TIME:   STEP =      0.02 ,  TOTAL =        0.1 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.01 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =    161.65%,  TOTAL =     137.06%
+
+
+                         ------------------------------
+                         properties for the GVB density
+                         ------------------------------
+
+          -----------------
+          ENERGY COMPONENTS
+          -----------------
+
+         WAVEFUNCTION NORMALIZATION =       1.0000000000
+
+                ONE ELECTRON ENERGY =     -62.2437619987
+                TWO ELECTRON ENERGY =      18.8425291414
+           NUCLEAR REPULSION ENERGY =       6.1450307920
+                                      ------------------
+                       TOTAL ENERGY =     -37.2562020654
+
+ ELECTRON-ELECTRON POTENTIAL ENERGY =      18.8425291414
+  NUCLEUS-ELECTRON POTENTIAL ENERGY =     -99.4404357200
+   NUCLEUS-NUCLEUS POTENTIAL ENERGY =       6.1450307920
+                                      ------------------
+             TOTAL POTENTIAL ENERGY =     -74.4528757866
+               TOTAL KINETIC ENERGY =      37.1966737213
+                 VIRIAL RATIO (V/T) =       2.0016003674
+
+          ---------------------------------------
+          MULLIKEN AND LOWDIN POPULATION ANALYSES
+          ---------------------------------------
+
+     MULLIKEN ATOMIC POPULATION IN EACH MOLECULAR ORBITAL
+
+                      1          2          3          4          5
+
+                  2.000000   2.000000   2.000000   1.911033   0.088967
+
+    1             2.004627   0.997251   0.933631   1.954714   0.088967
+    2            -0.002313   0.501374   0.533184  -0.021841   0.000000
+    3            -0.002313   0.501374   0.533184  -0.021841   0.000000
+
+               ----- POPULATIONS IN EACH AO -----
+                             MULLIKEN      LOWDIN
+              1  C   1  S     1.98955     1.98636
+              2  C   1  S     1.62546     1.50853
+              3  C   1  X     0.93363     0.97893
+              4  C   1  Y     0.08897     0.08897
+              5  C   1  Z     1.34158     1.38202
+              6  H   2  S     1.01040     1.02760
+              7  H   3  S     1.01040     1.02760
+
+          ----- MULLIKEN ATOMIC OVERLAP POPULATIONS -----
+          (OFF-DIAGONAL ELEMENTS NEED TO BE MULTIPLIED BY 2)
+
+             1           2           3
+
+    1    5.3353355
+    2    0.3219275   0.7205509
+    3    0.3219275  -0.0320736   0.7205509
+
+          TOTAL MULLIKEN AND LOWDIN ATOMIC POPULATIONS
+       ATOM         MULL.POP.    CHARGE          LOW.POP.     CHARGE
+    1 C1            5.979190    0.020810         5.944797    0.055203
+    2 H1            1.010405   -0.010405         1.027602   -0.027602
+    3 H1            1.010405   -0.010405         1.027602   -0.027602
+
+          -------------------------------
+          BOND ORDER AND VALENCE ANALYSIS     BOND ORDER THRESHOLD=0.050
+          -------------------------------
+
+                   BOND                       BOND                       BOND
+  ATOM PAIR DIST  ORDER      ATOM PAIR DIST  ORDER      ATOM PAIR DIST  ORDER
+    1   2  1.090  0.999        1   3  1.090  0.999
+
+                       TOTAL       BONDED        FREE
+      ATOM            VALENCE     VALENCE     VALENCE
+    1 C1                2.341       1.997       0.344
+    2 H1                1.000       1.002      -0.002
+    3 H1                1.000       1.002      -0.002
+
+          ---------------------
+          ELECTROSTATIC MOMENTS
+          ---------------------
+
+ POINT   1           X           Y           Z (BOHR)    CHARGE
+                 0.000000    0.000000    0.000000        0.00 (A.U.)
+         DX          DY          DZ         /D/  (DEBYE)
+     0.000000    0.000000    1.249835    1.249835
+ ...... END OF PROPERTY EVALUATION ......
+
+ CPU        TIME:   STEP =      0.00 ,  TOTAL =        0.1 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.00 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =      0.00%,  TOTAL =     134.41%
+ ......END OF NBO ANALYSIS......
+
+ CPU        TIME:   STEP =      0.00 ,  TOTAL =        0.1 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.00 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =      0.00%,  TOTAL =     132.17%
+
+ BEGINNING ONE ELECTRON GRADIENT...
+ ..... END OF 1-ELECTRON GRADIENT ......
+
+ CPU        TIME:   STEP =      0.00 ,  TOTAL =        0.1 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.00 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =      0.00%,  TOTAL =     130.33%
+
+          ----------------------
+          GRADIENT OF THE ENERGY
+          ----------------------
+ SCHWARZ SCREENING SKIPPED          0 BLOCKS, COMPUTED         27 BLOCKS
+
+ ...... END OF 2-ELECTRON GRADIENT ......
+
+ CPU        TIME:   STEP =      0.00 ,  TOTAL =        0.1 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.00 ,  TOTAL =        0.1 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =      0.00%,  TOTAL =     122.54%
+
+                         ----------------------
+                         GRADIENT OF THE ENERGY
+                         ----------------------
+
+      ATOM                 E'X               E'Y               E'Z 
+    1 C1               0.000000000       0.000000000       0.038674832
+    2 H1               0.024701518       0.000000000      -0.019337416
+    3 H1              -0.024701518       0.000000000      -0.019337416
+
+                   MAXIMUM GRADIENT =    0.038674832
+                       RMS GRADIENT =    0.019618427
+  $VIB   
+          IVIB=   0 IATOM=   0 ICOORD=   0 E=      -37.2562020654
+  0.000000000E+00 0.000000000E+00 3.867483246E-02 2.470151782E-02 0.000000000E+00
+ -1.933741623E-02-2.470151782E-02 0.000000000E+00-1.933741623E-02
+ -3.262147770E-13-1.196867035E-17 1.249834728E+00
+
+ ..... END OF SINGLE POINT GRADIENT .....
+
+ CPU        TIME:   STEP =      0.00 ,  TOTAL =        0.1 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.00 ,  TOTAL =        0.1 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =      0.00%,  TOTAL =     122.33%
+
+                         I/O STATISTICS:
+ DATA READ TOTAL =        0.270 MB,  DATA WRITTEN TOTAL =        0.585 MB
+
+      396849 WORDS OF    DYNAMIC MEMORY USED
+      130048 BYTES OF    HEAP MEMORY    USED,       97591 BYTES REMAIN IN USE
+ EXECUTION OF FIREFLY TERMINATED NORMALLY 16:58:54 17-SEP-2016    

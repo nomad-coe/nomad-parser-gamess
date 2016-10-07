@@ -1,0 +1,1057 @@
+                             Running on host I7
+
+          ******************************************************
+          *      Firefly version 8.2.0, build number 10203     *
+          *   Compiled on    Friday,    16-09-2016, 21:20:07   *
+          *Code development and Intel/AMD specific optimization*
+          *  Copyright (c) 1994, 2016 by  Alex A. Granovsky,   *
+          *          Firefly Project, Moscow, Russia.          *
+          *   Some parts of this program include code due to   *
+          * work of Jim Kress, Peter Burger, and Robert Ponec. *
+          ******************************************************
+          *             Firefly Project homepage:              *
+          * http://classic.chem.msu.su/gran/firefly/index.html *
+          *                      e-mail:                       *
+          *               gran@classic.chem.msu.su             *
+          *This program is not a free software and is provided *
+          *exclusively to its registered users under the terms *
+          *       of Firefly package license agreement         *
+          * Unauthorized use of Firefly is strongly prohibited *
+          *   This program may not be redistributed without    *
+          * the specific, written permission of its developers.*
+          ******************************************************
+
+          ******************************************************
+          *  PARTIALLY BASED ON  US GAMESS VERSION 6 JUN 1999, *
+          *   US GAMESS VERSIONS  6 SEP 2001 AND 12 DEC 2003   *
+          *             FROM IOWA STATE UNIVERSITY             *
+          * M.W.SCHMIDT, K.K.BALDRIDGE, J.A.BOATZ, S.T.ELBERT, *
+          *   M.S.GORDON, J.H.JENSEN, S.KOSEKI, N.MATSUNAGA,   *
+          *          K.A.NGUYEN, S.J.SU, T.L.WINDUS,           *
+          *       TOGETHER WITH M.DUPUIS, J.A.MONTGOMERY       *
+          *         J.COMPUT.CHEM.  14, 1347-1363(1993)        *
+          ******************************************************
+
+
+ Core i7    / Win32  Firefly version running under Windows NT
+ Running on Intel CPU:  Brand ID  0, Family  6, Model  26, Stepping  4
+ CPU Brand String    :  Intel(R) Core(TM) i7 CPU         940  @ 2.93GHz 
+ CPU Features        :  x87 FPU, CMOV, MMX, SSE, SSE2, SSE3, SSSE3, SSE4.1, SSE4.2, HTT, EM64T
+ Data cache size     :  L1 32 KB, L2  256 KB, L3  8192 KB
+ max    # of   cores/package :   8
+ max    # of threads/package :  16
+ max     cache sharing level :  16
+ actual # of   cores/package :   4
+ actual # of threads/package :   8
+ actual # of threads/core    :   2
+ Operating System successfully passed SSE support test.
+
+
+ PARALLEL VERSION (UNIFIED) RUNNING IN SERIAL MODE USING SINGLE PROCESS
+
+ EXECUTION OF FIREFLY BEGUN 16:58:57 17-SEP-2016    
+
+            ECHO OF THE FIRST FEW INPUT CARDS -
+ INPUT CARD>! EXAM29.  surface scan                                                         
+ INPUT CARD>!                                                                               
+ INPUT CARD>! The scan is done over a 3x3 grid centered on the SCF                          
+ INPUT CARD>! transition state for the SN2 type reaction                                    
+ INPUT CARD>!     F- + NH2OH -> F-NH2-OH anion -> FNH2 + OH-                                
+ INPUT CARD>!                                                                               
+ INPUT CARD>! Groups 1 and 2 are F and OH, and their distance from                          
+ INPUT CARD>! the N is varied antisymmetrically, which is more or                           
+ INPUT CARD>! less what the IRC should be like.  The results seem to                        
+ INPUT CARD>! indicate that the MP2/3-21G saddle point would shift                          
+ INPUT CARD>! further into the product channel, since the higher                            
+ INPUT CARD>! MP2 energies occur at shorter r(NF) and longer r(NO):                         
+ INPUT CARD>!                                                                               
+ INPUT CARD>! FINAL RHF energy = -229.0368324539, E(MP2)= -229.3873302431E                  
+ INPUT CARD>! FINAL RHF energy = -229.0356378397, E(MP2)= -229.3866642786E                  
+ INPUT CARD>! FINAL RHF energy = -229.0309266388, E(MP2)= -229.3822094962E                  
+ INPUT CARD>! FINAL RHF energy = -229.0372146491, E(MP2)= -229.3923236254E                  
+ INPUT CARD>! FINAL RHF energy = -229.0385440173, E(MP2)= -229.3936486644E                  
+ INPUT CARD>! FINAL RHF energy = -229.0367369510, E(MP2)= -229.3913683142E                  
+ INPUT CARD>! FINAL RHF energy = -229.0328600876, E(MP2)= -229.3918933655E                  
+ INPUT CARD>! FINAL RHF energy = -229.0364643718, E(MP2)= -229.3948325411E                  
+ INPUT CARD>! FINAL RHF energy = -229.0372478115, E(MP2)= -229.3943498133E                  
+ INPUT CARD>!                                                                               
+ INPUT CARD> $contrl scftyp=rhf runtyp=surface icharg=-1 coord=zmt mplevl=2 $end            
+ INPUT CARD> $system memory=500000 timlim=30 $end                                           
+ INPUT CARD> $basis  gbasis=n21 ngauss=3 $end                                               
+ INPUT CARD> $guess  guess=huckel $end                                                      
+ INPUT CARD> $mp2 method=1 $end                                                             
+ INPUT CARD> $surf                                                                          
+ INPUT CARD>   ivec1(1)=2,1 igrp1=1                                                         
+ INPUT CARD>   ivec2(1)=2,5 igrp2(1)=5,6                                                    
+ INPUT CARD>   disp1= 0.10 ndisp1=3 orig1=-0.10                                             
+ INPUT CARD>   disp2=-0.10 ndisp2=3 orig2= 0.10                                             
+ INPUT CARD> $end                                                                           
+ INPUT CARD> $data                                                                          
+ INPUT CARD>F-NH2-OH exchange (inspired by J.Phys.Chem. 1994,98,7942-4)                     
+ INPUT CARD>Cs                                                                              
+ INPUT CARD>                                                                                
+ INPUT CARD>F                                                                               
+ INPUT CARD>N 1 rNF                                                                         
+ INPUT CARD>H 2 rNH   1  aFNH                                                               
+ INPUT CARD>H 2 rNH   1  aFNH   3 aHNH  +1                                                  
+ INPUT CARD>O 2 rNO   3  aONH   4 aONH  -1                                                  
+ INPUT CARD>H 5 rOH   2  aHON   1 180.0                                                     
+ INPUT CARD>                                                                                
+ INPUT CARD>rNF=1.7125469                                                                   
+ INPUT CARD>rNH=0.9966981                                                                   
+ INPUT CARD>rNO=1.9359887                                                                   
+ INPUT CARD>rOH=0.9828978                                                                   
+ INPUT CARD>aFNH=90.18493                                                                   
+     500000 WORDS OF MEMORY AVAILABLE
+
+ This job is executing on     1 unique host(s)
+ Minimum number of processes per host is:    1
+ Maximum number of processes per host is:    1
+
+ On master's host, detected    8 CPU core(s) in aggregate
+
+ Warning: HTT is enabled, bitmask of physically unique cores is 0x000000AA
+
+ SMT aware parts of program will use              2 threads.
+
+ Creating thread pool to serve up to            128 threads.
+
+ Activating Call64 option.
+
+ Using 64-bit DGEMM by default.
+
+     BASIS OPTIONS
+     -------------
+     GBASIS=N21          IGAUSS=       3      POLAR=NONE    
+     NDFUNC=       0     NFFUNC=       0     DIFFSP=       F
+     NPFUNC=       0      DIFFS=       F
+
+
+     RUN TITLE
+     ---------
+ F-NH2-OH exchange (inspired by J.Phys.Chem. 1994,98,7942-4)                     
+
+ THE POINT GROUP OF THE MOLECULE IS CS      
+ THE ORDER OF THE PRINCIPAL AXIS IS     0
+
+ YOUR FULLY SUBSTITUTED Z-MATRIX IS
+ F   
+ N        1   1.7125469
+ H        2   0.9966981    1    90.1849300
+ H        2   0.9966981    1    90.1849300    3   108.5700000    1
+ O        2   1.9359887    3    79.3433900    4    79.3433900   -1
+ H        5   0.9828978    2   100.7885100    1   180.0000000    0
+
+ THE MOMENTS OF INERTIA ARE (AMU-ANGSTROM**2)
+ IXX=       3.103   IYY=     119.201   IZZ=     119.665
+
+ ATOM      ATOMIC                      COORDINATES (BOHR)
+           CHARGE         X                   Y                   Z
+ F           9.0     3.2294065141       -0.1045539813        0.0000000000
+ N           7.0     0.0301704407        0.3834703771        0.0000000000
+ H           1.0    -0.1416397013       -0.7025152187       -1.5292605160
+ H           1.0    -0.1416397013       -0.7025152187        1.5292605160
+ O           8.0    -3.5783720745       -0.2189899711        0.0000000000
+ H           1.0    -4.2217648589        1.5234247064        0.0000000000
+
+          INTERNUCLEAR DISTANCES (ANGS.)
+          ------------------------------
+
+                    F              N              H              H         
+
+  1  F               0.0000000      1.7125469 *    1.9842486 *    1.9842486 *  
+  2  N               1.7125469 *    0.0000000      0.9966981 *    0.9966981 *  
+  3  H               1.9842486 *    0.9966981 *    0.0000000      1.6184996 *  
+  4  H               1.9842486 *    0.9966981 *    1.6184996 *    0.0000000    
+  5  O               3.6030302      1.9359887 *    2.0069400 *    2.0069400 *  
+  6  H               4.0360048      2.3294889 *    2.5892327 *    2.5892327 *  
+
+                    O              H         
+
+  1  F               3.6030302      4.0360048    
+  2  N               1.9359887 *    2.3294889 *  
+  3  H               2.0069400 *    2.5892327 *  
+  4  H               2.0069400 *    2.5892327 *  
+  5  O               0.0000000      0.9828978 *  
+  6  H               0.9828978 *    0.0000000    
+
+  * ... LESS THAN  3.000
+
+
+     ATOMIC BASIS SET
+     ----------------
+ THE CONTRACTED PRIMITIVE FUNCTIONS HAVE BEEN UNNORMALIZED
+ THE CONTRACTED BASIS FUNCTIONS ARE NOW NORMALIZED TO UNITY
+
+ SHELL TYPE PRIM    EXPONENT          CONTRACTION COEFFICIENTS
+
+ F         
+
+   1   S    1     413.801000    3.828407 (  0.058548) 
+   1   S    2      62.244600    5.516897 (  0.349308) 
+   1   S    3      13.434000    3.548929 (  0.709632) 
+
+   2   L    4       9.777590   -1.605190 ( -0.407327)     6.079443 (  0.246680) 
+   2   L    5       2.086170    1.513205 (  1.223140)     3.046004 (  0.852321) 
+
+   3   L    6       0.482383    0.412529 (  1.000000)     0.573034 (  1.000000) 
+
+ N         
+
+   4   S    7     242.766000    2.624092 (  0.059866) 
+   4   S    8      36.485100    3.734359 (  0.352955) 
+   4   S    9       7.814490    2.353454 (  0.706513) 
+
+   5   L   10       5.425220   -1.047101 ( -0.413301)     2.808586 (  0.237972) 
+   5   L   11       1.149150    0.968550 (  1.224420)     1.456735 (  0.858953) 
+
+   6   L   12       0.283205    0.276685 (  1.000000)     0.294487 (  1.000000) 
+
+ H         
+
+   9   S   13       5.447178    0.397151 (  0.156285) 
+   9   S   14       0.824547    0.557920 (  0.904691) 
+
+  10   S   15       0.183192    0.199567 (  1.000000) 
+
+ O         
+
+  11   S   16     322.037000    3.209593 (  0.059239) 
+  11   S   17      48.430800    4.599140 (  0.351500) 
+  11   S   18      10.420600    2.925183 (  0.707658) 
+
+  12   L   19       7.402940   -1.293695 ( -0.404453)     4.257230 (  0.244586) 
+  12   L   20       1.576200    1.224712 (  1.221560)     2.149757 (  0.853955) 
+
+  13   L   21       0.373684    0.340634 (  1.000000)     0.416458 (  1.000000) 
+
+ H         
+
+  14   S   22       5.447178    0.397151 (  0.156285) 
+  14   S   23       0.824547    0.557920 (  0.904691) 
+
+  15   S   24       0.183192    0.199567 (  1.000000) 
+
+ TOTAL NUMBER OF SHELLS              =   15
+ TOTAL NUMBER OF BASIS FUNCTIONS     =   33
+ NUMBER OF ELECTRONS                 =   28
+ CHARGE OF MOLECULE                  =   -1
+ STATE MULTIPLICITY                  =    1
+ NUMBER OF OCCUPIED ORBITALS (ALPHA) =   14
+ NUMBER OF OCCUPIED ORBITALS (BETA ) =   14
+ TOTAL NUMBER OF ATOMS               =    6
+ THE NUCLEAR REPULSION ENERGY IS       69.6136879550
+
+     $CONTRL OPTIONS
+     ---------------
+     SCFTYP=RHF          RUNTYP=SURFACE      EXETYP=RUN     
+     MPLEVL=       2     LOCAL =NONE         UNITS =ANGS    
+     MULT  =       1     ICHARG=      -1     MAXIT =      30
+     NPRINT=       7     IREST =       0     COORD =ZMT     
+     ECP   =NONE         NORMF =       0     NORMP =       0
+     ITOL  =      20     ICUT  =       9     NZVAR =       0
+     NOSYM =       0     INTTYP=POPLE        GEOM  =INPUT   
+     PLTORB=       F     MOLPLT=       F     RPAC  =       F
+     AIMPAC=       0     FRIEND=             CITYP =NONE    
+     DFTTYP=NONE    
+
+     $SYSTEM OPTIONS
+     ---------------
+     KDIAG =       0     MEMORY=   500000     TIMLIM=     1800.0 SEC.
+     COREFL=       F     PTIME =        F     XDR   =       F
+     BALTYP=LOOP         CBASE = 00401000     FBASE = 63E110C0
+
+          ----------------
+          PROPERTIES INPUT
+          ----------------
+
+     MOMENTS            FIELD           POTENTIAL          DENSITY
+ IEMOM =       1   IEFLD =       0   IEPOT =       0   IEDEN =       0
+ WHERE =COMASS     WHERE =NUCLEI     WHERE =NUCLEI     WHERE =NUCLEI  
+ OUTPUT=BOTH       OUTPUT=BOTH       OUTPUT=BOTH       OUTPUT=BOTH    
+ IEMINT=       0   IEFINT=       0                     IEDINT=       0
+                                                       MORB  =       0
+
+          EXTRAPOLATION IN EFFECT
+          SOSCF IN EFFECT
+
+          ----------------------
+          INTEGRAL INPUT OPTIONS
+          ----------------------
+ NOPK  =       1 NORDER=       0 SCHWRZ=       T
+
+ ATTENTION! AO INTEGRALS WILL BE PACKED.
+ THRESHOLD FOR PACKING PKTHR =  0.10000000D-01
+
+     -------------------------------
+     INTEGRAL TRANSFORMATION OPTIONS
+     -------------------------------
+     NWORD  =       0     CUTTRF = 1.0E-09
+     MPTRAN =       0     DIRTRF =       F
+     AOINTS =DUP          IREST  =       0
+
+          -----------------------
+          MP2 CONTROL INFORMATION
+          -----------------------
+          NCORE  =        3  CUTOFF = 1.00E-09
+          LMOMP2 =        F  AOINTS = DUP     
+          METHOD =        1  NWORD  =          0
+          MP2PRP =        F  DIRECT =          F
+          PACKAO =        T  MNRECL =      20000
+          SPARSE =     AUTO  OSPT   = NONE    
+          SCS(S) =        1.0000000000000000E+00
+          SCS(T) =        1.0000000000000000E+00
+
+          NUMBER OF CORE      ORBITALS =     3
+          NUMBER OF OCC. -A-  ORBITALS =    14
+          NUMBER OF OCC. -B-  ORBITALS =    14
+          NUMBER OF MOLECULAR ORBITALS =    33
+          NUMBER OF   BASIS  FUNCTIONS =    33
+
+
+   --- ENCODED Z MATRIX ---
+ COORD    TYPE     I    J    K    L    M    N
+     1       1     2    1
+     2       1     4    2
+     3       2     4    2    1
+     4       1     3    2
+     5       2     3    2    1
+     6       2     3    2    4
+     7       1     5    2
+     8       2     5    2    4
+     9       2     5    2    3
+    10       1     6    5
+    11       2     6    5    2
+    12       3     6    5    2    1
+
+ THE DETERMINANT OF THE G MATRIX IS 10**(    -8)
+
+     ------------------------------------------
+     THE POINT GROUP IS CS , NAXIS= 0, ORDER= 2
+     ------------------------------------------
+
+     DIMENSIONS OF THE SYMMETRY SUBSPACES ARE
+ A'  =  25      A'' =   8
+
+ ..... DONE SETTING UP THE RUN .....
+
+ CPU        TIME:   STEP =      0.02 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.02 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =     85.39%,  TOTAL =     170.78%
+
+     ---------------------------
+     POTENTIAL SURFACE MAP INPUT
+     ---------------------------
+ COORD 1 LYING ALONG ATOM PAIR    2    1
+ HAS ORIGIN=-0.100, DISPLACEMENT= 0.100  AND   3 STEPS.
+ GROUP 1 CONTAINS    1 ATOMS:
+     1
+ COORD 2 LYING ALONG ATOM PAIR    2    5
+ HAS ORIGIN= 0.100, DISPLACEMENT=-0.100  AND   3 STEPS.
+ GROUP 2 CONTAINS    2 ATOMS:
+     5    6
+ ...... END OF ONE-ELECTRON INTEGRALS ......
+
+ CPU        TIME:   STEP =      0.00 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.00 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =      0.00%,  TOTAL =     159.39%
+
+          -------------
+          GUESS OPTIONS
+          -------------
+          GUESS =HUCKEL            NORB  =       0          NORDER=       0
+          MIX   =       F          PRTMO =       F          SYMDEN=       F
+          TOLZ  = 0.0E+00          TOLE  = 0.0E+00
+
+ INITIAL GUESS ORBITALS GENERATED BY HUCKEL   ROUTINE.
+ HUCKEL GUESS REQUIRES     12150 WORDS.
+
+ LOG10 OF CONDITION NUMBER OF OVERLAP MATRIX IS:  1.90237625E+00
+
+ SYMMETRIES FOR INITIAL GUESS ORBITALS FOLLOW.   BOTH SET(S).
+    14 ORBITALS ARE OCCUPIED (    3 CORE ORBITALS).
+     4=A'       5=A'       6=A'       7=A''      8=A'       9=A'      10=A'  
+    11=A''     12=A''     13=A'      14=A'      15=A'      16=A''     17=A'  
+    18=A'      19=A'      20=A'      21=A'      22=A'      23=A'      24=A'  
+ ...... END OF INITIAL ORBITAL SELECTION ......
+
+ CPU        TIME:   STEP =      0.00 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.00 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =      0.00%,  TOTAL =     136.24%
+ TOTAL NUMBER OF NONZERO TWO-ELECTRON INTEGRALS =               63376
+         13 INTEGRAL RECORDS WERE STORED ON DISK FILE  8.
+ ...... END OF TWO-ELECTRON INTEGRALS .....
+
+ CPU        TIME:   STEP =      0.02 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.01 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =    168.26%,  TOTAL =     145.47%
+
+ ITER EX DEM  TOTAL ENERGY      E CHANGE  DENSITY CHANGE     ORB. GRAD
+   1  0  0  -228.438026814  -228.438026814   0.585016172   0.000000000
+          ---------------START SECOND ORDER SCF---------------
+   2  1  0  -228.975183263    -0.537156449   0.141988780   0.111481479
+   3  2  0  -229.013662768    -0.038479504   0.064083068   0.080249275
+   4  3  0  -229.036190047    -0.022527279   0.025894794   0.007627573
+   5  4  0  -229.036777439    -0.000587392   0.008381787   0.001825933
+   6  5  0  -229.036824839    -0.000047400   0.001950120   0.000973598
+   7  6  0  -229.036831700    -0.000006861   0.000320094   0.000298405
+   8  7  0  -229.036832336    -0.000000637   0.000114172   0.000082348
+   9  8  0  -229.036832428    -0.000000092   0.000075693   0.000043019
+  10  9  0  -229.036832450    -0.000000022   0.000027750   0.000017234
+  11 10  0  -229.036832454    -0.000000003   0.000005674   0.000003035
+  12 11  0  -229.036832454     0.000000000   0.000003027   0.000000865
+
+          -----------------
+          DENSITY CONVERGED
+          -----------------
+     TIME TO FORM FOCK OPERATORS =       0.02 SECONDS (       0.00 SEC/ITER)
+     TIME TO SOLVE SCF EQUATIONS =       0.00 SECONDS (       0.00 SEC/ITER)
+
+ FINAL ENERGY IS     -229.0368324539 AFTER  12 ITERATIONS
+ ...... END OF RHF CALCULATION ......
+
+ CPU        TIME:   STEP =      0.02 ,  TOTAL =        0.1 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.02 ,  TOTAL =        0.1 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =     77.15%,  TOTAL =     119.10%
+
+ Smallest alpha-alpha delta epsilon is:   0.55192668
+
+
+ -----------------------------------   ----------------------------------
+ TWO-PASS RHF-MP2 ENERGY CALCULATION   PROGRAM WRITTEN BY A. A. GRANOVSKY
+ -----------------------------------   ----------------------------------
+ NCORE=   3     NOCC=   14     NAOS=   33
+
+
+ RESULTS OF MOLLER-PLESSET 2ND ORDER CORRECTION ARE
+               E(0)=      -229.0368324539
+               E(1)=         0.0
+               E(2)=        -0.3504977892
+             E(MP2)=      -229.3873302431
+
+ ..... DONE WITH MP2 ENERGY .....
+
+ CPU        TIME:   STEP =      0.03 ,  TOTAL =        0.1 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.03 ,  TOTAL =        0.1 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =     99.00%,  TOTAL =     111.55%
+
+ ---- SURFACE MAPPING GEOMETRY ----
+ COORD 1=  -0.10000  COORD 2=   0.10000
+ HAS ENERGY VALUE       -229.3873302431
+ F             1.6100718958         -0.0402476253          0.0000000000
+ N             0.0159655097          0.2029237845          0.0000000000
+ H            -0.0749525020         -0.3717550439         -0.8092498143
+ H            -0.0749525020         -0.3717550439          0.8092498143
+ O            -1.9922277470         -0.1323519684          0.0000000000
+ H            -2.3326965460          0.7896941705          0.0000000000
+ ----------------------------------
+ ...... END OF ONE-ELECTRON INTEGRALS ......
+
+ CPU        TIME:   STEP =      0.00 ,  TOTAL =        0.1 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.00 ,  TOTAL =        0.1 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =      0.00%,  TOTAL =     110.58%
+
+ LOG10 OF CONDITION NUMBER OF OVERLAP MATRIX IS:  1.90736153E+00
+ TOTAL NUMBER OF NONZERO TWO-ELECTRON INTEGRALS =               65164
+         14 INTEGRAL RECORDS WERE STORED ON DISK FILE  8.
+ ...... END OF TWO-ELECTRON INTEGRALS .....
+
+ CPU        TIME:   STEP =      0.02 ,  TOTAL =        0.1 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.01 ,  TOTAL =        0.1 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =    141.21%,  TOTAL =     114.12%
+
+ ITER EX DEM  TOTAL ENERGY      E CHANGE  DENSITY CHANGE     ORB. GRAD
+          ---------------START SECOND ORDER SCF---------------
+   1  0  0  -229.034618184  -229.034618184   0.013060460   0.010570646
+   2  1  0  -229.035515914    -0.000897729   0.008054869   0.003092733
+   3  2  0  -229.035622376    -0.000106463   0.003356838   0.000951381
+   4  3  0  -229.035635842    -0.000013465   0.000810093   0.000496155
+   5  4  0  -229.035637643    -0.000001801   0.000352079   0.000111209
+   6  5  0  -229.035637815    -0.000000172   0.000158060   0.000045844
+   7  6  0  -229.035637836    -0.000000021   0.000054912   0.000024351
+   8  7  0  -229.035637839    -0.000000004   0.000010241   0.000006663
+   9  8  0  -229.035637840     0.000000000   0.000003797   0.000001999
+  10  9  0  -229.035637840     0.000000000   0.000001259   0.000000522
+
+          -----------------
+          DENSITY CONVERGED
+          -----------------
+     TIME TO FORM FOCK OPERATORS =       0.03 SECONDS (       0.00 SEC/ITER)
+     TIME TO SOLVE SCF EQUATIONS =       0.00 SECONDS (       0.00 SEC/ITER)
+
+ FINAL ENERGY IS     -229.0356378397 AFTER  10 ITERATIONS
+ ...... END OF RHF CALCULATION ......
+
+ CPU        TIME:   STEP =      0.03 ,  TOTAL =        0.1 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.02 ,  TOTAL =        0.1 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =    190.05%,  TOTAL =     125.24%
+
+ Smallest alpha-alpha delta epsilon is:   0.55959266
+
+
+ -----------------------------------   ----------------------------------
+ TWO-PASS RHF-MP2 ENERGY CALCULATION   PROGRAM WRITTEN BY A. A. GRANOVSKY
+ -----------------------------------   ----------------------------------
+ NCORE=   3     NOCC=   14     NAOS=   33
+
+
+ RESULTS OF MOLLER-PLESSET 2ND ORDER CORRECTION ARE
+               E(0)=      -229.0356378397
+               E(1)=         0.0
+               E(2)=        -0.3510264389
+             E(MP2)=      -229.3866642786
+
+ ..... DONE WITH MP2 ENERGY .....
+
+ CPU        TIME:   STEP =      0.03 ,  TOTAL =        0.2 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.03 ,  TOTAL =        0.1 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =     98.63%,  TOTAL =     119.38%
+
+ ---- SURFACE MAPPING GEOMETRY ----
+ COORD 1=  -0.10000  COORD 2=   0.00000
+ HAS ENERGY VALUE       -229.3866642786
+ F             1.6100718958         -0.0402476253          0.0000000000
+ N             0.0159655097          0.2029237845          0.0000000000
+ H            -0.0749525020         -0.3717550439         -0.8092498143
+ H            -0.0749525020         -0.3717550439          0.8092498143
+ O            -1.8935929531         -0.1158845021          0.0000000000
+ H            -2.2340617521          0.8061616368          0.0000000000
+ ----------------------------------
+ ...... END OF ONE-ELECTRON INTEGRALS ......
+
+ CPU        TIME:   STEP =      0.00 ,  TOTAL =        0.2 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.00 ,  TOTAL =        0.1 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =      0.00%,  TOTAL =     118.85%
+
+ LOG10 OF CONDITION NUMBER OF OVERLAP MATRIX IS:  1.91688250E+00
+ TOTAL NUMBER OF NONZERO TWO-ELECTRON INTEGRALS =               66803
+         14 INTEGRAL RECORDS WERE STORED ON DISK FILE  8.
+ ...... END OF TWO-ELECTRON INTEGRALS .....
+
+ CPU        TIME:   STEP =      0.02 ,  TOTAL =        0.2 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.01 ,  TOTAL =        0.2 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =    139.48%,  TOTAL =     120.33%
+
+ ITER EX DEM  TOTAL ENERGY      E CHANGE  DENSITY CHANGE     ORB. GRAD
+          ---------------START SECOND ORDER SCF---------------
+   1  0  0  -229.029606534  -229.029606534   0.014272324   0.011884405
+   2  1  0  -229.030762597    -0.001156063   0.009997908   0.002861842
+   3  2  0  -229.030908088    -0.000145490   0.003893495   0.000972587
+   4  3  0  -229.030923923    -0.000015835   0.001226333   0.000517620
+   5  4  0  -229.030926396    -0.000002474   0.000379208   0.000113788
+   6  5  0  -229.030926607    -0.000000211   0.000180832   0.000049929
+   7  6  0  -229.030926634    -0.000000027   0.000054078   0.000025989
+   8  7  0  -229.030926638    -0.000000004   0.000010409   0.000007745
+   9  8  0  -229.030926639     0.000000000   0.000003433   0.000002558
+  10  9  0  -229.030926639     0.000000000   0.000000958   0.000000586
+
+          -----------------
+          DENSITY CONVERGED
+          -----------------
+     TIME TO FORM FOCK OPERATORS =       0.00 SECONDS (       0.00 SEC/ITER)
+     TIME TO SOLVE SCF EQUATIONS =       0.00 SECONDS (       0.00 SEC/ITER)
+
+ FINAL ENERGY IS     -229.0309266388 AFTER  10 ITERATIONS
+ ...... END OF RHF CALCULATION ......
+
+ CPU        TIME:   STEP =      0.00 ,  TOTAL =        0.2 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.02 ,  TOTAL =        0.2 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =      0.00%,  TOTAL =     108.63%
+
+ Smallest alpha-alpha delta epsilon is:   0.56399080
+
+
+ -----------------------------------   ----------------------------------
+ TWO-PASS RHF-MP2 ENERGY CALCULATION   PROGRAM WRITTEN BY A. A. GRANOVSKY
+ -----------------------------------   ----------------------------------
+ NCORE=   3     NOCC=   14     NAOS=   33
+
+
+ RESULTS OF MOLLER-PLESSET 2ND ORDER CORRECTION ARE
+               E(0)=      -229.0309266388
+               E(1)=         0.0
+               E(2)=        -0.3512828575
+             E(MP2)=      -229.3822094962
+
+ ..... DONE WITH MP2 ENERGY .....
+
+ CPU        TIME:   STEP =      0.03 ,  TOTAL =        0.2 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.03 ,  TOTAL =        0.2 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =     97.48%,  TOTAL =     106.88%
+
+ ---- SURFACE MAPPING GEOMETRY ----
+ COORD 1=  -0.10000  COORD 2=  -0.10000
+ HAS ENERGY VALUE       -229.3822094962
+ F             1.6100718958         -0.0402476253          0.0000000000
+ N             0.0159655097          0.2029237845          0.0000000000
+ H            -0.0749525020         -0.3717550439         -0.8092498143
+ H            -0.0749525020         -0.3717550439          0.8092498143
+ O            -1.7949581593         -0.0994170358          0.0000000000
+ H            -2.1354269583          0.8226291031          0.0000000000
+ ----------------------------------
+ ...... END OF ONE-ELECTRON INTEGRALS ......
+
+ CPU        TIME:   STEP =      0.00 ,  TOTAL =        0.2 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.00 ,  TOTAL =        0.2 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =      0.00%,  TOTAL =     106.56%
+
+ LOG10 OF CONDITION NUMBER OF OVERLAP MATRIX IS:  1.86718627E+00
+ TOTAL NUMBER OF NONZERO TWO-ELECTRON INTEGRALS =               61698
+         13 INTEGRAL RECORDS WERE STORED ON DISK FILE  8.
+ ...... END OF TWO-ELECTRON INTEGRALS .....
+
+ CPU        TIME:   STEP =      0.02 ,  TOTAL =        0.2 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.01 ,  TOTAL =        0.2 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =    145.80%,  TOTAL =     108.51%
+
+ ITER EX DEM  TOTAL ENERGY      E CHANGE  DENSITY CHANGE     ORB. GRAD
+   1  0  0  -229.035286660  -229.035286660   0.015212045   0.000000000
+          ---------------START SECOND ORDER SCF---------------
+   2  1  0  -229.037016857    -0.001730196   0.005922839   0.003068061
+   3  2  0  -229.037172453    -0.000155597   0.005523050   0.001653845
+   4  3  0  -229.037209798    -0.000037344   0.000615965   0.000516324
+   5  4  0  -229.037213988    -0.000004190   0.000260158   0.000145068
+   6  5  0  -229.037214505    -0.000000517   0.000207822   0.000077212
+   7  6  0  -229.037214633    -0.000000128   0.000051925   0.000028494
+   8  7  0  -229.037214646    -0.000000013   0.000030824   0.000014267
+   9  8  0  -229.037214649    -0.000000003   0.000008541   0.000005274
+  10  9  0  -229.037214649     0.000000000   0.000002985   0.000001541
+
+          -----------------
+          DENSITY CONVERGED
+          -----------------
+     TIME TO FORM FOCK OPERATORS =       0.03 SECONDS (       0.00 SEC/ITER)
+     TIME TO SOLVE SCF EQUATIONS =       0.00 SECONDS (       0.00 SEC/ITER)
+
+ FINAL ENERGY IS     -229.0372146491 AFTER  10 ITERATIONS
+ ...... END OF RHF CALCULATION ......
+
+ CPU        TIME:   STEP =      0.03 ,  TOTAL =        0.3 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.02 ,  TOTAL =        0.2 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =    188.35%,  TOTAL =     114.20%
+
+ Smallest alpha-alpha delta epsilon is:   0.52462128
+
+
+ -----------------------------------   ----------------------------------
+ TWO-PASS RHF-MP2 ENERGY CALCULATION   PROGRAM WRITTEN BY A. A. GRANOVSKY
+ -----------------------------------   ----------------------------------
+ NCORE=   3     NOCC=   14     NAOS=   33
+
+
+ RESULTS OF MOLLER-PLESSET 2ND ORDER CORRECTION ARE
+               E(0)=      -229.0372146491
+               E(1)=         0.0
+               E(2)=        -0.3551089763
+             E(MP2)=      -229.3923236254
+
+ ..... DONE WITH MP2 ENERGY .....
+
+ CPU        TIME:   STEP =      0.03 ,  TOTAL =        0.3 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.03 ,  TOTAL =        0.3 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =    101.86%,  TOTAL =     112.76%
+
+ ---- SURFACE MAPPING GEOMETRY ----
+ COORD 1=   0.00000  COORD 2=   0.10000
+ HAS ENERGY VALUE       -229.3923236254
+ F             1.7089283313         -0.0553275842          0.0000000000
+ N             0.0159655097          0.2029237845          0.0000000000
+ H            -0.0749525020         -0.3717550439         -0.8092498143
+ H            -0.0749525020         -0.3717550439          0.8092498143
+ O            -1.9922277470         -0.1323519684          0.0000000000
+ H            -2.3326965460          0.7896941705          0.0000000000
+ ----------------------------------
+ ...... END OF ONE-ELECTRON INTEGRALS ......
+
+ CPU        TIME:   STEP =      0.00 ,  TOTAL =        0.3 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.00 ,  TOTAL =        0.3 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =      0.00%,  TOTAL =     112.50%
+
+ LOG10 OF CONDITION NUMBER OF OVERLAP MATRIX IS:  1.87589856E+00
+ TOTAL NUMBER OF NONZERO TWO-ELECTRON INTEGRALS =               63404
+         13 INTEGRAL RECORDS WERE STORED ON DISK FILE  8.
+ ...... END OF TWO-ELECTRON INTEGRALS .....
+
+ CPU        TIME:   STEP =      0.00 ,  TOTAL =        0.3 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.01 ,  TOTAL =        0.3 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =      0.00%,  TOTAL =     108.03%
+
+ ITER EX DEM  TOTAL ENERGY      E CHANGE  DENSITY CHANGE     ORB. GRAD
+          ---------------START SECOND ORDER SCF---------------
+   1  0  0  -229.037524392  -229.037524392   0.012638732   0.010597965
+   2  1  0  -229.038423986    -0.000899594   0.007711505   0.002585426
+   3  2  0  -229.038528378    -0.000104391   0.003164846   0.000936632
+   4  3  0  -229.038541999    -0.000013622   0.000718923   0.000497531
+   5  4  0  -229.038543826    -0.000001827   0.000307529   0.000103305
+   6  5  0  -229.038543992    -0.000000166   0.000137731   0.000043953
+   7  6  0  -229.038544012    -0.000000021   0.000037115   0.000027680
+   8  7  0  -229.038544017    -0.000000005   0.000008811   0.000003858
+   9  8  0  -229.038544017     0.000000000   0.000004438   0.000001248
+
+          -----------------
+          DENSITY CONVERGED
+          -----------------
+     TIME TO FORM FOCK OPERATORS =       0.02 SECONDS (       0.00 SEC/ITER)
+     TIME TO SOLVE SCF EQUATIONS =       0.00 SECONDS (       0.00 SEC/ITER)
+
+ FINAL ENERGY IS     -229.0385440173 AFTER   9 ITERATIONS
+ ...... END OF RHF CALCULATION ......
+
+ CPU        TIME:   STEP =      0.02 ,  TOTAL =        0.3 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.01 ,  TOTAL =        0.3 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =    107.43%,  TOTAL =     108.00%
+
+ Smallest alpha-alpha delta epsilon is:   0.54982094
+
+
+ -----------------------------------   ----------------------------------
+ TWO-PASS RHF-MP2 ENERGY CALCULATION   PROGRAM WRITTEN BY A. A. GRANOVSKY
+ -----------------------------------   ----------------------------------
+ NCORE=   3     NOCC=   14     NAOS=   33
+
+
+ RESULTS OF MOLLER-PLESSET 2ND ORDER CORRECTION ARE
+               E(0)=      -229.0385440173
+               E(1)=         0.0
+               E(2)=        -0.3551046471
+             E(MP2)=      -229.3936486644
+
+ ..... DONE WITH MP2 ENERGY .....
+
+ CPU        TIME:   STEP =      0.03 ,  TOTAL =        0.3 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.03 ,  TOTAL =        0.3 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =     99.55%,  TOTAL =     107.18%
+
+ ---- SURFACE MAPPING GEOMETRY ----
+ COORD 1=   0.00000  COORD 2=   0.00000
+ HAS ENERGY VALUE       -229.3936486644
+ F             1.7089283313         -0.0553275842          0.0000000000
+ N             0.0159655097          0.2029237845          0.0000000000
+ H            -0.0749525020         -0.3717550439         -0.8092498143
+ H            -0.0749525020         -0.3717550439          0.8092498143
+ O            -1.8935929531         -0.1158845021          0.0000000000
+ H            -2.2340617521          0.8061616368          0.0000000000
+ ----------------------------------
+ ...... END OF ONE-ELECTRON INTEGRALS ......
+
+ CPU        TIME:   STEP =      0.00 ,  TOTAL =        0.3 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.00 ,  TOTAL =        0.3 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =      0.00%,  TOTAL =     106.97%
+
+ LOG10 OF CONDITION NUMBER OF OVERLAP MATRIX IS:  1.89196234E+00
+ TOTAL NUMBER OF NONZERO TWO-ELECTRON INTEGRALS =               65054
+         14 INTEGRAL RECORDS WERE STORED ON DISK FILE  8.
+ ...... END OF TWO-ELECTRON INTEGRALS .....
+
+ CPU        TIME:   STEP =      0.02 ,  TOTAL =        0.4 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.01 ,  TOTAL =        0.3 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =    141.72%,  TOTAL =     108.12%
+
+ ITER EX DEM  TOTAL ENERGY      E CHANGE  DENSITY CHANGE     ORB. GRAD
+          ---------------START SECOND ORDER SCF---------------
+   1  0  0  -229.035434753  -229.035434753   0.013680751   0.011733466
+   2  1  0  -229.036580438    -0.001145685   0.009322172   0.003296833
+   3  2  0  -229.036719041    -0.000138603   0.003588594   0.000955304
+   4  3  0  -229.036734332    -0.000015292   0.001078181   0.000498666
+   5  4  0  -229.036736727    -0.000002395   0.000329146   0.000105858
+   6  5  0  -229.036736921    -0.000000194   0.000155799   0.000049223
+   7  6  0  -229.036736946    -0.000000025   0.000046873   0.000029151
+   8  7  0  -229.036736951    -0.000000005   0.000008362   0.000003762
+   9  8  0  -229.036736951     0.000000000   0.000003719   0.000001336
+
+          -----------------
+          DENSITY CONVERGED
+          -----------------
+     TIME TO FORM FOCK OPERATORS =       0.00 SECONDS (       0.00 SEC/ITER)
+     TIME TO SOLVE SCF EQUATIONS =       0.02 SECONDS (       0.00 SEC/ITER)
+
+ FINAL ENERGY IS     -229.0367369510 AFTER   9 ITERATIONS
+ ...... END OF RHF CALCULATION ......
+
+ CPU        TIME:   STEP =      0.02 ,  TOTAL =        0.4 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.01 ,  TOTAL =        0.3 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =    105.05%,  TOTAL =     107.99%
+
+ Smallest alpha-alpha delta epsilon is:   0.56611599
+
+
+ -----------------------------------   ----------------------------------
+ TWO-PASS RHF-MP2 ENERGY CALCULATION   PROGRAM WRITTEN BY A. A. GRANOVSKY
+ -----------------------------------   ----------------------------------
+ NCORE=   3     NOCC=   14     NAOS=   33
+
+
+ RESULTS OF MOLLER-PLESSET 2ND ORDER CORRECTION ARE
+               E(0)=      -229.0367369510
+               E(1)=         0.0
+               E(2)=        -0.3546313632
+             E(MP2)=      -229.3913683142
+
+ ..... DONE WITH MP2 ENERGY .....
+
+ CPU        TIME:   STEP =      0.03 ,  TOTAL =        0.4 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.03 ,  TOTAL =        0.4 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =     95.70%,  TOTAL =     106.93%
+
+ ---- SURFACE MAPPING GEOMETRY ----
+ COORD 1=   0.00000  COORD 2=  -0.10000
+ HAS ENERGY VALUE       -229.3913683142
+ F             1.7089283313         -0.0553275842          0.0000000000
+ N             0.0159655097          0.2029237845          0.0000000000
+ H            -0.0749525020         -0.3717550439         -0.8092498143
+ H            -0.0749525020         -0.3717550439          0.8092498143
+ O            -1.7949581593         -0.0994170358          0.0000000000
+ H            -2.1354269583          0.8226291031          0.0000000000
+ ----------------------------------
+ ...... END OF ONE-ELECTRON INTEGRALS ......
+
+ CPU        TIME:   STEP =      0.00 ,  TOTAL =        0.4 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.00 ,  TOTAL =        0.4 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =      0.00%,  TOTAL =     106.76%
+
+ LOG10 OF CONDITION NUMBER OF OVERLAP MATRIX IS:  1.84419528E+00
+ TOTAL NUMBER OF NONZERO TWO-ELECTRON INTEGRALS =               60037
+         13 INTEGRAL RECORDS WERE STORED ON DISK FILE  8.
+ ...... END OF TWO-ELECTRON INTEGRALS .....
+
+ CPU        TIME:   STEP =      0.02 ,  TOTAL =        0.4 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.01 ,  TOTAL =        0.4 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =    139.19%,  TOTAL =     107.69%
+
+ ITER EX DEM  TOTAL ENERGY      E CHANGE  DENSITY CHANGE     ORB. GRAD
+   1  0  0  -229.031345577  -229.031345577   0.013724108   0.000000000
+          ---------------START SECOND ORDER SCF---------------
+   2  1  0  -229.032693514    -0.001347937   0.005239628   0.002562697
+   3  2  0  -229.032821552    -0.000128037   0.005107667   0.001654515
+   4  3  0  -229.032855777    -0.000034226   0.000506984   0.000470986
+   5  4  0  -229.032859385    -0.000003608   0.000297872   0.000168836
+   6  5  0  -229.032859938    -0.000000553   0.000208991   0.000090369
+   7  6  0  -229.032860063    -0.000000125   0.000065332   0.000040965
+   8  7  0  -229.032860084    -0.000000020   0.000030612   0.000015917
+   9  8  0  -229.032860087    -0.000000004   0.000011137   0.000003588
+  10  9  0  -229.032860088     0.000000000   0.000003755   0.000001283
+  11 10  0  -229.032860088     0.000000000   0.000000690   0.000000358
+
+          -----------------
+          DENSITY CONVERGED
+          -----------------
+     TIME TO FORM FOCK OPERATORS =       0.02 SECONDS (       0.00 SEC/ITER)
+     TIME TO SOLVE SCF EQUATIONS =       0.00 SECONDS (       0.00 SEC/ITER)
+
+ FINAL ENERGY IS     -229.0328600876 AFTER  11 ITERATIONS
+ ...... END OF RHF CALCULATION ......
+
+ CPU        TIME:   STEP =      0.02 ,  TOTAL =        0.4 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.02 ,  TOTAL =        0.4 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =     96.61%,  TOTAL =     107.25%
+
+ Smallest alpha-alpha delta epsilon is:   0.50215886
+
+
+ -----------------------------------   ----------------------------------
+ TWO-PASS RHF-MP2 ENERGY CALCULATION   PROGRAM WRITTEN BY A. A. GRANOVSKY
+ -----------------------------------   ----------------------------------
+ NCORE=   3     NOCC=   14     NAOS=   33
+
+
+ RESULTS OF MOLLER-PLESSET 2ND ORDER CORRECTION ARE
+               E(0)=      -229.0328600876
+               E(1)=         0.0
+               E(2)=        -0.3590332779
+             E(MP2)=      -229.3918933655
+
+ ..... DONE WITH MP2 ENERGY .....
+
+ CPU        TIME:   STEP =      0.03 ,  TOTAL =        0.5 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.03 ,  TOTAL =        0.4 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =     99.30%,  TOTAL =     106.68%
+
+ ---- SURFACE MAPPING GEOMETRY ----
+ COORD 1=   0.10000  COORD 2=   0.10000
+ HAS ENERGY VALUE       -229.3918933655
+ F             1.8077847668         -0.0704075431          0.0000000000
+ N             0.0159655097          0.2029237845          0.0000000000
+ H            -0.0749525020         -0.3717550439         -0.8092498143
+ H            -0.0749525020         -0.3717550439          0.8092498143
+ O            -1.9922277470         -0.1323519684          0.0000000000
+ H            -2.3326965460          0.7896941705          0.0000000000
+ ----------------------------------
+ ...... END OF ONE-ELECTRON INTEGRALS ......
+
+ CPU        TIME:   STEP =      0.00 ,  TOTAL =        0.5 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.00 ,  TOTAL =        0.4 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =      0.00%,  TOTAL =     106.53%
+
+ LOG10 OF CONDITION NUMBER OF OVERLAP MATRIX IS:  1.85672448E+00
+ TOTAL NUMBER OF NONZERO TWO-ELECTRON INTEGRALS =               61654
+         13 INTEGRAL RECORDS WERE STORED ON DISK FILE  8.
+ ...... END OF TWO-ELECTRON INTEGRALS .....
+
+ CPU        TIME:   STEP =      0.02 ,  TOTAL =        0.5 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.01 ,  TOTAL =        0.5 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =    138.53%,  TOTAL =     107.33%
+
+ ITER EX DEM  TOTAL ENERGY      E CHANGE  DENSITY CHANGE     ORB. GRAD
+          ---------------START SECOND ORDER SCF---------------
+   1  0  0  -229.035453538  -229.035453538   0.012102593   0.010340397
+   2  1  0  -229.036347515    -0.000893976   0.007412365   0.002533759
+   3  2  0  -229.036448672    -0.000101158   0.003010455   0.000931486
+   4  3  0  -229.036462330    -0.000013657   0.000664576   0.000486782
+   5  4  0  -229.036464177    -0.000001847   0.000271470   0.000093768
+   6  5  0  -229.036464340    -0.000000164   0.000114061   0.000066223
+   7  6  0  -229.036464367    -0.000000026   0.000038863   0.000026677
+   8  7  0  -229.036464371    -0.000000004   0.000013760   0.000004615
+   9  8  0  -229.036464372    -0.000000001   0.000004685   0.000001684
+  10  9  0  -229.036464372     0.000000000   0.000002717   0.000000713
+
+          -----------------
+          DENSITY CONVERGED
+          -----------------
+     TIME TO FORM FOCK OPERATORS =       0.02 SECONDS (       0.00 SEC/ITER)
+     TIME TO SOLVE SCF EQUATIONS =       0.00 SECONDS (       0.00 SEC/ITER)
+
+ FINAL ENERGY IS     -229.0364643718 AFTER  10 ITERATIONS
+ ...... END OF RHF CALCULATION ......
+
+ CPU        TIME:   STEP =      0.02 ,  TOTAL =        0.5 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.01 ,  TOTAL =        0.5 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =    104.65%,  TOTAL =     107.24%
+
+ Smallest alpha-alpha delta epsilon is:   0.52764478
+
+
+ -----------------------------------   ----------------------------------
+ TWO-PASS RHF-MP2 ENERGY CALCULATION   PROGRAM WRITTEN BY A. A. GRANOVSKY
+ -----------------------------------   ----------------------------------
+ NCORE=   3     NOCC=   14     NAOS=   33
+
+
+ RESULTS OF MOLLER-PLESSET 2ND ORDER CORRECTION ARE
+               E(0)=      -229.0364643718
+               E(1)=         0.0
+               E(2)=        -0.3583681693
+             E(MP2)=      -229.3948325411
+
+ ..... DONE WITH MP2 ENERGY .....
+
+ CPU        TIME:   STEP =      0.03 ,  TOTAL =        0.5 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.03 ,  TOTAL =        0.5 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =    101.22%,  TOTAL =     106.87%
+
+ ---- SURFACE MAPPING GEOMETRY ----
+ COORD 1=   0.10000  COORD 2=   0.00000
+ HAS ENERGY VALUE       -229.3948325411
+ F             1.8077847668         -0.0704075431          0.0000000000
+ N             0.0159655097          0.2029237845          0.0000000000
+ H            -0.0749525020         -0.3717550439         -0.8092498143
+ H            -0.0749525020         -0.3717550439          0.8092498143
+ O            -1.8935929531         -0.1158845021          0.0000000000
+ H            -2.2340617521          0.8061616368          0.0000000000
+ ----------------------------------
+ ...... END OF ONE-ELECTRON INTEGRALS ......
+
+ CPU        TIME:   STEP =      0.00 ,  TOTAL =        0.5 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.00 ,  TOTAL =        0.5 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =      0.00%,  TOTAL =     106.74%
+
+ LOG10 OF CONDITION NUMBER OF OVERLAP MATRIX IS:  1.87840336E+00
+ TOTAL NUMBER OF NONZERO TWO-ELECTRON INTEGRALS =               63208
+         13 INTEGRAL RECORDS WERE STORED ON DISK FILE  8.
+ ...... END OF TWO-ELECTRON INTEGRALS .....
+
+ CPU        TIME:   STEP =      0.00 ,  TOTAL =        0.5 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.01 ,  TOTAL =        0.5 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =      0.00%,  TOTAL =     104.47%
+
+ ITER EX DEM  TOTAL ENERGY      E CHANGE  DENSITY CHANGE     ORB. GRAD
+          ---------------START SECOND ORDER SCF---------------
+   1  0  0  -229.035969280  -229.035969280   0.013009186   0.011221149
+   2  1  0  -229.037098853    -0.001129573   0.008771095   0.002897382
+   3  2  0  -229.037230405    -0.000131552   0.003345004   0.000952257
+   4  3  0  -229.037245236    -0.000014831   0.000981335   0.000472035
+   5  4  0  -229.037247590    -0.000002354   0.000288700   0.000099713
+   6  5  0  -229.037247775    -0.000000185   0.000125653   0.000073144
+   7  6  0  -229.037247807    -0.000000032   0.000049569   0.000026522
+   8  7  0  -229.037247811    -0.000000004   0.000014002   0.000004412
+   9  8  0  -229.037247811     0.000000000   0.000003652   0.000001321
+  10  9  0  -229.037247812     0.000000000   0.000001992   0.000000598
+
+          -----------------
+          DENSITY CONVERGED
+          -----------------
+     TIME TO FORM FOCK OPERATORS =       0.03 SECONDS (       0.00 SEC/ITER)
+     TIME TO SOLVE SCF EQUATIONS =       0.00 SECONDS (       0.00 SEC/ITER)
+
+ FINAL ENERGY IS     -229.0372478115 AFTER  10 ITERATIONS
+ ...... END OF RHF CALCULATION ......
+
+ CPU        TIME:   STEP =      0.03 ,  TOTAL =        0.6 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.02 ,  TOTAL =        0.5 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =    196.69%,  TOTAL =     107.26%
+
+ Smallest alpha-alpha delta epsilon is:   0.55056130
+
+
+ -----------------------------------   ----------------------------------
+ TWO-PASS RHF-MP2 ENERGY CALCULATION   PROGRAM WRITTEN BY A. A. GRANOVSKY
+ -----------------------------------   ----------------------------------
+ NCORE=   3     NOCC=   14     NAOS=   33
+
+
+ RESULTS OF MOLLER-PLESSET 2ND ORDER CORRECTION ARE
+               E(0)=      -229.0372478115
+               E(1)=         0.0
+               E(2)=        -0.3571020018
+             E(MP2)=      -229.3943498133
+
+ ..... DONE WITH MP2 ENERGY .....
+
+ CPU        TIME:   STEP =      0.03 ,  TOTAL =        0.6 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.03 ,  TOTAL =        0.6 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =    100.09%,  TOTAL =     106.86%
+
+ ---- SURFACE MAPPING GEOMETRY ----
+ COORD 1=   0.10000  COORD 2=  -0.10000
+ HAS ENERGY VALUE       -229.3943498133
+ F             1.8077847668         -0.0704075431          0.0000000000
+ N             0.0159655097          0.2029237845          0.0000000000
+ H            -0.0749525020         -0.3717550439         -0.8092498143
+ H            -0.0749525020         -0.3717550439          0.8092498143
+ O            -1.7949581593         -0.0994170358          0.0000000000
+ H            -2.1354269583          0.8226291031          0.0000000000
+ ----------------------------------
+
+
+                  OVERALL RESULTS OF THE POTENTIAL SURFACE SCAN
+
+ ------------------------------------------------------------------------------------
+   ICOORD1,     |                        ICOORD2, COORD2
+    COORD1      |      1 (   0.10000)          2 (   0.00000)          3 (  -0.10000)         
+ ---------------+--------------------------------------------------------------------
+  1 (  -0.10000)|     -229.3873302431         -229.3866642786         -229.3822094962  
+  2 (   0.00000)|     -229.3923236254         -229.3936486644         -229.3913683142  
+  3 (   0.10000)|     -229.3918933655         -229.3948325411         -229.3943498133  
+
+
+                    ENERGY DELTA MAP(S) (W.R. TO THE LOWEST FOUND)
+
+ ------------------------------------------------------------------------------------
+   ICOORD1,     |                        ICOORD2, COORD2
+    COORD1      |      1 (   0.10000)          2 (   0.00000)          3 (  -0.10000)         
+ ---------------+--------------------------------------------------------------------
+  1 (  -0.10000)|        0.0075022981            0.0081682626            0.0126230449  
+  2 (   0.00000)|        0.0025089157            0.0011838768            0.0034642270  
+  3 (   0.10000)|        0.0029391756            0.0000000000            0.0004827278  
+
+ ... DONE WITH POTENTIAL SURFACE SCAN ...
+
+ CPU        TIME:   STEP =      0.00 ,  TOTAL =        0.6 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.00 ,  TOTAL =        0.6 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =      0.00%,  TOTAL =     106.84%
+
+                         I/O STATISTICS:
+ DATA READ TOTAL =       42.258 MB,  DATA WRITTEN TOTAL =       13.650 MB
+
+      463571 WORDS OF    DYNAMIC MEMORY USED
+      131862 BYTES OF    HEAP MEMORY    USED,      105719 BYTES REMAIN IN USE
+ EXECUTION OF FIREFLY TERMINATED NORMALLY 16:58:58 17-SEP-2016    

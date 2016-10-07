@@ -1,0 +1,828 @@
+                             Running on host I7
+
+          ******************************************************
+          *      Firefly version 8.2.0, build number 10203     *
+          *   Compiled on    Friday,    16-09-2016, 21:20:07   *
+          *Code development and Intel/AMD specific optimization*
+          *  Copyright (c) 1994, 2016 by  Alex A. Granovsky,   *
+          *          Firefly Project, Moscow, Russia.          *
+          *   Some parts of this program include code due to   *
+          * work of Jim Kress, Peter Burger, and Robert Ponec. *
+          ******************************************************
+          *             Firefly Project homepage:              *
+          * http://classic.chem.msu.su/gran/firefly/index.html *
+          *                      e-mail:                       *
+          *               gran@classic.chem.msu.su             *
+          *This program is not a free software and is provided *
+          *exclusively to its registered users under the terms *
+          *       of Firefly package license agreement         *
+          * Unauthorized use of Firefly is strongly prohibited *
+          *   This program may not be redistributed without    *
+          * the specific, written permission of its developers.*
+          ******************************************************
+
+          ******************************************************
+          *  PARTIALLY BASED ON  US GAMESS VERSION 6 JUN 1999, *
+          *   US GAMESS VERSIONS  6 SEP 2001 AND 12 DEC 2003   *
+          *             FROM IOWA STATE UNIVERSITY             *
+          * M.W.SCHMIDT, K.K.BALDRIDGE, J.A.BOATZ, S.T.ELBERT, *
+          *   M.S.GORDON, J.H.JENSEN, S.KOSEKI, N.MATSUNAGA,   *
+          *          K.A.NGUYEN, S.J.SU, T.L.WINDUS,           *
+          *       TOGETHER WITH M.DUPUIS, J.A.MONTGOMERY       *
+          *         J.COMPUT.CHEM.  14, 1347-1363(1993)        *
+          ******************************************************
+
+
+ Core i7    / Win32  Firefly version running under Windows NT
+ Running on Intel CPU:  Brand ID  0, Family  6, Model  26, Stepping  4
+ CPU Brand String    :  Intel(R) Core(TM) i7 CPU         940  @ 2.93GHz 
+ CPU Features        :  x87 FPU, CMOV, MMX, SSE, SSE2, SSE3, SSSE3, SSE4.1, SSE4.2, HTT, EM64T
+ Data cache size     :  L1 32 KB, L2  256 KB, L3  8192 KB
+ max    # of   cores/package :   8
+ max    # of threads/package :  16
+ max     cache sharing level :  16
+ actual # of   cores/package :   4
+ actual # of threads/package :   8
+ actual # of threads/core    :   2
+ Operating System successfully passed SSE support test.
+
+
+ PARALLEL VERSION (UNIFIED) RUNNING IN SERIAL MODE USING SINGLE PROCESS
+
+ EXECUTION OF FIREFLY BEGUN 16:58:57 17-SEP-2016    
+
+            ECHO OF THE FIRST FEW INPUT CARDS -
+ INPUT CARD>! EXAM28.                                                                       
+ INPUT CARD>!                                                                               
+ INPUT CARD>! Morokuma energy decomposition.                                                
+ INPUT CARD>! This run duplicates a result from Table 16 of                                 
+ INPUT CARD>! H.Umeyama, K.Morokuma, J.Am.Chem.Soc. 99,1316(1977)                           
+ INPUT CARD>!                                                                               
+ INPUT CARD>!           Firefly  literature                                                 
+ INPUT CARD>!   ES=   -14.02     -14.0                                                      
+ INPUT CARD>!   EX=     8.98       9.0                                                      
+ INPUT CARD>!   PL=    -1.12      -1.1                                                      
+ INPUT CARD>!   CT=    -2.37      -2.4                                                      
+ INPUT CARD>!  MIX=    -0.43      -0.4                                                      
+ INPUT CARD>! total    -8.96      -9.0                                                      
+ INPUT CARD>!                                                                               
+ INPUT CARD> $contrl scftyp=rhf runtyp=morokuma coord=zmt $end                              
+ INPUT CARD> $system memory=1000000 timlim=5 $end                                           
+ INPUT CARD> $basis  gbasis=n31 ngauss=4 $end                                               
+ INPUT CARD> $guess  guess=huckel $end                                                      
+ INPUT CARD> $morokm iatm(1)=3 $end                                                         
+ INPUT CARD> $data                                                                          
+ INPUT CARD>water-ammonia dimer                                                             
+ INPUT CARD>Cs                                                                              
+ INPUT CARD>                                                                                
+ INPUT CARD>H                                                                               
+ INPUT CARD>O 1 rOH                                                                         
+ INPUT CARD>H 2 rOH 1 aHOH                                                                  
+ INPUT CARD>N 2  R  1 aHOH    3    0.0                                                      
+ INPUT CARD>H 4 rNH 3 aHNaxis 1  180.0                                                      
+ INPUT CARD>H 4 rNH 3 aHNaxis 5 +120.0                                                      
+ INPUT CARD>H 4 rNH 3 aHNaxis 5 -120.0                                                      
+ INPUT CARD>                                                                                
+ INPUT CARD>rOH=0.956                                                                       
+ INPUT CARD>aHOH=105.2                                                                      
+ INPUT CARD>rNH=1.0124                                                                      
+ INPUT CARD>aHNaxis=112.1451  ! makes HNH=106.67                                            
+ INPUT CARD>R=2.93                                                                          
+ INPUT CARD> $end                                                                           
+    1000000 WORDS OF MEMORY AVAILABLE
+
+ This job is executing on     1 unique host(s)
+ Minimum number of processes per host is:    1
+ Maximum number of processes per host is:    1
+
+ On master's host, detected    8 CPU core(s) in aggregate
+
+ Warning: HTT is enabled, bitmask of physically unique cores is 0x000000AA
+
+ SMT aware parts of program will use              2 threads.
+
+ Creating thread pool to serve up to            128 threads.
+
+ Activating Call64 option.
+
+ Using 64-bit DGEMM by default.
+
+     BASIS OPTIONS
+     -------------
+     GBASIS=N31          IGAUSS=       4      POLAR=NONE    
+     NDFUNC=       0     NFFUNC=       0     DIFFSP=       F
+     NPFUNC=       0      DIFFS=       F
+
+
+     RUN TITLE
+     ---------
+ water-ammonia dimer                                                             
+
+ THE POINT GROUP OF THE MOLECULE IS CS      
+ THE ORDER OF THE PRINCIPAL AXIS IS     0
+
+ YOUR FULLY SUBSTITUTED Z-MATRIX IS
+ H   
+ O        1   0.9560000
+ H        2   0.9560000    1   105.2000000
+ N        2   2.9300000    1   105.2000000    3     0.0000000    0
+ H        4   1.0124000    3   112.1451000    1   180.0000000    0
+ H        4   1.0124000    3   112.1451000    5   120.0000000    0
+ H        4   1.0124000    3   112.1451000    5  -120.0000000    0
+
+ THE MOMENTS OF INERTIA ARE (AMU-ANGSTROM**2)
+ IXX=       3.458   IYY=      79.278   IZZ=      80.077
+
+ ATOM      ATOMIC                      COORDINATES (BOHR)
+           CHARGE         X                   Y                   Z
+ H           1.0    -3.3000843228        1.6236610451        0.0000000000
+ O           8.0    -2.7895805610       -0.1092874870        0.0000000000
+ H           1.0    -0.9834080814       -0.0710032887        0.0000000000
+ N           7.0     2.7460735866        0.0080479746        0.0000000000
+ H           1.0     3.5046354860       -1.7483005583        0.0000000000
+ H           1.0     3.4483074074        0.9091463673        1.5346223221
+ H           1.0     3.4483074074        0.9091463673       -1.5346223221
+
+          INTERNUCLEAR DISTANCES (ANGS.)
+          ------------------------------
+
+                    H              O              H              N         
+
+  1  H               0.0000000      0.9560000 *    1.5189208 *    3.3117460    
+  2  O               0.9560000 *    0.0000000      0.9560000 *    2.9300000 *  
+  3  H               1.5189208 *    0.9560000 *    0.0000000      1.9740000 *  
+  4  N               3.3117460      2.9300000 *    1.9740000 *    0.0000000    
+  5  H               4.0187634      3.4418297      2.5354084 *    1.0124000 *  
+  6  H               3.6817345      3.4418297      2.5354084 *    1.0124000 *  
+  7  H               3.6817345      3.4418297      2.5354084 *    1.0124000 *  
+
+                    H              H              H         
+
+  1  H               4.0187634      3.6817345      3.6817345    
+  2  O               3.4418297      3.4418297      3.4418297    
+  3  H               2.5354084 *    2.5354084 *    2.5354084 *  
+  4  N               1.0124000 *    1.0124000 *    1.0124000 *  
+  5  H               0.0000000      1.6241743 *    1.6241743 *  
+  6  H               1.6241743 *    0.0000000      1.6241743 *  
+  7  H               1.6241743 *    1.6241743 *    0.0000000    
+
+  * ... LESS THAN  3.000
+
+
+     ATOMIC BASIS SET
+     ----------------
+ THE CONTRACTED PRIMITIVE FUNCTIONS HAVE BEEN UNNORMALIZED
+ THE CONTRACTED BASIS FUNCTIONS ARE NOW NORMALIZED TO UNITY
+
+ SHELL TYPE PRIM    EXPONENT          CONTRACTION COEFFICIENTS
+
+ H         
+
+   1   S    1      18.731137    0.214935 (  0.033495) 
+   1   S    2       2.825394    0.364571 (  0.234727) 
+   1   S    3       0.640122    0.415051 (  0.813757) 
+
+   2   S    4       0.161278    0.181381 (  1.000000) 
+
+ O         
+
+   3   S    5     883.272860    2.026627 (  0.017551) 
+   3   S    6     133.129280    3.430971 (  0.122829) 
+   3   S    7      29.906408    3.963750 (  0.434884) 
+   3   S    8       7.978677    1.894762 (  0.560011) 
+
+   4   L    9      16.194447   -0.652457 ( -0.113401)     3.174134 (  0.068545) 
+   4   L   10       3.780086   -0.342541 ( -0.177286)     2.488518 (  0.331225) 
+   4   L   11       1.070984    0.863175 (  1.150408)     1.140839 (  0.734608) 
+
+   5   L   12       0.283880    0.277179 (  1.000000)     0.295364 (  1.000000) 
+
+ H         
+
+   6   S   13      18.731137    0.214935 (  0.033495) 
+   6   S   14       2.825394    0.364571 (  0.234727) 
+   6   S   15       0.640122    0.415051 (  0.813757) 
+
+   7   S   16       0.161278    0.181381 (  1.000000) 
+
+ N         
+
+   8   S   17     671.279503    1.654082 (  0.017598) 
+   8   S   18     101.201662    2.793590 (  0.122846) 
+   8   S   19      22.699966    3.215146 (  0.433782) 
+   8   S   20       6.040609    1.541726 (  0.561418) 
+
+   9   L   21      12.393600   -0.553104 ( -0.117489)     2.122047 (  0.064020) 
+   9   L   22       2.922383   -0.340890 ( -0.213994)     1.694941 (  0.311203) 
+   9   L   23       0.832528    0.729563 (  1.174502)     0.853274 (  0.752748) 
+
+  10   L   24       0.225964    0.233582 (  1.000000)     0.222070 (  1.000000) 
+
+ H         
+
+  11   S   25      18.731137    0.214935 (  0.033495) 
+  11   S   26       2.825394    0.364571 (  0.234727) 
+  11   S   27       0.640122    0.415051 (  0.813757) 
+
+  12   S   28       0.161278    0.181381 (  1.000000) 
+
+ H         
+
+  15   S   29      18.731137    0.214935 (  0.033495) 
+  15   S   30       2.825394    0.364571 (  0.234727) 
+  15   S   31       0.640122    0.415051 (  0.813757) 
+
+  16   S   32       0.161278    0.181381 (  1.000000) 
+
+ TOTAL NUMBER OF SHELLS              =   16
+ TOTAL NUMBER OF BASIS FUNCTIONS     =   28
+ NUMBER OF ELECTRONS                 =   20
+ CHARGE OF MOLECULE                  =    0
+ STATE MULTIPLICITY                  =    1
+ NUMBER OF OCCUPIED ORBITALS (ALPHA) =   10
+ NUMBER OF OCCUPIED ORBITALS (BETA ) =   10
+ TOTAL NUMBER OF ATOMS               =    7
+ THE NUCLEAR REPULSION ENERGY IS       39.0032143342
+
+     $CONTRL OPTIONS
+     ---------------
+     SCFTYP=RHF          RUNTYP=MOROKUMA     EXETYP=RUN     
+     MPLEVL=       0     LOCAL =NONE         UNITS =ANGS    
+     MULT  =       1     ICHARG=       0     MAXIT =      30
+     NPRINT=       7     IREST =       0     COORD =ZMT     
+     ECP   =NONE         NORMF =       0     NORMP =       0
+     ITOL  =      20     ICUT  =       9     NZVAR =       0
+     NOSYM =       0     INTTYP=POPLE        GEOM  =INPUT   
+     PLTORB=       F     MOLPLT=       F     RPAC  =       F
+     AIMPAC=       0     FRIEND=             CITYP =NONE    
+     DFTTYP=NONE    
+
+ FORCING UNDOCUMENTED OPTION -NOSO-
+
+
+     $SYSTEM OPTIONS
+     ---------------
+     KDIAG =       0     MEMORY=  1000000     TIMLIM=      300.0 SEC.
+     COREFL=       F     PTIME =        F     XDR   =       F
+     BALTYP=LOOP         CBASE = 00401000     FBASE = 714610C0
+
+          ----------------
+          PROPERTIES INPUT
+          ----------------
+
+     MOMENTS            FIELD           POTENTIAL          DENSITY
+ IEMOM =       1   IEFLD =       0   IEPOT =       0   IEDEN =       0
+ WHERE =COMASS     WHERE =NUCLEI     WHERE =NUCLEI     WHERE =NUCLEI  
+ OUTPUT=BOTH       OUTPUT=BOTH       OUTPUT=BOTH       OUTPUT=BOTH    
+ IEMINT=       0   IEFINT=       0                     IEDINT=       0
+                                                       MORB  =       0
+
+          EXTRAPOLATION IN EFFECT
+          SOSCF IN EFFECT
+
+          ----------------------
+          INTEGRAL INPUT OPTIONS
+          ----------------------
+ NOPK  =       1 NORDER=       0 SCHWRZ=       T
+
+ ATTENTION! AO INTEGRALS WILL BE PACKED.
+ THRESHOLD FOR PACKING PKTHR =  0.10000000D-01
+
+     -------------------------------
+     INTEGRAL TRANSFORMATION OPTIONS
+     -------------------------------
+     NWORD  =       0     CUTTRF = 1.0E-09
+     MPTRAN =       0     DIRTRF =       F
+     AOINTS =DUP          IREST  =       0
+
+   --- ENCODED Z MATRIX ---
+ COORD    TYPE     I    J    K    L    M    N
+     1       1     2    1
+     2       1     3    2
+     3       2     3    2    1
+     4       1     4    2
+     5       2     4    2    1
+     6       3     4    2    1    3
+     7       1     5    4
+     8       2     5    4    3
+     9       3     5    4    3    1
+    10       1     7    4
+    11       2     7    4    3
+    12       3     7    4    3    5
+    13       1     6    4
+    14       2     6    4    3
+    15       3     6    4    3    5
+
+ THE DETERMINANT OF THE G MATRIX IS 10**(    -5)
+
+     ------------------------------------------
+     THE POINT GROUP IS CS , NAXIS= 0, ORDER= 2
+     ------------------------------------------
+
+     DIMENSIONS OF THE SYMMETRY SUBSPACES ARE
+ A'  =  22      A'' =   6
+
+ ..... DONE SETTING UP THE RUN .....
+
+ CPU        TIME:   STEP =      0.02 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.02 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =     83.77%,  TOTAL =     167.54%
+ MOROKUMA ANALYSIS DOES NOT APPLY SYMMETRY OPERATION
+
+          --------------------
+          2 ELECTRON INTEGRALS
+          --------------------
+
+ THE -PK- OPTION IS OFF, THE INTEGRALS ARE NOT IN SUPERMATRIX FORM.
+ STORING    4998 INTEGRALS/RECORD ON DISK, USING 12 BYTES/INTEGRAL.
+ TWO ELECTRON INTEGRAL EVALUATION REQUIRES   34603 WORDS OF MEMORY.
+ SCHWARZ INEQUALITY OVERHEAD:       393 INTEGRALS, CPU TIME=        0.00
+ II,JST,KST,LST =  1  1  1  1 NREC =         1 INTLOC =    1
+ II,JST,KST,LST =  2  1  1  1 NREC =         1 INTLOC =    2
+ II,JST,KST,LST =  3  1  1  1 NREC =         1 INTLOC =    7
+ II,JST,KST,LST =  4  1  1  1 NREC =         1 INTLOC =   22
+ II,JST,KST,LST =  5  1  1  1 NREC =         1 INTLOC =  232
+ II,JST,KST,LST =  6  1  1  1 NREC =         1 INTLOC =  960
+ II,JST,KST,LST =  7  1  1  1 NREC =         1 INTLOC = 1534
+ II,JST,KST,LST =  8  1  1  1 NREC =         1 INTLOC = 2281
+ II,JST,KST,LST =  9  1  1  1 NREC =         1 INTLOC = 2803
+ II,JST,KST,LST = 10  1  1  1 NREC =         2 INTLOC = 1981
+ II,JST,KST,LST = 11  1  1  1 NREC =         4 INTLOC =  824
+ II,JST,KST,LST = 12  1  1  1 NREC =         4 INTLOC = 3797
+ II,JST,KST,LST = 13  1  1  1 NREC =         5 INTLOC = 2988
+ II,JST,KST,LST = 14  1  1  1 NREC =         6 INTLOC = 3979
+ II,JST,KST,LST = 15  1  1  1 NREC =         8 INTLOC = 2053
+ II,JST,KST,LST = 16  1  1  1 NREC =         9 INTLOC = 4689
+ SCHWARZ INEQUALITY TEST SKIPPED      1169 INTEGRAL BLOCKS.
+ TOTAL NUMBER OF NONZERO TWO-ELECTRON INTEGRALS =               54720
+         11 INTEGRAL RECORDS WERE STORED ON DISK FILE 24.
+ ...... END OF TWO-ELECTRON INTEGRALS .....
+
+ CPU        TIME:   STEP =      0.02 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.01 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =    106.32%,  TOTAL =     140.56%
+
+          ----------------------
+          RUNNING FOR MONOMER  1
+          ----------------------
+
+          ********************
+          1 ELECTRON INTEGRALS
+          ********************
+ ...... END OF ONE-ELECTRON INTEGRALS ......
+
+ CPU        TIME:   STEP =      0.00 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.00 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =      0.00%,  TOTAL =     139.27%
+
+          -------------
+          GUESS OPTIONS
+          -------------
+          GUESS =HUCKEL            NORB  =       0          NORDER=       0
+          MIX   =       F          PRTMO =       F          SYMDEN=       F
+          TOLZ  = 0.0E+00          TOLE  = 0.0E+00
+
+ INITIAL GUESS ORBITALS GENERATED BY HCORE    ROUTINE.
+
+ SYMMETRIES FOR INITIAL GUESS ORBITALS FOLLOW.   BOTH SET(S).
+     5 ORBITALS ARE OCCUPIED (    2 CORE ORBITALS).
+     3=A        4=A        5=A        6=A        7=A        8=A        9=A   
+    10=A       11=A       12=A       13=A   
+ ...... END OF INITIAL ORBITAL SELECTION ......
+
+ CPU        TIME:   STEP =      0.00 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.00 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =      0.00%,  TOTAL =     131.83%
+
+
+ SIFTING INTEGRALS FOR MONOMER   1 FROM FILE  24
+        1 RECORDS OF  4998 INTEGRALS WRITTEN ON UNIT  8
+
+          -------------------
+          RHF SCF CALCULATION
+          -------------------
+
+     NUCLEAR ENERGY =         9.2049126236
+     MAXIT =   30     NPUNCH=    2
+     EXTRAP=T  DAMP=F  SHIFT=F  RSTRCT=F  DIIS=F  DEM=F  SOSCF=T
+     DENSITY CONV=  1.00E-05
+     SOSCF WILL OPTIMIZE      40 ORBITAL ROTATIONS, SOGTOL=   0.250
+     MEMORY REQUIRED FOR RHF STEP=     13432 WORDS.
+
+ ITER EX DEM  TOTAL ENERGY      E CHANGE  DENSITY CHANGE     ORB. GRAD
+   1  0  0   -69.136560481   -69.136560481   6.891821888   0.000000000
+   2  1  0   -70.669164906    -1.532604425   6.894689015   0.974040351
+   3  2  0   -73.499351438    -2.830186533   2.411056794   0.753584427
+   4  3  0   -74.692587832    -1.193236394   2.173310148   0.614887972
+   5  0  0   -75.419423600    -0.726835768   0.381391994   0.388916958
+          ---------------START SECOND ORDER SCF---------------
+   6  1  0   -75.900613400    -0.481189799   0.114047745   0.056026727
+   7  2  0   -75.906944827    -0.006331427   0.037659859   0.010791641
+   8  3  0   -75.907617648    -0.000672822   0.001976381   0.003989013
+   9  4  0   -75.907634585    -0.000016937   0.002121957   0.000596851
+  10  5  0   -75.907637624    -0.000003038   0.000434175   0.000372532
+  11  6  0   -75.907637994    -0.000000370   0.000192145   0.000154744
+  12  7  0   -75.907638086    -0.000000092   0.000059732   0.000036707
+  13  8  0   -75.907638096    -0.000000010   0.000021684   0.000017977
+  14  9  0   -75.907638097    -0.000000002   0.000006431   0.000004562
+  15 10  0   -75.907638097     0.000000000   0.000002795   0.000001620
+
+          -----------------
+          DENSITY CONVERGED
+          -----------------
+     TIME TO FORM FOCK OPERATORS =       0.00 SECONDS (       0.00 SEC/ITER)
+     TIME TO SOLVE SCF EQUATIONS =       0.00 SECONDS (       0.00 SEC/ITER)
+
+ FINAL ENERGY IS      -75.9076380974 AFTER  15 ITERATIONS
+ ...... END OF RHF CALCULATION ......
+
+ CPU        TIME:   STEP =      0.00 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.01 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =      0.00%,  TOTAL =     104.72%
+
+          ----------------------
+          RUNNING FOR MONOMER  2
+          ----------------------
+
+          ********************
+          1 ELECTRON INTEGRALS
+          ********************
+ ...... END OF ONE-ELECTRON INTEGRALS ......
+
+ CPU        TIME:   STEP =      0.00 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.00 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =      0.00%,  TOTAL =     103.96%
+
+          -------------
+          GUESS OPTIONS
+          -------------
+          GUESS =HUCKEL            NORB  =       0          NORDER=       0
+          MIX   =       F          PRTMO =       F          SYMDEN=       F
+          TOLZ  = 0.0E+00          TOLE  = 0.0E+00
+
+ INITIAL GUESS ORBITALS GENERATED BY HCORE    ROUTINE.
+
+ SYMMETRIES FOR INITIAL GUESS ORBITALS FOLLOW.   BOTH SET(S).
+     5 ORBITALS ARE OCCUPIED (    2 CORE ORBITALS).
+     3=A        4=A        5=A        6=A        7=A        8=A        9=A   
+    10=A       11=A       12=A       13=A       14=A       15=A   
+ ...... END OF INITIAL ORBITAL SELECTION ......
+
+ CPU        TIME:   STEP =      0.00 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.00 ,  TOTAL =        0.0 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =      0.00%,  TOTAL =     103.04%
+
+
+ SIFTING INTEGRALS FOR MONOMER   2 FROM FILE  24
+        2 RECORDS OF  4998 INTEGRALS WRITTEN ON UNIT  8
+
+          -------------------
+          RHF SCF CALCULATION
+          -------------------
+
+     NUCLEAR ENERGY =        11.9540506325
+     MAXIT =   30     NPUNCH=    2
+     EXTRAP=T  DAMP=F  SHIFT=F  RSTRCT=F  DIIS=F  DEM=F  SOSCF=T
+     DENSITY CONV=  1.00E-05
+     SOSCF WILL OPTIMIZE      50 ORBITAL ROTATIONS, SOGTOL=   0.250
+     MEMORY REQUIRED FOR RHF STEP=     13494 WORDS.
+
+ ITER EX DEM  TOTAL ENERGY      E CHANGE  DENSITY CHANGE     ORB. GRAD
+   1  0  0   -49.066787150   -49.066787150  10.309401092   0.000000000
+   2  1  0   -51.963321471    -2.896534321  10.012454708   0.718624862
+   3  2  0   -53.968332405    -2.005010934   1.715880121   0.667635413
+   4  3  0   -55.307071666    -1.338739261   1.496703626   0.331295299
+   5  0  0   -55.828107268    -0.521035602   0.275694885   0.270992362
+          ---------------START SECOND ORDER SCF---------------
+   6  1  0   -56.099006269    -0.270899001   0.045584365   0.023081174
+   7  2  0   -56.101512873    -0.002506604   0.023876164   0.013804567
+   8  3  0   -56.102295849    -0.000782976   0.016566164   0.004353019
+   9  4  0   -56.102417597    -0.000121747   0.003511755   0.000732620
+  10  5  0   -56.102423906    -0.000006309   0.000172783   0.000135548
+  11  6  0   -56.102424049    -0.000000144   0.000099004   0.000018859
+  12  7  0   -56.102424054    -0.000000005   0.000021314   0.000008867
+  13  8  0   -56.102424054     0.000000000   0.000003708   0.000002010
+  14  9  0   -56.102424054     0.000000000   0.000000883   0.000000202
+
+          -----------------
+          DENSITY CONVERGED
+          -----------------
+     TIME TO FORM FOCK OPERATORS =       0.00 SECONDS (       0.00 SEC/ITER)
+     TIME TO SOLVE SCF EQUATIONS =       0.02 SECONDS (       0.00 SEC/ITER)
+
+ FINAL ENERGY IS      -56.1024240543 AFTER  14 ITERATIONS
+ ...... END OF RHF CALCULATION ......
+
+ CPU        TIME:   STEP =      0.02 ,  TOTAL =        0.1 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.01 ,  TOTAL =        0.1 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =    188.01%,  TOTAL =     116.17%
+
+          ********************
+          1 ELECTRON INTEGRALS
+          ********************
+ ...... END OF ONE-ELECTRON INTEGRALS ......
+
+ CPU        TIME:   STEP =      0.00 ,  TOTAL =        0.1 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.00 ,  TOTAL =        0.1 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =      0.00%,  TOTAL =     114.14%
+
+          ---------------------
+          RUNNING FOR E3 AND E4
+          ---------------------
+
+          -------------------
+          RHF SCF CALCULATION
+          -------------------
+
+     NUCLEAR ENERGY =        39.0032143342
+     MAXIT =   30     NPUNCH=    2
+     EXTRAP=T  DAMP=F  SHIFT=F  RSTRCT=F  DIIS=F  DEM=F  SOSCF=T
+     DENSITY CONV=  1.00E-05
+     SOSCF WILL OPTIMIZE     180 ORBITAL ROTATIONS, SOGTOL=   0.250
+     MEMORY REQUIRED FOR RHF STEP=     14157 WORDS.
+
+ ITER EX DEM  TOTAL ENERGY      E CHANGE  DENSITY CHANGE     ORB. GRAD
+   1  0  0  -132.018090708  -132.018090708   0.037461061   0.000000000
+          ---------------START SECOND ORDER SCF---------------
+   2  1  0  -132.023721400    -0.005630692   0.012586508   0.007925329
+   3  2  0  -132.024245478    -0.000524078   0.008946474   0.003388287
+   4  3  0  -132.024340246    -0.000094768   0.001184355   0.000841680
+   5  4  0  -132.024343431    -0.000003185   0.000348566   0.000351311
+   6  5  0  -132.024343937    -0.000000506   0.000099761   0.000037263
+   7  6  0  -132.024343947    -0.000000011   0.000019558   0.000006986
+   8  7  0  -132.024343948    -0.000000001   0.000003036   0.000002151
+   9  8  0  -132.024343948     0.000000000   0.000002165   0.000000771
+
+          -----------------
+          DENSITY CONVERGED
+          -----------------
+     TIME TO FORM FOCK OPERATORS =       0.03 SECONDS (       0.00 SEC/ITER)
+     TIME TO SOLVE SCF EQUATIONS =       0.00 SECONDS (       0.00 SEC/ITER)
+
+ FINAL ENERGY IS     -132.0243439479 AFTER   9 ITERATIONS
+ ...... END OF RHF CALCULATION ......
+
+ CPU        TIME:   STEP =      0.03 ,  TOTAL =        0.1 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.01 ,  TOTAL =        0.1 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =    223.16%,  TOTAL =     136.34%
+
+          ---------------------------------
+          RUNNING FOR E6 (SPLIT), IMOL =  1
+          ---------------------------------
+
+          -------------------
+          RHF SCF CALCULATION
+          -------------------
+
+     NUCLEAR ENERGY =        39.0032143342
+     MAXIT =   30     NPUNCH=    2
+     EXTRAP=T  DAMP=F  SHIFT=F  RSTRCT=F  DIIS=F  DEM=F  SOSCF=T
+     DENSITY CONV=  1.00E-05
+     SOSCF WILL OPTIMIZE     180 ORBITAL ROTATIONS, SOGTOL=   0.250
+     MEMORY REQUIRED FOR RHF STEP=     14157 WORDS.
+
+ ITER EX DEM  TOTAL ENERGY      E CHANGE  DENSITY CHANGE     ORB. GRAD
+   1  0  0  -132.049869786  -132.049869786   0.015472584   0.000000000
+          ---------------START SECOND ORDER SCF---------------
+   2  1  0  -132.050356584    -0.000486798   0.001883645   0.001567573
+   3  2  0  -132.050363316    -0.000006732   0.000272442   0.000197256
+   4  3  0  -132.050363431    -0.000000115   0.000007521   0.000002609
+   5  4  0  -132.050363431     0.000000000   0.000001554   0.000000461
+   6  5  0  -132.050363431     0.000000000   0.000000030   0.000000026
+
+          -----------------
+          DENSITY CONVERGED
+          -----------------
+     TIME TO FORM FOCK OPERATORS =       0.00 SECONDS (       0.00 SEC/ITER)
+     TIME TO SOLVE SCF EQUATIONS =       0.00 SECONDS (       0.00 SEC/ITER)
+
+ FINAL ENERGY IS     -132.0503634308 AFTER   6 ITERATIONS
+ ...... END OF RHF CALCULATION ......
+
+ CPU        TIME:   STEP =      0.00 ,  TOTAL =        0.1 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.01 ,  TOTAL =        0.1 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =      0.00%,  TOTAL =     119.47%
+
+          ---------------------------------
+          RUNNING FOR E6 (SPLIT), IMOL =  2
+          ---------------------------------
+
+          -------------------
+          RHF SCF CALCULATION
+          -------------------
+
+     NUCLEAR ENERGY =        39.0032143342
+     MAXIT =   30     NPUNCH=    2
+     EXTRAP=T  DAMP=F  SHIFT=F  RSTRCT=F  DIIS=F  DEM=F  SOSCF=T
+     DENSITY CONV=  1.00E-05
+     SOSCF WILL OPTIMIZE     180 ORBITAL ROTATIONS, SOGTOL=   0.250
+     MEMORY REQUIRED FOR RHF STEP=     14157 WORDS.
+
+ ITER EX DEM  TOTAL ENERGY      E CHANGE  DENSITY CHANGE     ORB. GRAD
+   1  0  0  -132.049869786  -132.049869786   0.042795443   0.000000000
+          ---------------START SECOND ORDER SCF---------------
+   2  1  0  -132.053025032    -0.003155246   0.011185455   0.004852580
+   3  2  0  -132.053150193    -0.000125162   0.003566662   0.000932094
+   4  3  0  -132.053156184    -0.000005990   0.000144230   0.000061785
+   5  4  0  -132.053156201    -0.000000017   0.000029924   0.000014045
+   6  5  0  -132.053156202    -0.000000001   0.000000081   0.000000085
+   7  6  0  -132.053156202     0.000000000   0.000000016   0.000000007
+
+          -----------------
+          DENSITY CONVERGED
+          -----------------
+     TIME TO FORM FOCK OPERATORS =       0.02 SECONDS (       0.00 SEC/ITER)
+     TIME TO SOLVE SCF EQUATIONS =       0.00 SECONDS (       0.00 SEC/ITER)
+
+ FINAL ENERGY IS     -132.0531562017 AFTER   7 ITERATIONS
+ ...... END OF RHF CALCULATION ......
+
+ CPU        TIME:   STEP =      0.02 ,  TOTAL =        0.1 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.01 ,  TOTAL =        0.1 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =    142.72%,  TOTAL =     122.31%
+
+          ********************
+          1 ELECTRON INTEGRALS
+          FOR SA(1)SB(2) = 0 
+          ********************
+ ...... END OF ONE-ELECTRON INTEGRALS ......
+
+ CPU        TIME:   STEP =      0.00 ,  TOTAL =        0.1 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.00 ,  TOTAL =        0.1 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =      0.00%,  TOTAL =     122.24%
+
+
+ SIFTING INTEGRALS FROM FILE  24
+        4 RECORDS OF  4998 INTEGRALS WRITTEN ON UNIT  8
+
+          ---------------------
+          RUNNING FOR E1 AND E2
+          ---------------------
+
+          -------------------
+          RHF SCF CALCULATION
+          -------------------
+
+     NUCLEAR ENERGY =        39.0032143342
+     MAXIT =   30     NPUNCH=    2
+     EXTRAP=T  DAMP=F  SHIFT=F  RSTRCT=F  DIIS=F  DEM=F  SOSCF=T
+     DENSITY CONV=  1.00E-05
+     SOSCF WILL OPTIMIZE     180 ORBITAL ROTATIONS, SOGTOL=   0.250
+     MEMORY REQUIRED FOR RHF STEP=     14157 WORDS.
+
+ ITER EX DEM  TOTAL ENERGY      E CHANGE  DENSITY CHANGE     ORB. GRAD
+   1  0  0  -132.032398415  -132.032398415   0.019390575   0.000000000
+          ---------------START SECOND ORDER SCF---------------
+   2  1  0  -132.033947160    -0.001548744   0.008666589   0.004804935
+   3  2  0  -132.034143017    -0.000195858   0.006129768   0.001529756
+   4  3  0  -132.034181750    -0.000038732   0.000779494   0.000787521
+   5  4  0  -132.034184185    -0.000002435   0.000149606   0.000166813
+   6  5  0  -132.034184272    -0.000000087   0.000059287   0.000023353
+   7  6  0  -132.034184278    -0.000000006   0.000017563   0.000007104
+   8  7  0  -132.034184279    -0.000000001   0.000004223   0.000003032
+   9  8  0  -132.034184279     0.000000000   0.000000848   0.000000525
+
+          -----------------
+          DENSITY CONVERGED
+          -----------------
+     TIME TO FORM FOCK OPERATORS =       0.00 SECONDS (       0.00 SEC/ITER)
+     TIME TO SOLVE SCF EQUATIONS =       0.00 SECONDS (       0.00 SEC/ITER)
+
+ FINAL ENERGY IS     -132.0341842786 AFTER   9 ITERATIONS
+ ...... END OF RHF CALCULATION ......
+
+ CPU        TIME:   STEP =      0.00 ,  TOTAL =        0.1 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.01 ,  TOTAL =        0.1 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =      0.00%,  TOTAL =     111.53%
+
+          ---------------------------------
+          RUNNING FOR E2 (SPLIT), IMOL =  1
+          ---------------------------------
+
+          ********************
+          1 ELECTRON INTEGRALS
+          FOR SA(1)SB(2) = 0 
+          ********************
+ ...... END OF ONE-ELECTRON INTEGRALS ......
+
+ CPU        TIME:   STEP =      0.00 ,  TOTAL =        0.1 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.00 ,  TOTAL =        0.1 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =      0.00%,  TOTAL =     111.46%
+
+          -------------------
+          RHF SCF CALCULATION
+          -------------------
+
+     NUCLEAR ENERGY =        39.0032143342
+     MAXIT =   30     NPUNCH=    2
+     EXTRAP=T  DAMP=F  SHIFT=F  RSTRCT=F  DIIS=F  DEM=F  SOSCF=T
+     DENSITY CONV=  1.00E-05
+     SOSCF WILL OPTIMIZE     180 ORBITAL ROTATIONS, SOGTOL=   0.250
+     MEMORY REQUIRED FOR RHF STEP=     14157 WORDS.
+
+ ITER EX DEM  TOTAL ENERGY      E CHANGE  DENSITY CHANGE     ORB. GRAD
+   1  0  0  -132.032398415  -132.032398415   0.020804666   0.000000000
+          ---------------START SECOND ORDER SCF---------------
+   2  1  0  -132.033369693    -0.000971278   0.006780102   0.003061345
+   3  2  0  -132.033451288    -0.000081596   0.004568045   0.001003593
+   4  3  0  -132.033465847    -0.000014558   0.000554893   0.000412191
+   5  4  0  -132.033466830    -0.000000984   0.000066203   0.000071975
+   6  5  0  -132.033466851    -0.000000021   0.000045416   0.000018076
+   7  6  0  -132.033466853    -0.000000002   0.000005374   0.000002390
+   8  7  0  -132.033466853     0.000000000   0.000002269   0.000000769
+
+          -----------------
+          DENSITY CONVERGED
+          -----------------
+     TIME TO FORM FOCK OPERATORS =       0.00 SECONDS (       0.00 SEC/ITER)
+     TIME TO SOLVE SCF EQUATIONS =       0.00 SECONDS (       0.00 SEC/ITER)
+
+ FINAL ENERGY IS     -132.0334668533 AFTER   8 ITERATIONS
+ ...... END OF RHF CALCULATION ......
+
+ CPU        TIME:   STEP =      0.02 ,  TOTAL =        0.1 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.01 ,  TOTAL =        0.1 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =    222.06%,  TOTAL =     118.86%
+
+          ---------------------------------
+          RUNNING FOR E2 (SPLIT), IMOL =  2
+          ---------------------------------
+
+          ********************
+          1 ELECTRON INTEGRALS
+          FOR SA(1)SB(2) = 0 
+          ********************
+ ...... END OF ONE-ELECTRON INTEGRALS ......
+
+ CPU        TIME:   STEP =      0.00 ,  TOTAL =        0.1 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.00 ,  TOTAL =        0.1 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =      0.00%,  TOTAL =     118.80%
+
+          -------------------
+          RHF SCF CALCULATION
+          -------------------
+
+     NUCLEAR ENERGY =        39.0032143342
+     MAXIT =   30     NPUNCH=    2
+     EXTRAP=T  DAMP=F  SHIFT=F  RSTRCT=F  DIIS=F  DEM=F  SOSCF=T
+     DENSITY CONV=  1.00E-05
+     SOSCF WILL OPTIMIZE     180 ORBITAL ROTATIONS, SOGTOL=   0.250
+     MEMORY REQUIRED FOR RHF STEP=     14157 WORDS.
+
+ ITER EX DEM  TOTAL ENERGY      E CHANGE  DENSITY CHANGE     ORB. GRAD
+   1  0  0  -132.032398415  -132.032398415   0.013969814   0.000000000
+          ---------------START SECOND ORDER SCF---------------
+   2  1  0  -132.032912957    -0.000514542   0.006030197   0.004399389
+   3  2  0  -132.032973205    -0.000060248   0.003520847   0.001013337
+   4  3  0  -132.032982346    -0.000009140   0.000498994   0.000286759
+   5  4  0  -132.032982824    -0.000000479   0.000129510   0.000104373
+   6  5  0  -132.032982847    -0.000000022   0.000058040   0.000015585
+   7  6  0  -132.032982848    -0.000000002   0.000031120   0.000005289
+   8  7  0  -132.032982848     0.000000000   0.000001111   0.000000868
+   9  8  0  -132.032982848     0.000000000   0.000000205   0.000000159
+
+          -----------------
+          DENSITY CONVERGED
+          -----------------
+     TIME TO FORM FOCK OPERATORS =       0.00 SECONDS (       0.00 SEC/ITER)
+     TIME TO SOLVE SCF EQUATIONS =       0.00 SECONDS (       0.00 SEC/ITER)
+
+ FINAL ENERGY IS     -132.0329828483 AFTER   9 ITERATIONS
+ ...... END OF RHF CALCULATION ......
+
+ CPU        TIME:   STEP =      0.00 ,  TOTAL =        0.1 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.01 ,  TOTAL =        0.1 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =      0.00%,  TOTAL =     110.99%
+
+          ------------------------------------
+          RESULTS OF KITAURA-MOROKUMA ANALYSIS
+          ------------------------------------
+
+                                         HARTREE      KCAL/MOLE
+ ELECTROSTATIC ENERGY             ES=   -0.022336       -14.02
+ EXCHANGE REPULSION ENERGY        EX=    0.014308         8.98
+ POLARIZATION ENERGY              PL=   -0.001786        -1.12
+ CHARGE TRANSFER ENERGY           CT=   -0.003780        -2.37
+ HIGH ORDER COUPLING ENERGY      MIX=   -0.000687        -0.43
+ TOTAL INTERACTION ENERGY,   DELTA-E=   -0.014282        -8.96
+
+ DECOMPOSITION OF CT
+ CHARGE TRANSFER ENERGY, MON=  1  CT=   -0.000494        -0.31
+ CHARGE TRANSFER ENERGY, MON=  2  CT=   -0.003286        -2.06
+
+ DECOMPOSITION OF PL
+ EPL,                    MON=  1  PL=   -0.001068        -0.67
+ EPL,                    MON=  2  PL=   -0.000584        -0.37
+ HIGH ORDER COUPLING FOR PL,    PMIX=   -0.000133        -0.08
+ ... END OF MOROKUMA DECOMPOSITION ...
+
+ CPU        TIME:   STEP =      0.00 ,  TOTAL =        0.1 SECONDS (    0.0 MIN)
+ WALL CLOCK TIME:   STEP =      0.00 ,  TOTAL =        0.1 SECONDS (    0.0 MIN)
+ CPU UTILIZATION:   STEP =      0.00%,  TOTAL =     110.92%
+
+                         I/O STATISTICS:
+ DATA READ TOTAL =       18.156 MB,  DATA WRITTEN TOTAL =        3.132 MB
+
+      396870 WORDS OF    DYNAMIC MEMORY USED
+      135878 BYTES OF    HEAP MEMORY    USED,      113847 BYTES REMAIN IN USE
+ EXECUTION OF FIREFLY TERMINATED NORMALLY 16:58:57 17-SEP-2016    

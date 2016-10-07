@@ -1,0 +1,36 @@
+! EXAM01.
+!
+! 1-A-1 CH2    RHF geometry optimization using Firefly.
+!
+! Although internal coordinates are used (COORD=ZMAT),
+! the optimization is done in Cartesian space (NZVAR=0).
+! This run uses a criterion (OPTTOL) on the gradient
+! which is tighter than is normally used.
+!
+! This job tests the sp integral module, the RHF module,
+! and the geometry optimization module.
+!
+! Using the default search METHOD=GDIIS,
+! FINAL ENERGY IS  -37.2322678094 AFTER 8 ITERS   RMS GRADIENT = 0.0264308
+! FINAL ENERGY IS  -37.2308175559 AFTER 7 ITERS   RMS GRADIENT = 0.0320880
+! FINAL ENERGY IS  -37.2376451083 AFTER 7 ITERS   RMS GRADIENT = 0.0046682
+! FINAL ENERGY IS  -37.2379963822 AFTER 8 ITERS   RMS GRADIENT = 0.0016453
+! FINAL ENERGY IS  -37.2380396086 AFTER 8 ITERS   RMS GRADIENT = 0.0001526
+! FINAL ENERGY IS  -37.2380397693 AFTER 5 ITERS   RMS GRADIENT = 0.0000026
+!
+ $CONTRL SCFTYP=RHF RUNTYP=OPTIMIZE COORD=ZMT NZVAR=0 $END
+ $SYSTEM TIMLIM=2 MEMORY=100000 $END
+ $STATPT OPTTOL=1.0E-5  $END
+ $BASIS  GBASIS=STO NGAUSS=2 $END
+ $GUESS  GUESS=HUCKEL $END
+ $DATA
+Methylene...1-A-1 state...RHF/STO-2G
+Cnv  2
+
+C
+H  1 rCH
+H  1 rCH  2 aHCH
+
+rCH=1.09
+aHCH=110.0
+ $END

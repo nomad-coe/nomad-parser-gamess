@@ -1,0 +1,59 @@
+! EXAM35.
+!
+! 3-A-2 H3CN   UDFT/B3LYP1/6-31G*//UHF/6-31G*
+!
+! UDFT/B3LYP1 geometry optimization using analytical gradients 
+!
+! Direct SCF is requested
+!
+! At the initial geometry:
+!
+! FINAL ENERGY IS      -94.5511200516 AFTER  10 ITERATIONS
+! DFT EXCHANGE + CORRELATION ENERGY IS      -10.8159931532
+! INTEGRATED TOTAL ELECTRON NUMBER  IS       15.9999998864
+!
+! RMS GRADIENT = 0.0064025
+!
+! FULLY SUBSTITUTED Z-MATRIX IS:
+! N   
+! C        1   1.4329216
+! H        2   1.0876477    1   110.2192800
+! H        2   1.0876477    1   110.2192800    3   120.0000000    0
+! H        2   1.0876477    1   110.2192800    3  -120.0000000    0
+!
+!------------------------------------------------------------------------------
+!
+! After 4 steps at the optimized geometry:
+!
+! FINAL ENERGY IS      -94.5516630301 AFTER   4 ITERATIONS
+! DFT EXCHANGE + CORRELATION ENERGY IS      -10.8062020108
+! INTEGRATED TOTAL ELECTRON NUMBER  IS       15.9999974649
+!
+! RMS GRADIENT = 0.0000076
+!
+! FULLY SUBSTITUTED Z-MATRIX IS
+! N   
+! C        1   1.4189725
+! H        2   1.1039182    1   110.9654566
+! H        2   1.1039182    1   110.9654566    3   120.0000000    0
+! H        2   1.1039182    1   110.9654566    3  -120.0000000    0
+!
+ $CONTRL SCFTYP=UHF MULT=3 RUNTYP=OPTIMIZE COORD=ZMT DFTTYP=B3LYP1 $END
+ $SYSTEM TIMLIM=30 MEMORY=300000 $END
+ $BASIS  GBASIS=N31 NGAUSS=6 NDFUNC=1 NPFUNC=0 $END
+ $GUESS  GUESS=HUCKEL $END
+ $SCF DIRSCF=.T. $END
+ $DATA
+Methylnitrene...UHF/6-31G* structure
+Cnv 3
+
+N
+C  1  rCN
+H  2  rCH  1  aHCN
+H  2  rCH  1  aHCN  3  120.0
+H  2  rCH  1  aHCN  3 -120.0
+
+rCN=1.4329216
+rCH=1.0876477
+aHCN=110.21928
+ $END

@@ -1,0 +1,75 @@
+! EXAM 13.
+!
+! This run nearly duplicates the POLYATOM calculation
+! of D.Neumann + J.W.Moskowitz, J.Chem.Phys. 49,2056(1968)
+! This run differs in that the cartesian s contaminant
+! in the d shells is retained. All properties are tested.
+!
+! V(NE) = -199.1899182516
+! V(EE) =   37.8936629460   T     =   76.0126455399
+! V(NN) =    9.2390200836   E(TOT)=  -76.0445896821
+!  MULL.Q(O)=-0.622844 Bond Order=0.912
+!  DENSITY - O=286.751655    H=0.404807
+!
+! MOMENTS:  DZ= 2.097014
+!  QXX=-2.369596  QYY= 2.480729  QZZ=-0.111133
+!  OXXZ=-0.863481 OYYZ= 2.149720 OZZZ=-1.286238
+!
+! ELECTRIC FIELD/GRADIENT:
+!  O(Z)=-0.060754  H(Y)=+/-0.007326  H(Z)=0.001535
+!  O(XX)=1.909579  O(YY)=-1.727602  O(ZZ)=-0.181976
+!  H(XX)=0.301167  H(YY)=-0.258105  H(ZZ)=-0.043062 H(YZ)=+/-0.364925
+!
+!  POTENTIAL - V(O)=-22.337451 V(H)=-1.006137
+!
+ $CONTRL SCFTYP=RHF RUNTYP=ENERGY UNITS=BOHR $END
+ $SYSTEM TIMLIM=15 MEMORY=300000 $END
+ $GUESS  GUESS=HUCKEL $END
+ $ELMOM  IEMOM=3 $END
+ $ELFLDG IEFLD=2 $END
+ $ELPOT  IEPOT=1 $END
+ $ELDENS IEDEN=1 $END
+ $DATA
+Water...properties test...(10,5,2/4,1)/[5,3,2/2,1] basis
+Cnv      2
+ 
+Oxygen     8.0
+  S    2
+    1   31.3166          0.243991
+    2   76.232           0.152763
+  S    3
+    1  290.785           0.904785
+    2 1424.0643          0.121603
+    3 4643.4485          0.029225
+  S    2
+    1    4.6037          0.264438
+    2   12.8607          0.458240
+  S    2
+    1    0.9311          1.051534
+    2    9.7044         -0.140314
+  S    1
+    1    0.2825          1.0
+  P    3
+    1    7.90403         0.124190
+    2   35.1832          0.019580
+    3    2.30512         0.394730
+  P    1
+    1    0.21373         1.0
+  P    1
+    1    0.71706         1.0
+  D    1
+    1    1.5             1.0
+  D    1
+    1    0.5             1.0
+ 
+Hydrogen   1.0      0.0  1.428036   1.0957706
+  S    3
+    1   0.65341          0.817238
+    2   2.89915          0.231208
+    3  19.2406           0.032828
+  S    1
+    1   0.17758          1.0
+  P    1
+    1   1.0              1.0
+ 
+ $END
