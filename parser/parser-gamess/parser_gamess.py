@@ -68,21 +68,21 @@ mainFileDescription = SM(
                    startReStr = r"\s*\$CONTRL OPTIONS",
                    forwardMatch = False,
                    subMatchers = [
-                       SM(r"\s*SCFTYP=[A-Z]+\s*RUNTYP=[A-Z]+\s*EXETYP=[A-Z]+"),
-                       SM(r"\s*MPLEVL=\s*[0-9]\s*CITYP =[A-Z]+\s*CCTYP =[A-Z]+\s*VBTYP =[A-Z]+"),
-                       SM(r"\s*DFTTYP=(?P<XC_functional>[-A-Z0-9]+)\s*TDDFT =[A-Z]+"),
-                       SM(r"\s*PP    =[A-Z]+\s*RELWFN=[A-Z]+"),
+                       SM(r"\s*SCFTYP=(?P<x_gamess_scf_type>[A-Z]+)\s*RUNTYP=(?P<x_gamess_comp_method>[0-9A-Z]+)\s*EXETYP=[A-Z]+"),
+                       SM(r"\s*MPLEVL=\s*(?P<x_gamess_mplevel>[0-9])\s*CITYP =(?P<x_gamess_citype>[A-Z]+)\s*CCTYP =(?P<x_gamess_cctype>[-A-Z]+)\s*VBTYP =(?P<x_gamess_vbtype>[A-Z]+)"),
+                       SM(r"\s*DFTTYP=(?P<XC_functional>[-0-9A-Z]+)\s*TDDFT =(?P<x_gamess_tddfttype>[A-Z]+)"),
+                       SM(r"\s*PP    =(?P<x_gamess_pptype>[A-Z]+)\s*RELWFN=(?P<x_gamess_relatmethod>[A-Z]+)"),
                        ]
              ),
             SM (name = 'SingleConfigurationCalculationWithSystemDescription',
-                startReStr = r"\s*COORDINATES OF ALL ATOMS|\s*[-A-Z0-9]+\s*SCF CALCULATION",
+                startReStr = r"\s*\$SYSTEM OPTIONS",
                 repeats = False,
                 forwardMatch = True,
                 subMatchers = [
                 SM (name = 'SingleConfigurationCalculation',
-                  startReStr = r"\s*COORDINATES OF ALL ATOMS|\s*[-A-Z0-9]+\s*SCF CALCULATION",
+                  startReStr = r"\s*\$SYSTEM OPTIONS",
                   repeats = True,
-                  forwardMatch = True,
+                  forwardMatch = False,
                   sections = ['section_single_configuration_calculation'],
                   subMatchers = [
                   SM(name = 'geometry',
@@ -96,15 +96,128 @@ mainFileDescription = SM(
                 ),
                   SM(name = 'TotalEnergyScfGamess',
                    sections  = ['section_scf_iteration'],
-                   startReStr = r"\s*[-A-Z0-9]+\s*SCF CALCULATION",
+                   startReStr = r"\s*RHF\s*SCF CALCULATION|\s*UHF\s*SCF CALCULATION|\s*ROHF\s*SCF CALCULATION",
                     forwardMatch = False,
                     repeats = True,
                     subMatchers = [
-                     SM(r"(\s+[0-9]+)(\s+[0-9]+)(\s+[0-9]+)?\s*(?P<energy_total_scf_iteration>[-+0-9.]+)",repeats = True),
+                     SM(r"ITER EX DEM     TOTAL ENERGY"),
+                     SM(r"(\s+[0-9^.]+)(\s+[0-9^.]+)(\s+[0-9^.])\s*(?P<energy_total_scf_iteration__hartree>(-\d+\.\d{10}))\s*[-+0-9.]+\s*[-+0-9.]+\s*[-+0-9.]+",repeats = True),
                      SM(r"\s*(?P<single_configuration_calculation_converged>DENSITY CONVERGED)"),
-                     SM(r"\s*FINAL\s*[-A-Z0-9]+\s*ENERGY IS\s*(?P<x_gamess_energy_scf>[-+0-9.]+)"),
+                     SM(r"\s*FINAL\s*[ROUHF]\s*ENERGY IS\s*(?P<x_gamess_energy_total_scf__hartree>[-+0-9.]+)"),
                     ]
                 ),
+                    SM(name = 'PerturbationEnergies',
+                    sections = ['x_gamess_section_moller_plesset'],
+                    startReStr = r"\s*RESULTS OF MOLLER-PLESSET 2ND ORDER CORRECTION ARE",
+                    forwardMatch = True,
+                    subMatchers = [
+                     SM(r"\s*RESULTS OF MOLLER-PLESSET 2ND ORDER CORRECTION ARE"),
+                     SM(r"\s*E(MP2)=\s*(?P<energy_total__hartree>[-+0-9EeDd.]+)"),
+                     ]
+                ),
+                    SM(name = 'GroundStateCoupledClusterEnergies',
+                    sections = ['x_gamess_section_coupled_cluster'],
+                    startReStr = r"\s*.......\s*DONE WITH CC AMPLITUDE ITERATIONS\s*",
+                    forwardMatch = False,
+                    subMatchers = [
+                     SM(r"\s*CCSD    ENERGY:\s*(?P<energy_total__hartree>[-+0-9.]+)"),
+                     SM(r"\s*CR-CC(2,3) OR CR-CCSD(T)_L ENERGY:\s*(?P<energy_total__hartree>[-+0-9.]+)"),
+                     ]
+                ), 
+                    SM(name = 'MCSCFStates',
+                    sections = ['x_gamess_section_mcscf'],
+                    startReStr = r"\s*MCSCF CALCULATION",
+                    forwardMatch = False,
+                    subFlags = SM.SubFlags.Sequenced,
+                    subMatchers = [
+                     SM(r"\s*NUMBER OF CORE ORBITALS          =\s*(?P<x_gamess_mcscf_inactive_orbitals>[0-9]+)"),
+                     SM(r"\s*THE MAXIMUM ELECTRON EXCITATION WILL BE\s*(?P<x_gamess_mcscf_active_electrons>[0-9]+)"),
+                     SM(r"\s*SYMMETRIES FOR THE\s*(?P<x_gamess_mcscf_inactive_orbitals>[0-9]+)\s*CORE,\s*(?P<x_gamess_mcscf_active_orbitals>[0-9]+)\s*ACTIVE"),
+                     SM(r"\s*NUMBER OF ACTIVE ORBITALS        =\s*(?P<x_gamess_mcscf_active_orbitals>[0-9]+)"),
+                     SM(r"\s*NUMBER\s*OF\s*[A-Z]+\s*ELECTRONS\s*=\s*[0-9]+\s*\(\s*(?P<x_gamess_mcscf_active_electrons>[0-9]+)", repeats = True),
+                     SM(r"\s*STATE #\s*[0-9]+\s*ENERGY =\s*[-+0-9.]+", repeats = True),
+                     SM(r"\s*STATE\s*[0-9]+\s*ENERGY=\s*", repeats = True), 
+                     SM(r"\s*ITER\s*TOTAL\s*ENERGY"),
+                     SM(r"\s*[0-9^.]+\s*(?P<x_gamess_energy_mcscf_iteration__hartree>(-\d+\.\d{9}))", repeats = True),
+                     SM(r"\s*ENERGY CONVERGED"),
+                     SM(r"\s*LAGRANGIAN CONVERGED"),
+                     SM(r"\s*STATE #\s*[0-9]+\s*ENERGY =\s*(?P<x_gamess_energy_mcscf__hartree>[-+0-9.]+)", repeats = True),
+                     SM(r"\s*STATE\s*[0-9]+\s*ENERGY=\s*(?P<x_gamess_energy_mcscf__hartree>[-+0-9.]+)", repeats = True),
+                     ]
+                ),
+                    SM(name = 'OrbitalEnergies',
+                    sections = ['section_eigenvalues'],
+                    startReStr = r"\s*EIGENVECTORS|\s*MCSCF OPTIMIZED ORBITALS",
+                    endReStr = r"\s*PROPERTY VALUES FOR THE", 
+                    forwardMatch = False,
+                    subFlags = SM.SubFlags.Sequenced,
+                    subMatchers = [
+                          SM(r"\s*(?P<x_gamess_alpha_eigenvalues_values>\s*(-?\d+\.\d{4})\s*(-?\d+\.\d{4})?\s*(-?\d+\.\d{4})?\s*(-?\d+\.\d{4})?\s*(-?\d+\.\d{4})?)", repeats = True),   
+                          SM(r"\s*-----\s*BETA SET"),
+                          SM(r"\s*(?P<x_gamess_beta_eigenvalues_values>\s*(-?\d+\.\d{4})\s*(-?\d+\.\d{4})?\s*(-?\d+\.\d{4})?\s*(-?\d+\.\d{4})?\s*(-?\d+\.\d{4})?)", repeats = True),
+                     ]
+                ),   
+                    SM(name = 'MRPT2States',
+                    sections = ['x_gamess_section_mrpt2'],
+                    startReStr = r"\s*MC-QDPT2|\s*DETERMINANTAL MULTIREFERENCE 2ND ORDER PERTURBATION THEORY",
+                    forwardMatch = False,
+                    subMatchers = [
+                     SM(r"\s*# OF FROZEN CORE ORBITALS     =\s*(?P<x_gamess_mrpt2_frozen_core_orbitals>[0-9]+)"),
+                     SM(r"\s*# OF DOUBLY OCCUPIED ORBITALS =\s*(?P<x_gamess_mrpt2_doubly_occupied_orbitals>[0-9]+)"),
+                     SM(r"\s*# OF ACTIVE ORBITALS          =\s*(?P<x_gamess_mrpt2_active_orbitals>[0-9]+)"),
+                     SM(r"\s*# OF EXTERNAL ORBITALS        =\s*(?P<x_gamess_mrpt2_external_orbitals>[0-9]+)"),
+                     SM(r"\s*# OF FROZEN VIRTUAL ORBITALS  =\s*(?P<x_gamess_mrpt2_frozen_virtual_orbitals>[0-9]+)"),
+                     SM(r"\s*NUMBER OF CORE     ORBITALS      =\s*(?P<x_gamess_mrpt2_frozen_core_orbitals>[0-9]+)"),
+                     SM(r"\s*NUMBER OF VALENCE  ORBITALS      =\s*(?P<x_gamess_mrpt2_doubly_occupied_orbitals>[0-9]+)"),
+                     SM(r"\s*NUMBER OF ACTIVE   ORBITALS      =\s*(?P<x_gamess_mrpt2_active_orbitals>[0-9]+)"),
+                     SM(r"\s*NUMBER OF EXTERNAL ORBITALS      =\s*(?P<x_gamess_mrpt2_external_orbitals>[0-9]+)"),
+                     SM(r"\s*NUMBER OF ALPHA ELECTRONS\s*=\s*[0-9]+\s*\(\s*[0-9]+\s*VALENCE\)\s*\(\s*(?P<x_gamess_mrpt2_active_electrons>[0-9]+)"),
+                     SM(r"\s*NUMBER OF BETA ELECTRONS\s*=\s*[0-9]+\s*\(\s*[0-9]+\s*VALENCE\)\s*\(\s*(?P<x_gamess_mrpt2_active_electrons>[0-9]+)"),
+                     SM(r"\s*###   MRMP2 RESULTS"),
+                     SM(r"\s*AMES LABORATORY DETERMINANTAL FULL CI"),
+                     SM(r"\s*THE DETERMINANT\s*(?P<x_gamess_mrpt2_method_type>([MRPT]+))"), 
+                     SM(r"\s*\*\*\*\s*(?P<x_gamess_mrpt2_method_type>[0-9A-Z]+)\s*ENERGY"), 
+                     SM(r"\s*[0-9]+\s*E\(MCSCF\)=\s*[-0-9.]+\s*E\(MP2\)=\s*(?P<energy_total__hartree>[-0-9.]+)", repeats = True),
+                     SM(r"\s*TOTAL MRPT2, E\(MP2\) 0TH\s*\+\s*1ST\s*\+\s*2ND ORDER ENERGY =\s*(?P<energy_total__hartree>[-0-9.]+)", repeats = True),
+                     ]
+                ),
+                    SM(name = 'TDDFTStatesSection',
+                    sections = ['x_gamess_section_excited_states'],
+                    startReStr = r"\s*SINGLET EXCITATIONS|\s*PRINTING CIS COEFFICIENTS",
+                    forwardMatch = False,
+                    repeats = False,
+                    subMatchers = [
+                       SM(name = 'TDDFTStates',
+                       sections = ['x_gamess_section_tddft'],
+                       startReStr = r"\s*STATE #\s*[0-9]+\s*ENERGY =",
+                       forwardMatch = True,
+                       repeats = True,
+                       subMatchers = [ 
+                        SM(r"\s*STATE #\s*[0-9]+\s*ENERGY =\s*(?P<x_gamess_tddft_excitation_energy__eV>[-0-9.]+)"),
+                        SM(r"\s*OSCILLATOR STRENGTH =\s*(?P<x_gamess_tddft_oscillator_strength>[0-9.]+)"),
+                        ]
+                   ),   
+                       SM(name = 'CISStates',
+                       sections = ['x_gamess_section_cis'],
+                       startReStr = r"\s*CI-SINGLES EXCITATION ENERGIES",
+                       forwardMatch = False,
+                       repeats = True,
+                       subMatchers = [
+                        SM(r"\s*[0-9A-Z']+\s*(?P<x_gamess_cis_excitation_energy__hartree>[0-9.]+)"),
+                        SM(r"\s*OSCILLATOR STRENGTH =\s*(?P<x_gamess_cis_oscillator_strength>[0-9.]+)"),
+                        ]
+                   ),
+                        ]
+                   ),
+                    SM(name = 'Geometry_optimization',
+                    sections  = ['x_gamess_section_geometry_optimization_info'],
+                    startReStr = r"\s*\*\*\*\*\*\s*EQUILIBRIUM GEOMETRY LOCATED",
+                    forwardMatch = True,
+                    subMatchers = [
+                     SM(r"\s*\*\*\*\*\*\s*(?P<x_gamess_geometry_optimization_converged>EQUILIBRIUM GEOMETRY LOCATED)"),
+                     SM(r"\s*\*\*\*\*\*\s*(?P<x_gamess_geometry_optimization_converged>FAILURE TO LOCATE STATIONARY POINT)"),
+                     ]
+               ),
           ])
         ])
       ])
@@ -265,7 +378,7 @@ class GAMESSParserContext(object):
               'SPK-DQP':      [{'name': 'SPK-DQP'}],
               'SPK-ADZP':     [{'name': 'AUG-SPK-DZP'}],
               'SPK-ATZP':     [{'name': 'AUG-SPK-TZP'}],
-              'SPKAQZP':      [{'name': 'AUG-SPK-QZP'}],
+              'SPK-AQZP':     [{'name': 'AUG-SPK-QZP'}],
               'SPKRDZP':      [{'name': 'SPK-RELDZP'}],
               'SPKRDTP':      [{'name': 'SPK-RELDTP'}],
               'SPKRDQP':      [{'name': 'SPK-RELDQP'}],
@@ -287,8 +400,6 @@ class GAMESSParserContext(object):
               'KTZV':         [{'name': 'KARLSRUHETZV'}],
               'KTZVP':        [{'name': 'KARLSRUHETZVP'}],
               'KTZVPP':       [{'name': 'KARLSRUHETZVPP'}],
-              'SBKJC':        [{'name': 'SBKJC'}],
-              'HW':           [{'name': 'HAYWADT'}],
               'MCP-DZP':      [{'name': 'MCP-DZP'}],
               'MCP-TZP':      [{'name': 'MCP-TZP'}],
               'MCP-QZP':      [{'name': 'MCP-QZP'}],
@@ -328,11 +439,11 @@ class GAMESSParserContext(object):
        sdiffuselightlogical = 'F'
        nrofpfunctionslight = 0
 
-       basissetreal = basissetDict.get([basisset][-1])
-
        if(section['x_gamess_basis_set_gbasis']):
 
         basisset = str(section['x_gamess_basis_set_gbasis']).replace("[","").replace("]","").replace("'","").upper()
+        basissetreal = basissetDict.get([basisset][-1])
+
         nrofgaussians = str(section['x_gamess_basis_set_igauss']).replace("[","").replace("]","").replace("'","") 
         nrofdfunctions = int(str(section['x_gamess_basis_set_ndfunc']).replace("[","").replace("]","").replace("'",""))
         nrofffunctions = int(str(section['x_gamess_basis_set_nffunc']).replace("[","").replace("]","").replace("'",""))
@@ -518,10 +629,10 @@ class GAMESSParserContext(object):
 
         #Write basis sets to metadata
 
-       if basisset is not None:
+       if basissetreal is not None:
           # check if only one method keyword was found in output
           if len([basisset]) > 1:
-              logger.error("Found %d settings for the basis set: %s. This leads to an undefined behavior of the calculation and no metadata can be written for the basis set." % (len(method), method))
+              logger.error("Found %d settings for the basis set: %s. This leads to an undefined behavior of the calculation and no metadata can be written for the basis set." % (len(basisset), basisset))
           else:
             if(gIndex == 0):
               backend.superBackend.addValue('basis_set', basissetreal)
@@ -729,10 +840,13 @@ class GAMESSParserContext(object):
               'IP-EOM3A':  [{'name': 'IP-EOMCCSDt'}],
               'EA-EOM2':   [{'name': 'EA-EOMCCSD'}],
               'EA-EOM3A':  [{'name': 'EA-EOMCCSDt'}],
-              'IOTC':      [{'name': 'INFINITEORDERTWOCOMPONENT'}],
-              'DK':        [{'name': 'DOUGLASKROLL'}],
-              'RESC':      [{'name': 'RELATIVISTICELIMINATIONOFSMALLCOMPONENT'}],
-              'NESC':      [{'name': 'NORMALISEDELIMINTIONOFSMALLCOMPONENT'}],
+              'IOTC':      [{'name': 'SCALAR_RELATIVISTIC'}],
+              'DK':        [{'name': 'SCALAR_RELATIVISTIC'}],
+              'RESC':      [{'name': 'SCALAR_RELATIVISTIC'}],
+              'NESC':      [{'name': 'SCALAR_RELATIVISTIC'}],
+              'SBKJC':     [{'name': 'PSEUDO_SCALAR_RELATIVISTIC'}],
+              'HW':        [{'name': 'PSEUDO_SCALAR_RELATIVISTIC'}],
+              'MCP':       [{'name': 'PSEUDO_SCALAR_RELATIVISTIC'}],
               'TAMMD':     [{'name': 'TAMM-DANCOFF'}],
               'DFTB':      [{'name': 'DFTB'}],
               'MP2':       [{'name': 'MP2'}],
@@ -753,18 +867,31 @@ class GAMESSParserContext(object):
               'HSO2P':     [{'name': 'PARTIALTWOELEC-SOC'}],
               'HSO2':      [{'name': 'TWOELEC-SOC'}],
               'HSO2FF':    [{'name': 'TWOELECFORMFACTOR-SOC'}],
+              'GUGA':      [{'name': 'GUGA-CI'}],
+              'NONE':      [{'name': 'NOCORRELATEDMETHOD'}],
              }
 
-       global xc,xcWrite
+       global xc, xcWrite, methodWrite, scfmethod, mplevel, casscfkey, relatmethod, relatpseudo, methodci, methodcc, methodvb, methodmr, methodtddft
 
        xc = None
        xcWrite = True
+       scfmethod = None
+       methodWrite = True
+       mplevel = 0
+       casscfkey = None
+       relatmethod = None
+       relatpseudo = None
+       methodci = None
+       methodcc = None
+       methodvb = None
+       methodmr = None
+       methodtddft = None 
 
 # functionals where hybrid_xc_coeff are written
 
-       xc = str(section["XC_functional"]).replace("[","").replace("]","").replace("'","")
+       xc = str(section["XC_functional"]).replace("[","").replace("]","").replace("'","").upper()
 
-       if xc is not None:
+       if xc is not None and xc != 'NONE':
           # check if only one xc keyword was found in output
           if len([xc]) > 1:
               logger.error("Found %d settings for the xc functional: %s. This leads to an undefined behavior of the calculation and no metadata can be written for xc." % (len(xc), xc))
@@ -789,7 +916,216 @@ class GAMESSParserContext(object):
                       logger.error("The xc functional '%s' could not be converted for the metadata. Please add it to the dictionary xcDict in %s." % (xc[-1], os.path.basename(__file__)))
 
 
+# Write electronic structure method to metadata
 
+       scfmethod = str(section["x_gamess_scf_type"]).replace("[","").replace("]","").replace("'","").upper()
+
+       methodci = str(section["x_gamess_citype"]).replace("[","").replace("]","").replace("'","").upper()
+       methodcc = str(section["x_gamess_cctype"]).replace("[","").replace("]","").replace("'","").upper()
+       methodvb = str(section["x_gamess_vbtype"]).replace("[","").replace("]","").replace("'","").upper()
+       methodtddft = str(section["x_gamess_tddfttype"]).replace("[","").replace("]","").replace("'","").upper()
+       methodcomp = str(section["x_gamess_comp_method"]).replace("[","").replace("]","").replace("'","").upper()
+       relatmethod = str(section["x_gamess_relatmethod"]).replace("[","").replace("]","").replace("'","").upper()
+       relatpseudo = str(section["x_gamess_pptype"]).replace("[","").replace("]","").replace("'","").upper()
+
+       if relatmethod != 'NONE' or relatpseudo != 'NONE':
+          # check if only one method keyword was found in output
+          if len([relatmethod]) > 1:
+              logger.error("Found %d settings for the method: %s. This leads to an undefined behavior of the calculation and no metadata can be written for the method." % (len(relatmethod), relatmethod))
+          if len([relatpseudo]) > 1:
+              logger.error("Found %d settings for the method: %s. This leads to an undefined behavior of the calculation and no metadata can be written for the method." % (len(relatpseudo), relatpseudo))
+          methodList = methodDict.get([relatmethod][-1])
+          methodList = methodDict.get([relatpseudo][-1])
+          if methodWrite:
+               if methodList is not None:
+        # loop over the method components
+                  for methodItem in methodList:
+                        methodName = methodItem.get('name')
+                        if methodName is not None:
+                 # write section and method name
+                           backend.addValue('relativity_method', methodName)
+                        else:
+                           logger.error("The dictionary for method '%s' does not have the key 'name'. Please correct the dictionary methodDict in %s." % (relatmethod[-1], os.path.basename(__file__)))
+               else:
+                    logger.error("The method '%s' could not be converted for the metadata. Please add it to the dictionary methodDict in %s." % (relatmethod[-1], os.path.basename(__file__)))
+
+       mplevel = str(section["x_gamess_mplevel"]).replace("[","").replace("]","").replace("'","")
+       casscfkey = str(section["x_gamess_mcscf_casscf"]).replace("[","").replace("]","").replace("'","")
+
+       if scfmethod != 'NONE' and scfmethod != 'MCSCF' and methodci == 'NONE' and methodcc == 'NONE' and methodvb == 'NONE' and methodtddft == 'NONE':
+          # check if only one method keyword was found in output
+          if len([scfmethod]) > 1:
+              logger.error("Found %d settings for the method: %s. This leads to an undefined behavior of the calculation and no metadata can be written for the method." % (len(scfmethod), scfmethod))
+          else:
+              backend.superBackend.addValue('x_gamess_scf_method', [scfmethod][-1])
+          methodList = methodDict.get([scfmethod][-1])
+          if methodWrite:
+               if methodList is not None:
+        # loop over the method components
+                  for methodItem in methodList:
+                        methodName = methodItem.get('name')
+                        if methodName is not None:
+                 # write section and method name
+                           gIndexTmp = backend.openSection('x_gamess_section_elstruc_method')
+                           backend.addValue('x_gamess_electronic_structure_method', methodName)
+                           backend.closeSection('x_gamess_section_elstruc_method', gIndexTmp)
+                        else:
+                           logger.error("The dictionary for method '%s' does not have the key 'name'. Please correct the dictionary methodDict in %s." % (method[-1], os.path.basename(__file__)))
+               else:
+                    logger.error("The method '%s' could not be converted for the metadata. Please add it to the dictionary methodDict in %s." % (method[-1], os.path.basename(__file__)))
+
+
+       if scfmethod == 'MCSCF' and mplevel != '2':
+          # check if only one method keyword was found in output
+          if len([scfmethod]) > 1:
+              logger.error("Found %d settings for the method: %s. This leads to an undefined behavior of the calculation and no metadata can be written for the method." % (len(scfmethod), scfmethod))
+          else:
+              backend.superBackend.addValue('x_gamess_method', [scfmethod][-1])
+          methodList = methodDict.get([scfmethod][-1])
+          if methodWrite:
+               if methodList is not None:
+        # loop over the method components
+                  for methodItem in methodList:
+                        methodName = methodItem.get('name')
+                        if methodName is not None:
+                 # write section and method name
+                           if(scfmethod == 'MCSCF' and casscfkey == 'T'):
+                               methodName = 'CASSCF'
+                           gIndexTmp = backend.openSection('x_gamess_section_elstruc_method')
+                           backend.addValue('x_gamess_electronic_structure_method', methodName)
+                           backend.closeSection('x_gamess_section_elstruc_method', gIndexTmp)
+                        else:
+                           logger.error("The dictionary for method '%s' does not have the key 'name'. Please correct the dictionary methodDict in %s." % (method[-1], os.path.basename(__file__)))
+               else:
+                    logger.error("The method '%s' could not be converted for the metadata. Please add it to the dictionary methodDict in %s." % (method[-1], os.path.basename(__file__)))
+
+       if (methodci != 'NONE' or methodcc != 'NONE' or methodvb != 'NONE' or methodtddft != 'NONE' or methodcomp == 'COMP' or methodcomp == 'G3MP2') and mplevel != 2:
+          # check if only one method keyword was found in output
+          if len([methodci]) > 1 or len([methodcc]) > 1 or len([methodvb]) > 1 or len([methodtddft]) > 1 or len([methodcomp]) > 1:
+              logger.error("There is an undefined behavior of the calculation and no metadata can be written for the method.")
+          else:
+              if(methodci != 'NONE'):
+                 backend.superBackend.addValue('x_gamess_method', [methodci][-1])
+              elif(methodcc != 'NONE'):
+                 backend.superBackend.addValue('x_gamess_method', [methodcc][-1])
+              elif(methodvb != 'NONE'):
+                 backend.superBackend.addValue('x_gamess_method', [methodvb][-1])
+              elif(methodtddft != 'NONE'):
+                 backend.superBackend.addValue('x_gamess_method', [methodtddft][-1])
+              elif(methodcomp == 'COMP' or methodcomp == 'G3MP2'):
+                 backend.superBackend.addValue('x_gamess_method', [methodcomp][-1])
+          if(methodci != 'NONE'):
+              methodList = methodDict.get([methodci][-1])
+          elif(methodcc != 'NONE'):
+              methodList = methodDict.get([methodcc][-1])
+          elif(methodvb != 'NONE'):
+              methodList = methodDict.get([methodvb][-1])
+          elif(methodtddft != 'NONE'):
+              methodList = methodDict.get([methodtddft][-1])
+          elif(methodcomp == 'COMP' or methodcomp == 'G3MP2'):
+              methodList = methodDict.get([methodcomp][-1])
+          if methodWrite:
+               if methodList is not None:
+        # loop over the method components
+                  for methodItem in methodList:
+                        methodName = methodItem.get('name')
+                        if methodName is not None:
+                 # write section and method name
+                           gIndexTmp = backend.openSection('x_gamess_section_elstruc_method')
+                           backend.addValue('x_gamess_electronic_structure_method', methodName)
+                           backend.closeSection('x_gamess_section_elstruc_method', gIndexTmp)
+                        else:
+                           logger.error("The dictionary for method '%s' does not have the key 'name'. Please correct the dictionary methodDict in %s." % (methodci[-1], os.path.basename(__file__)))
+               else:
+                    logger.error("The method '%s' could not be converted for the metadata. Please add it to the dictionary methodDict in %s." % (methodci[-1], os.path.basename(__file__)))
+
+       if (scfmethod == 'RHF' or scfmethod == 'UHF' or scfmethod == 'ROHF') and mplevel == '2':
+          # check if only one method keyword was found in output
+          backend.superBackend.addValue('x_gamess_method', 'MP2')
+          gIndexTmp = backend.openSection('x_gamess_section_elstruc_method')
+          backend.addValue('x_gamess_electronic_structure_method', 'MP2')
+          backend.closeSection('x_gamess_section_elstruc_method', gIndexTmp)
+
+
+      def onClose_section_eigenvalues(self, backend, gIndex, section):
+          eigenenergies = str(section["x_gamess_alpha_eigenvalues_values"])
+          eigenen1 = []
+          energy = [float(f) for f in eigenenergies[:].replace("'","").replace(",","").replace("]","").replace("[","").replace("one","").replace("\\n","").replace("-"," -").split()]
+          eigenen1 = np.append(eigenen1, energy)
+          eigenenconalp = convert_unit(eigenen1, "hartree", "J")
+          occupationsalp = np.zeros(len(eigenen1), dtype = float)
+          for number in range(len(eigenen1)):
+            if(section["x_gamess_beta_eigenvalues_values"]):
+              if(eigenen1[number] < 0.0):
+                  occupationsalp[number] = 1.0
+            else:
+              if(eigenen1[number] < 0.0):
+                  occupationsalp[number] = 2.0
+
+          eigenenconalpnew = np.reshape(eigenenconalp,(1, 1, len(eigenenconalp)))
+          occupationsalpnew = np.reshape(occupationsalp,(1, 1, len(occupationsalp)))
+          if(section["x_gamess_beta_eigenvalues_values"]):
+             pass
+          else:
+             backend.addArrayValues("eigenvalues_values", eigenenconalpnew)
+             backend.addArrayValues("eigenvalues_occupation", occupationsalpnew)
+
+          if(section["x_gamess_beta_eigenvalues_values"]):
+            eigenenergies = str(section["x_gamess_beta_eigenvalues_values"])
+            eigenen1 = []
+            energy = [float(f) for f in eigenenergies[:].replace("'","").replace(",","").replace("]","").replace("[","").replace("one","").replace("\\n","").replace("-"," -").split()]
+            eigenen1 = np.append(eigenen1, energy)
+            eigenenconbet = convert_unit(eigenen1, "hartree", "J")
+            occupationsbet = np.zeros(len(eigenen1), dtype = float)
+            for number in range(len(eigenen1)):
+              if(eigenen1[number] < 0.0):
+                occupationsbet[number] = 1.0
+
+            eigenenall = np.concatenate((eigenenconalp,eigenenconbet), axis=0)
+            occupall = np.concatenate((occupationsalp,occupationsbet), axis=0)
+            eigenenall = np.reshape(eigenenall,(2, 1, len(eigenenconalp)))
+            occupall = np.reshape(occupall,(2, 1, len(occupationsalp)))
+            backend.addArrayValues("eigenvalues_values", eigenenall)
+            backend.addArrayValues("eigenvalues_occupation", occupall)
+
+
+      def onClose_x_gamess_section_geometry_optimization_info(self, backend, gIndex, section):
+        # check for geometry optimization convergence
+        if section['x_gamess_geometry_optimization_converged'] is not None:
+           if section['x_gamess_geometry_optimization_converged'] == ['EQUILIBRIUM GEOMETRY LOCATED']:
+              self.geoConvergence = True
+           elif section['x_gamess_geometry_optimization_converged'] != ['FAILURE TO LOCATE STATIONARY POINT']:
+              self.geoConvergence = False
+
+
+      def onClose_section_scf_iteration(self, backend, gIndex, section):
+        # count number of SCF iterations
+        self.scfIterNr += 1
+        # check for SCF convergence
+        if section['single_configuration_calculation_converged'] is not None:
+           self.scfConvergence = True
+           if section['x_gamess_energy_scf']:
+               self.scfenergyconverged = float(str(section['x_gamess_energy_scf']).replace("[","").replace("]","").replace("D","E"))
+               scfmethod = str(section["x_gamess_scf_type"]).replace("[","").replace("]","").replace("'","").upper()
+               if (scfmethod != ['RHF'] and scfmethod != ['UHF'] and scfmethod != ['ROHF']):
+                  self.energytotal = self.scfenergyconverged
+                  backend.addValue('energy_total', self.energytotal)
+               else:
+                  pass
+
+      def onClose_x_gamess_section_mrpt2(self, backend, gIndex, section):
+        
+         mrpt2type = None
+         mrpt2 = section['x_gamess_mrpt2_method_type']
+
+         if mrpt2 == ['MRPT']:
+           mrpt2type = 'MRPT2'
+         elif mrpt2 == ['MRMP2']:
+           mrpt2type = 'MC-QDPT'
+         gIndexTmp = backend.openSection('section_method')
+         backend.addValue("x_gamess_method", mrpt2type)
+         backend.closeSection('section_method', gIndexTmp)
+ 
 # which values to cache or forward (mapping meta name -> CachingLevel)
 
 cachingLevelForMetaName = {
@@ -801,6 +1137,12 @@ cachingLevelForMetaName = {
         "x_gamess_atomic_number": CachingLevel.Cache,
         "x_gamess_section_geometry": CachingLevel.Forward,
         "XC_functional_name": CachingLevel.ForwardAndCache,
+        "x_gamess_scf_type": CachingLevel.ForwardAndCache,
+        "x_gamess_method": CachingLevel.ForwardAndCache,
+        "relativistic_method": CachingLevel.ForwardAndCache,
+        "x_gamess_section_geometry_optimization_info": CachingLevel.Forward,
+        "x_gamess_geometry_optimization_converged": CachingLevel.ForwardAndCache,
+        "energy_total": CachingLevel.ForwardAndCache,
 }
 
 if __name__ == "__main__":
