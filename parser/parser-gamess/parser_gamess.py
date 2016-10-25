@@ -27,7 +27,7 @@ mainFileDescription = SM(
     startReStr = "",
     subMatchers = [
         SM(name = 'newRun',
-           startReStr = r"\s*GAMESS temporary binary files|\s*\*\s*Firefly version",
+           startReStr = r"\s*\*\s*GAMESS VERSION \=\s*|\s*\*\s*Firefly version",
            repeats = True,
            required = True,
            forwardMatch = True,
@@ -35,10 +35,9 @@ mainFileDescription = SM(
            sections   = ['section_run'],
            subMatchers = [
                SM(name = 'header',
-                  startReStr = r"\s*GAMESS temporary binary files|\s*\*\s*Firefly version",
+                  startReStr = r"\s*\*\s*GAMESS VERSION \=\s*|\s*\*\s*Firefly version",
                   forwardMatch = True,
                   subMatchers = [
-                      SM(r"\s*GAMESS temporary binary files"),
                       SM(r"\s*\*\s*GAMESS VERSION \=\s*(?P<program_version>[0-9]+\s*[A-Z]+\s*[0-9]+)"),
                       SM(r"\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\s*(?P<x_gamess_program_implementation>[0-9]+\s*[A-Z]+\s*[A-Z]+\s*[A-Z]+)"),
                       SM(r"\s*EXECUTION OF GAMESS BEGUN\s*(?P<x_gamess_program_execution_date>[a-zA-Z]+\s*[a-zA-Z]+\s*[0-9]+\s*[0-9][0-9][:][[0-9][0-9][:][0-9][0-9]\s*[0-9]+)"),
@@ -68,19 +67,19 @@ mainFileDescription = SM(
                    startReStr = r"\s*\$CONTRL OPTIONS",
                    forwardMatch = False,
                    subMatchers = [
-                       SM(r"\s*SCFTYP=(?P<x_gamess_scf_type>[A-Z]+)\s*RUNTYP=(?P<x_gamess_comp_method>[0-9A-Z]+)\s*EXETYP=[A-Z]+"),
+                       SM(r"\s*SCFTYP=(?P<x_gamess_scf_type>[A-Z]+)\s*RUNTYP=(?P<x_gamess_comp_method>[0-9a-zA-Z]+)\s*EXETYP=[A-Z]+"),
                        SM(r"\s*MPLEVL=\s*(?P<x_gamess_mplevel>[0-9])\s*CITYP =(?P<x_gamess_citype>[A-Z]+)\s*CCTYP =(?P<x_gamess_cctype>[-A-Z]+)\s*VBTYP =(?P<x_gamess_vbtype>[A-Z]+)"),
                        SM(r"\s*DFTTYP=(?P<XC_functional>[-0-9A-Z]+)\s*TDDFT =(?P<x_gamess_tddfttype>[A-Z]+)"),
                        SM(r"\s*PP    =(?P<x_gamess_pptype>[A-Z]+)\s*RELWFN=(?P<x_gamess_relatmethod>[A-Z]+)"),
                        ]
              ),
             SM (name = 'SingleConfigurationCalculationWithSystemDescription',
-                startReStr = r"\s*\$SYSTEM OPTIONS",
+                startReStr = r"\s*\$SYSTEM OPTIONS|\s*COORDINATES OF ALL ATOMS",
                 repeats = False,
                 forwardMatch = True,
                 subMatchers = [
                 SM (name = 'SingleConfigurationCalculation',
-                  startReStr = r"\s*\$SYSTEM OPTIONS",
+                  startReStr = r"\s*\$SYSTEM OPTIONS|\s*COORDINATES OF ALL ATOMS",
                   repeats = True,
                   forwardMatch = False,
                   sections = ['section_single_configuration_calculation'],
@@ -96,23 +95,36 @@ mainFileDescription = SM(
                 ),
                   SM(name = 'TotalEnergyScfGamess',
                    sections  = ['section_scf_iteration'],
-                   startReStr = r"\s*RHF\s*SCF CALCULATION|\s*UHF\s*SCF CALCULATION|\s*ROHF\s*SCF CALCULATION",
+                   startReStr = r"\s*[-A-Z0-9]+\s*SCF CALCULATION",
                     forwardMatch = False,
                     repeats = True,
                     subMatchers = [
                      SM(r"ITER EX DEM     TOTAL ENERGY"),
                      SM(r"(\s+[0-9^.]+)(\s+[0-9^.]+)(\s+[0-9^.])\s*(?P<energy_total_scf_iteration__hartree>(-\d+\.\d{10}))\s*[-+0-9.]+\s*[-+0-9.]+\s*[-+0-9.]+",repeats = True),
                      SM(r"\s*(?P<single_configuration_calculation_converged>DENSITY CONVERGED)"),
-                     SM(r"\s*FINAL\s*[ROUHF]\s*ENERGY IS\s*(?P<x_gamess_energy_total_scf__hartree>[-+0-9.]+)"),
+                     SM(r"\s*FINAL\s*[-A-Z0-9]+\s*ENERGY IS\s*(?P<energy_total__hartree>[-+0-9.]+)"),
                     ]
+                ),
+                    SM(name = 'OrbitalEnergies',
+                    sections = ['section_eigenvalues'],
+                    startReStr = r"\s*EIGENVECTORS",
+                    endReStr = r"\s*UHF NATURAL ORBITALS AND OCCUPATION NUMBERS|MULLIKEN AND LOWDIN POPULATION ANALYSES",
+                    forwardMatch = False,
+                    subFlags = SM.SubFlags.Sequenced,
+                    subMatchers = [
+                          SM(r"\s*(?P<x_gamess_alpha_eigenvalues_values>\s*(-?\d+\.\d{4})\s{2,}(-?\d+\.\d{4})?\s{2,}(-?\d+\.\d{4})?\s{2,}(-?\d+\.\d{4})?\s{2,}(-?\d+\.\d{4})?)", repeats = True),
+                          SM(r"\s*\-\-\-\-\-\s*BETA SET"),
+                          SM(r"\s*(?P<x_gamess_beta_eigenvalues_values>\s*(-?\d+\.\d{4})\s{2,}(-?\d+\.\d{4})?\s{2,}(-?\d+\.\d{4})?\s{2,}(-?\d+\.\d{4})?\s{2,}(-?\d+\.\d{4})?)", repeats = True),
+                     ]
                 ),
                     SM(name = 'PerturbationEnergies',
                     sections = ['x_gamess_section_moller_plesset'],
-                    startReStr = r"\s*RESULTS OF MOLLER-PLESSET 2ND ORDER CORRECTION ARE",
-                    forwardMatch = True,
+                    startReStr = r"\s*RESULTS OF MOLLER-PLESSET 2ND ORDER CORRECTION ARE|\s*DISTRIBUTED DATA MP2 GRADIENT",
+                    forwardMatch = False,
                     subMatchers = [
-                     SM(r"\s*RESULTS OF MOLLER-PLESSET 2ND ORDER CORRECTION ARE"),
-                     SM(r"\s*E(MP2)=\s*(?P<energy_total__hartree>[-+0-9EeDd.]+)"),
+#                     SM(r"\s*RESULTS OF MOLLER-PLESSET 2ND ORDER CORRECTION ARE"),
+#                     SM(r"\s*DISTRIBUTED DATA MP2 GRADIENT"),
+                     SM(r"\s*E\(MP2\)=\s*(?P<energy_total__hartree>[-0-9.]+)"),
                      ]
                 ),
                     SM(name = 'GroundStateCoupledClusterEnergies',
@@ -139,24 +151,24 @@ mainFileDescription = SM(
                      SM(r"\s*STATE\s*[0-9]+\s*ENERGY=\s*", repeats = True), 
                      SM(r"\s*ITER\s*TOTAL\s*ENERGY"),
                      SM(r"\s*[0-9^.]+\s*(?P<x_gamess_energy_mcscf_iteration__hartree>(-\d+\.\d{9}))", repeats = True),
-                     SM(r"\s*ENERGY CONVERGED"),
-                     SM(r"\s*LAGRANGIAN CONVERGED"),
-                     SM(r"\s*STATE #\s*[0-9]+\s*ENERGY =\s*(?P<x_gamess_energy_mcscf__hartree>[-+0-9.]+)", repeats = True),
-                     SM(r"\s*STATE\s*[0-9]+\s*ENERGY=\s*(?P<x_gamess_energy_mcscf__hartree>[-+0-9.]+)", repeats = True),
+                     SM(r"\s*(?P<single_configuration_calculation_converged>ENERGY CONVERGED)"),
+                     SM(r"\s*(?P<single_configuration_calculation_converged>LAGRANGIAN CONVERGED)"),
+                     SM(r"\s*STATE #\s*[0-9]+\s*ENERGY =\s*(?P<energy_total__hartree>[-+0-9.]+)", repeats = True),
+                     SM(r"\s*STATE\s*[0-9]+\s*ENERGY=\s*(?P<energy_total__hartree>[-+0-9.]+)", repeats = True),
                      ]
                 ),
                     SM(name = 'OrbitalEnergies',
                     sections = ['section_eigenvalues'],
-                    startReStr = r"\s*EIGENVECTORS|\s*MCSCF OPTIMIZED ORBITALS",
-                    endReStr = r"\s*PROPERTY VALUES FOR THE", 
+                    startReStr = r"\s*MCSCF OPTIMIZED ORBITALS",
+                    endReStr = r"\s*MULLIKEN AND LOWDIN POPULATION ANALYSES", 
                     forwardMatch = False,
                     subFlags = SM.SubFlags.Sequenced,
                     subMatchers = [
-                          SM(r"\s*(?P<x_gamess_alpha_eigenvalues_values>\s*(-?\d+\.\d{4})\s*(-?\d+\.\d{4})?\s*(-?\d+\.\d{4})?\s*(-?\d+\.\d{4})?\s*(-?\d+\.\d{4})?)", repeats = True),   
-                          SM(r"\s*-----\s*BETA SET"),
-                          SM(r"\s*(?P<x_gamess_beta_eigenvalues_values>\s*(-?\d+\.\d{4})\s*(-?\d+\.\d{4})?\s*(-?\d+\.\d{4})?\s*(-?\d+\.\d{4})?\s*(-?\d+\.\d{4})?)", repeats = True),
+                          SM(r"\s*(?P<x_gamess_alpha_eigenvalues_values>\s*(-?\d+\.\d{4})\s{2,}(-?\d+\.\d{4})?\s{2,}(-?\d+\.\d{4})?\s{2,}(-?\d+\.\d{4})?\s{2,}(-?\d+\.\d{4})?)", repeats = True),   
+                          SM(r"\s*\-\-\-\-\-\s*BETA SET"),
+                          SM(r"\s*(?P<x_gamess_beta_eigenvalues_values>\s*(-?\d+\.\d{4})\s{2,}(-?\d+\.\d{4})?\s{2,}(-?\d+\.\d{4})?\s{2,}(-?\d+\.\d{4})?\s{2,}(-?\d+\.\d{4})?)", repeats = True),
                      ]
-                ),   
+                ), 
                     SM(name = 'MRPT2States',
                     sections = ['x_gamess_section_mrpt2'],
                     startReStr = r"\s*MC-QDPT2|\s*DETERMINANTAL MULTIREFERENCE 2ND ORDER PERTURBATION THEORY",
@@ -209,15 +221,40 @@ mainFileDescription = SM(
                    ),
                         ]
                    ),
-                    SM(name = 'Geometry_optimization',
-                    sections  = ['x_gamess_section_geometry_optimization_info'],
-                    startReStr = r"\s*\*\*\*\*\*\s*EQUILIBRIUM GEOMETRY LOCATED",
-                    forwardMatch = True,
-                    subMatchers = [
-                     SM(r"\s*\*\*\*\*\*\s*(?P<x_gamess_geometry_optimization_converged>EQUILIBRIUM GEOMETRY LOCATED)"),
-                     SM(r"\s*\*\*\*\*\*\s*(?P<x_gamess_geometry_optimization_converged>FAILURE TO LOCATE STATIONARY POINT)"),
-                     ]
-               ),
+                       SM(name = 'EnergyGradients',
+                       sections = ['x_gamess_section_atom_forces'],
+                       startReStr = r"\s*GRADIENT \(HARTREE|\s*UNITS ARE HARTREE",
+                       forwardMatch = False,
+                       repeats = True,
+                       subMatchers = [
+                        SM(r"\s*[0-9]+\s*[A-Z0-9]+\s*(\d+\.\d{1})\s*(?P<x_gamess_atom_x_force>[+-.0-9]+)\s*(?P<x_gamess_atom_y_force>[+-.0-9]+)\s*(?P<x_gamess_atom_z_force>[+-.0-9]+)", repeats = True),
+                        SM(r"\s*[0-9]+\s*[A-Z0-9]+\s*(?P<x_gamess_atom_x_force>[+-.0-9]+)\s*(?P<x_gamess_atom_y_force>[+-.0-9]+)\s*(?P<x_gamess_atom_z_force>[+-.0-9]+)", repeats = True),
+                        SM(r"\s*MAXIMUM GRADIENT ="),
+                        SM(r"\s*INTERNAL COORDINATES"),
+                        ]
+                   ),
+                       SM(name = 'Geometry_optimization',
+                       sections  = ['x_gamess_section_geometry_optimization_info'],
+                       startReStr = r"\s*\*\*\*\*\*\s*EQUILIBRIUM GEOMETRY LOCATED",
+                       forwardMatch = True,
+                       subMatchers = [
+                        SM(r"\s*\*\*\*\*\*\s*(?P<x_gamess_geometry_optimization_converged>EQUILIBRIUM GEOMETRY LOCATED)"),
+                        SM(r"\s*\*\*\*\*\*\s*(?P<x_gamess_geometry_optimization_converged>FAILURE TO LOCATE STATIONARY POINT)"),
+                        ]
+                   ),
+                       SM (name = 'Frequencies',
+                       sections = ['x_gamess_section_frequencies'],
+                       startReStr = r"\s*FREQUENCIES IN CM",
+                       endReStr = r"\s*THERMOCHEMISTRY",
+                       forwardMatch = False,
+                       repeats = False,         
+                       subFlags = SM.SubFlags.Unordered,
+                       subMatchers = [
+                        SM(r"\s*FREQUENCY:\s*(?P<x_gamess_frequency_values>([0-9]+\.\d{2}\s*[A-Z]?)\s*([0-9]+\.\d{2})?\s*([0-9]+\.\d{2})?\s*([0-9]+\.\d{2})?\s*([0-9]+\.\d{2})?)", repeats = True),
+                        SM(r"\s*REDUCED MASS:\s*(?P<x_gamess_reduced_masses>([0-9]+\.\d{5})\s*([0-9]+\.\d{5})?\s*([0-9]+\.\d{5})?\s*([0-9]+\.\d{5})?\s*([0-9]+\.\d{5})?)", repeats = True),
+                         ]
+                   ),
+
           ])
         ])
       ])
@@ -262,8 +299,6 @@ class GAMESSParserContext(object):
         self.scfConvergence = False
         self.geoConvergence = False
         self.scfenergyconverged = 0.0
-        self.scfkineticenergyconverged = 0.0
-        self.scfelectrostaticenergy = 0.0
         self.periodicCalc = False
 
       def startedParsing(self, path, parser):
@@ -272,6 +307,36 @@ class GAMESSParserContext(object):
         self.metaInfoEnv = self.parser.parserBuilder.metaInfoEnv
         # allows to reset values if the same superContext is used to parse different files
         self.initialize_values()
+
+      def onClose_section_run(self, backend, gIndex, section):
+          """Trigger called when section_run is closed.
+
+          Write convergence of geometry optimization.
+          Variables are reset to ensure clean start for new run.
+          """
+          # write geometry optimization convergence
+          gIndexTmp = backend.openSection('section_frame_sequence')
+          backend.addValue('geometry_optimization_converged', self.geoConvergence)
+          backend.closeSection('section_frame_sequence', gIndexTmp)
+          # frame sequence
+          if self.geoConvergence:
+              sampling_method = "geometry_optimization"
+          elif len(self.singleConfCalcs) > 1:
+              pass # to do
+          else:
+              return
+          samplingGIndex = backend.openSection("section_sampling_method")
+          backend.addValue("sampling_method", sampling_method)
+          backend.closeSection("section_sampling_method", samplingGIndex)
+          frameSequenceGIndex = backend.openSection("section_frame_sequence")
+          backend.addValue("frame_sequence_to_sampling_ref", samplingGIndex)
+          backend.addArrayValues("frame_sequence_local_frames_ref", np.asarray(self.singleConfCalcs))
+          backend.closeSection("section_frame_sequence", frameSequenceGIndex)
+          # reset all variables
+          self.initialize_values()
+
+      def onOpen_section_single_configuration_calculation(self, backend, gIndex, section):
+          self.singleConfCalcs.append(gIndex)
 
       def onClose_x_gamess_section_geometry(self, backend, gIndex, section):
 
@@ -289,6 +354,21 @@ class GAMESSParserContext(object):
        self.skip_system_onclose = True
        backend.closeSection("section_system", gIndexTmp)
        self.skip_system_onclose = False
+
+      def onClose_x_gamess_section_atom_forces(self, backend, gIndex, section):
+        xForce = section["x_gamess_atom_x_force"]
+        yForce = section["x_gamess_atom_y_force"]
+        zForce = section["x_gamess_atom_z_force"]
+        atom_forces = np.zeros((len(xForce),3), dtype=float)
+        for i in range(len(xForce)):
+           atom_forces[i,0] = -xForce[i]
+           atom_forces[i,1] = -yForce[i]
+           atom_forces[i,2] = -zForce[i]
+        backend.addArrayValues("atom_forces_raw", atom_forces)
+
+      def onOpen_section_system(self, backend, gIndex, section):
+          # keep track of the latest system description section
+          self.secSystemDescriptionIndex = gIndex
 
       def onClose_section_system(self, backend, gIndex, section):
        if self.skip_system_onclose:
@@ -652,6 +732,10 @@ class GAMESSParserContext(object):
                else:
                       logger.error("The basis set '%s' could not be converted for the metadata. Please add it to the dictionary basissetDict in %s." % (basisset[-1], os.path.basename(__file__)))
 
+      def onOpen_section_method(self, backend, gIndex, section):
+        # keep track of the latest method section
+        self.secMethodIndex = gIndex
+
       def onClose_section_method(self, backend, gIndex, section):
        # handling of xc functional
        # Dictionary for conversion of xc functional name in Gaussian to metadata format.
@@ -852,6 +936,7 @@ class GAMESSParserContext(object):
               'MP2':       [{'name': 'MP2'}],
               'RIMP2':     [{'name': 'RESOLUTIONOFIDENTITY-MP2'}],
               'CPHF':      [{'name': 'COUPLEDPERTURBED-HF'}],
+              'G3MP2':     [{'name': 'G3(MP2)'}],
               'G32CCSD':   [{'name': 'G3(MP2,CCSD(T))'}],
               'G4MP2':     [{'name': 'G4(MP2)'}],
               'G4MP2-6X':  [{'name': 'G4(MP2)-6X'}],
@@ -884,7 +969,6 @@ class GAMESSParserContext(object):
        methodci = None
        methodcc = None
        methodvb = None
-       methodmr = None
        methodtddft = None 
 
 # functionals where hybrid_xc_coeff are written
@@ -952,7 +1036,7 @@ class GAMESSParserContext(object):
        mplevel = str(section["x_gamess_mplevel"]).replace("[","").replace("]","").replace("'","")
        casscfkey = str(section["x_gamess_mcscf_casscf"]).replace("[","").replace("]","").replace("'","")
 
-       if scfmethod != 'NONE' and scfmethod != 'MCSCF' and methodci == 'NONE' and methodcc == 'NONE' and methodvb == 'NONE' and methodtddft == 'NONE':
+       if scfmethod != 'NONE' and scfmethod != 'MCSCF' and methodci == 'NONE' and methodcc == 'NONE' and methodvb == 'NONE' and methodtddft == 'NONE' and mplevel != '2':
           # check if only one method keyword was found in output
           if len([scfmethod]) > 1:
               logger.error("Found %d settings for the method: %s. This leads to an undefined behavior of the calculation and no metadata can be written for the method." % (len(scfmethod), scfmethod))
@@ -998,6 +1082,11 @@ class GAMESSParserContext(object):
                            logger.error("The dictionary for method '%s' does not have the key 'name'. Please correct the dictionary methodDict in %s." % (method[-1], os.path.basename(__file__)))
                else:
                     logger.error("The method '%s' could not be converted for the metadata. Please add it to the dictionary methodDict in %s." % (method[-1], os.path.basename(__file__)))
+
+       if scfmethod == 'MCSCF' and mplevel == '2':
+          gIndexTmp = backend.openSection('x_gamess_section_elstruc_method')
+          backend.addValue('x_gamess_electronic_structure_method', 'MRPT2')
+          backend.closeSection('x_gamess_section_elstruc_method', gIndexTmp)
 
        if (methodci != 'NONE' or methodcc != 'NONE' or methodvb != 'NONE' or methodtddft != 'NONE' or methodcomp == 'COMP' or methodcomp == 'G3MP2') and mplevel != 2:
           # check if only one method keyword was found in output
@@ -1113,6 +1202,20 @@ class GAMESSParserContext(object):
                else:
                   pass
 
+      def onClose_section_single_configuration_calculation(self, backend, gIndex, section):
+        """Trigger called when section_single_configuration_calculation is closed.
+         Write number of SCF iterations and convergence.
+         Check for convergence of geometry optimization.
+        """
+        # write SCF convergence and reset
+        backend.addValue('single_configuration_calculation_converged', self.scfConvergence)
+        self.scfConvergence = False
+        # start with -1 since zeroth iteration is the initialization
+        self.scfIterNr = -1
+        # write the references to section_method and section_system
+        backend.addValue('single_configuration_to_calculation_method_ref', self.secMethodIndex)
+        backend.addValue('single_configuration_calculation_to_system_ref', self.secSystemDescriptionIndex)
+
       def onClose_x_gamess_section_mrpt2(self, backend, gIndex, section):
         
          mrpt2type = None
@@ -1125,6 +1228,33 @@ class GAMESSParserContext(object):
          gIndexTmp = backend.openSection('section_method')
          backend.addValue("x_gamess_method", mrpt2type)
          backend.closeSection('section_method', gIndexTmp)
+
+      def onClose_x_gamess_section_frequencies(self, backend, gIndex, section):
+          frequencies = str(section["x_gamess_frequency_values"])
+          vibfreqs = []
+          frequencies = frequencies.replace("'","").replace(",","").replace("[","").replace("]","").replace("\\n","").split()
+          if(frequencies[1] == 'I'):
+             frequencies[0] = -float(frequencies[0])
+            
+          if(frequencies[1] == 'I'): 
+             for i in range(2,len(frequencies)):
+               frequencies[i-1] = frequencies[i]
+
+          n = len(frequencies)
+
+          for freqs in frequencies[:n-1]:
+              vibfreqs = np.append(vibfreqs,float(freqs))
+
+          vibfreqs = convert_unit(vibfreqs, "inversecm", "J")
+          backend.addArrayValues("x_gamess_frequencies", vibfreqs)
+
+          masses = str(section["x_gamess_reduced_masses"])
+          vibreducedmasses = []
+          reduced = [float(f) for f in masses[:].replace("'","").replace(",","").replace("]","").replace("[","").replace("\\n","").split()]
+          vibreducedmasses = np.append(vibreducedmasses, reduced)
+          vibreducedmasses = convert_unit(vibreducedmasses, "amu", "kilogram")
+          backend.addArrayValues("x_gamess_red_masses", vibreducedmasses)
+
  
 # which values to cache or forward (mapping meta name -> CachingLevel)
 
@@ -1142,7 +1272,6 @@ cachingLevelForMetaName = {
         "relativistic_method": CachingLevel.ForwardAndCache,
         "x_gamess_section_geometry_optimization_info": CachingLevel.Forward,
         "x_gamess_geometry_optimization_converged": CachingLevel.ForwardAndCache,
-        "energy_total": CachingLevel.ForwardAndCache,
 }
 
 if __name__ == "__main__":
