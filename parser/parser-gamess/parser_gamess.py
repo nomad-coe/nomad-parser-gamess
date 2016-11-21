@@ -890,6 +890,7 @@ class GAMESSParserContext(object):
               'WIGNER':       [{'name': 'GGA_XC_WIGNER_GRIDFREE'}],
               'WS':           [{'name': 'GGA_XC_WIGNER_GRIDFREE'}],
               'WIGEXP':       [{'name': 'GGA_XC_WIGNER_GRIDFREE'}],
+              'NONE':         [{'name': 'NONE'}], 
              }      
 
        methodDict = {
@@ -975,7 +976,7 @@ class GAMESSParserContext(object):
 
        xc = str(section["XC_functional"]).replace("[","").replace("]","").replace("'","").upper()
 
-       if xc is not None and xc != 'NONE':
+       if xc is not None:
           # check if only one xc keyword was found in output
           if len([xc]) > 1:
               logger.error("Found %d settings for the xc functional: %s. This leads to an undefined behavior of the calculation and no metadata can be written for xc." % (len(xc), xc))
@@ -990,8 +991,12 @@ class GAMESSParserContext(object):
                           xcName = xcItem.get('name')
                           if xcName is not None:
                           # write section and XC_functional_name
-                              gIndexTmp = backend.openSection('section_XC_functionals')
-                              backend.addValue('XC_functional_name', xcName)
+                             if xcName != 'NONE':
+                                gIndexTmp = backend.openSection('section_XC_functionals')
+                                backend.addValue('XC_functional_name', xcName)
+                             else:
+                                gIndexTmp = backend.openSection('section_XC_functionals')
+                                backend.addValue('XC_functional_name', 'NONE')
                               # write hybrid_xc_coeff for PBE1PBE into XC_functional_parameters
                           else:
                               backend.closeSection('section_XC_functionals', gIndexTmp)
