@@ -991,15 +991,14 @@ class GAMESSParserContext(object):
                           xcName = xcItem.get('name')
                           if xcName is not None:
                           # write section and XC_functional_name
+                             gIndexTmp = backend.openSection('section_XC_functionals')
                              if xcName != 'NONE':
-                                gIndexTmp = backend.openSection('section_XC_functionals')
                                 backend.addValue('XC_functional_name', xcName)
                              else:
-                                gIndexTmp = backend.openSection('section_XC_functionals')
                                 backend.addValue('XC_functional_name', 'NONE')
+                             backend.closeSection('section_XC_functionals',gIndexTmp)
                               # write hybrid_xc_coeff for PBE1PBE into XC_functional_parameters
                           else:
-                              backend.closeSection('section_XC_functionals', gIndexTmp)
                               logger.error("The dictionary for xc functional '%s' does not have the key 'name'. Please correct the dictionary xcDict in %s." % (xc[-1], os.path.basename(__file__)))
                   else:
                       logger.error("The xc functional '%s' could not be converted for the metadata. Please add it to the dictionary xcDict in %s." % (xc[-1], os.path.basename(__file__)))
