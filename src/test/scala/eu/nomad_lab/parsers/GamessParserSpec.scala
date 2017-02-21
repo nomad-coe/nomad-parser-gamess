@@ -9,18 +9,18 @@ object GamessParserSpec extends Specification {
   "GamessParserTest" >> {
     "test exam01 " >> {
       "test with json-events" >> {
-        ParserRun.parse(GamessParser, "parsers/gamess/test/examples/exam01.out", "json-events") must_== ParseResult.ParseSuccess
+        ParserRun.parse(GamessParser, "parsers/gamess/test/examples/gamessus/exam01.out", "json-events") must_== ParseResult.ParseSuccess
       }
       "test with json" >> {
-        ParserRun.parse(GamessParser, "parsers/gamess/test/examples/exam01.out", "json") must_== ParseResult.ParseSuccess
+        ParserRun.parse(GamessParser, "parsers/gamess/test/examples/gamessus/exam01.out", "json") must_== ParseResult.ParseSuccess
       }
     }
     "test exam02 " >> {
       "test with json-events" >> {
-        ParserRun.parse(GamessParser, "parsers/gamess/test/examples/exam02.out", "json-events") must_== ParseResult.ParseSuccess
+        ParserRun.parse(GamessParser, "parsers/gamess/test/examples/gamessus/exam02.out", "json-events") must_== ParseResult.ParseSuccess
       }
       "test with json" >> {
-        ParserRun.parse(GamessParser, "parsers/gamess/test/examples/exam02.out", "json") must_== ParseResult.ParseSuccess
+        ParserRun.parse(GamessParser, "parsers/gamess/test/examples/gamessus/exam02.out", "json") must_== ParseResult.ParseSuccess
       }
     }
   }
