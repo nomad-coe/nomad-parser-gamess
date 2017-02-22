@@ -56,7 +56,7 @@ mainFileDescription = SM(
                       SM(r"\s*ATOM      ATOMIC"),
                       SM(r"\s*[A-Z0-9?]+\s+(?P<x_gamess_atomic_number>\d+\.\d)\s+(?P<x_gamess_atom_x_coord_initial__bohr>[-+0-9.]+)\s+(?P<x_gamess_atom_y_coord_initial__bohr>[-+0-9.]+)\s+(?P<x_gamess_atom_z_coord_initial__bohr>[-+0-9.]+)",repeats = True),
                       SM(r"\s*INTERNUCLEAR DISTANCES"),
-                      SM(r"\s*NUMBER OF ELECTRONS\s*=\s*(?P<number_of_electrons>[0-9]+)"),
+                      SM(r"\s*NUMBER OF ELECTRONS\s*=\s*(?P<x_gamess_number_of_electrons>[0-9]+)"),
                       SM(r"\s*CHARGE OF MOLECULE\s*=\s*(?P<x_gamess_total_charge>[0-9-]+)"),
                       SM(r"\s*SPIN MULTIPLICITY\s*=\s*(?P<x_gamess_spin_target_multiplicity>[0-9]+)"),
                       SM(r"\s*TOTAL NUMBER OF ATOMS\s*=\s*(?P<number_of_atoms>[0-9]+)"),
