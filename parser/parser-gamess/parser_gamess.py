@@ -43,16 +43,29 @@ mainFileDescription = SM(
                       SM(r"\s*EXECUTION OF GAMESS BEGUN\s*(?P<x_gamess_program_execution_date>[a-zA-Z]+\s*[a-zA-Z]+\s*[0-9]+\s*[0-9][0-9][:][[0-9][0-9][:][0-9][0-9]\s*[0-9]+)"),
                       SM(r"\s*\*\s*Firefly version\s*(?P<program_version>[0-9.]+)"),
                       ]),
-               SM(name = 'charge_multiplicity_atoms',
+               SM(name = 'memory',
                sections = ['section_system'],
                   startReStr = r"\s*ECHO OF THE FIRST FEW INPUT CARDS",
                   forwardMatch = True,
                   subMatchers = [
                       SM(r"\s*(?P<x_gamess_memory>[0-9]+)\s*WORDS OF MEMORY AVAILABLE"),
-                      SM(r"\s*BASIS OPTIONS"),
+                      ]
+             ),
+               SM (name = 'SectionMethodBasisSet',
+               sections = ['section_method'],
+                   startReStr = r"\s*BASIS OPTIONS",
+                   forwardMatch = False,
+                   subMatchers = [
                       SM(r"\s*GBASIS=(?P<x_gamess_basis_set_gbasis>[A-Z0-9-]+)\s*IGAUSS=\s*(?P<x_gamess_basis_set_igauss>[0-9]+)\s*POLAR=(?P<x_gamess_basis_set_polar>[A-Z]+)"),
                       SM(r"\s*NDFUNC=\s*(?P<x_gamess_basis_set_ndfunc>[0-9]+)\s*NFFUNC=\s*(?P<x_gamess_basis_set_nffunc>[0-9]+)\s*DIFFSP=\s*(?P<x_gamess_basis_set_diffsp>[TF])"),
                       SM(r"\s*NPFUNC=\s*(?P<x_gamess_basis_set_npfunc>[0-9]+)\s*DIFFS=\s*(?P<x_gamess_basis_set_diffs>[TF])"),
+                       ]
+             ),
+               SM(name = 'charge_multiplicity_atoms',
+               sections = ['section_system'],
+                  startReStr = r"\s*ATOM      ATOMIC",
+                  forwardMatch = True,
+                  subMatchers = [
                       SM(r"\s*ATOM      ATOMIC"),
                       SM(r"\s*[A-Z0-9?]+\s+(?P<x_gamess_atomic_number>\d+\.\d)\s+(?P<x_gamess_atom_x_coord_initial__bohr>[-+0-9.]+)\s+(?P<x_gamess_atom_y_coord_initial__bohr>[-+0-9.]+)\s+(?P<x_gamess_atom_z_coord_initial__bohr>[-+0-9.]+)",repeats = True),
                       SM(r"\s*INTERNUCLEAR DISTANCES"),
@@ -62,10 +75,10 @@ mainFileDescription = SM(
                       SM(r"\s*TOTAL NUMBER OF ATOMS\s*=\s*(?P<number_of_atoms>[0-9]+)"),
                       ]
              ),
-               SM (name = 'SectionMethod',
+               SM (name = 'SectionMethodElecStruc',
                sections = ['section_method'],
-                   startReStr = r"\s*\$CONTRL OPTIONS",
-                   forwardMatch = False,
+                   startReStr = r"\s*SCFTYP=",
+                   forwardMatch = True,
                    subMatchers = [
                        SM(r"\s*SCFTYP=(?P<x_gamess_scf_type>[A-Z]+)\s*RUNTYP=(?P<x_gamess_comp_method>[0-9a-zA-Z]+)\s*EXETYP=[A-Z]+"),
                        SM(r"\s*MPLEVL=\s*(?P<x_gamess_mplevel>[0-9])\s*CITYP =(?P<x_gamess_citype>[A-Z]+)\s*CCTYP =(?P<x_gamess_cctype>[-A-Z]+)\s*VBTYP =(?P<x_gamess_vbtype>[A-Z]+)"),
@@ -95,14 +108,13 @@ mainFileDescription = SM(
                 ),
                   SM(name = 'TotalEnergyScfGamess',
                    sections  = ['section_scf_iteration'],
-                   startReStr = r"\s*[-A-Z0-9]+\s*SCF CALCULATION",
+                    startReStr = r"\s*[-A-Z0-9]+\s*SCF CALCULATION",
                     forwardMatch = False,
-                    repeats = True,
                     subMatchers = [
                      SM(r"ITER EX DEM     TOTAL ENERGY"),
-                     SM(r"(\s+[0-9^.]+)(\s+[0-9^.]+)(\s+[0-9^.])\s*(?P<energy_total_scf_iteration__hartree>(-\d+\.\d{10}))\s*[-+0-9.]+\s*[-+0-9.]+\s*[-+0-9.]+",repeats = True),
+                     SM(r"(\s+[0-9^.]+)(\s+[0-9^.]+)(\s+[0-9^.])\s*(?P<x_gamess_energy_total_scf_iteration__hartree>(-\d+\.\d{10}))\s*[-+0-9.]+\s*[-+0-9.]+\s*[-+0-9.]+",repeats = True),
                      SM(r"\s*(?P<single_configuration_calculation_converged>DENSITY CONVERGED)"),
-                     SM(r"\s*FINAL\s*[-A-Z0-9]+\s*ENERGY IS\s*(?P<energy_total__hartree>[-+0-9.]+)"),
+                     SM(r"\s*FINAL\s*[-A-Z0-9]+\s*ENERGY IS\s*(?P<energy_total_scf__hartree>[-+0-9.]+)"),
                     ]
                 ),
                     SM(name = 'OrbitalEnergies',
@@ -122,8 +134,6 @@ mainFileDescription = SM(
                     startReStr = r"\s*RESULTS OF MOLLER-PLESSET 2ND ORDER CORRECTION ARE|\s*DISTRIBUTED DATA MP2 GRADIENT",
                     forwardMatch = False,
                     subMatchers = [
-#                     SM(r"\s*RESULTS OF MOLLER-PLESSET 2ND ORDER CORRECTION ARE"),
-#                     SM(r"\s*DISTRIBUTED DATA MP2 GRADIENT"),
                      SM(r"\s*E\(MP2\)=\s*(?P<energy_total__hartree>[-0-9.]+)"),
                      ]
                 ),
@@ -340,20 +350,21 @@ class GAMESSParserContext(object):
 
       def onClose_x_gamess_section_geometry(self, backend, gIndex, section):
 
-       xCoord = section["x_gamess_atom_x_coord"]
-       yCoord = section["x_gamess_atom_y_coord"]
-       zCoord = section["x_gamess_atom_z_coord"]
-       atom_coords = np.zeros((len(xCoord),3), dtype=float)
-       atom_numbers = np.zeros(len(xCoord), dtype=int)
-       for i in range(len(xCoord)):
-          atom_coords[i,0] = xCoord[i]
-          atom_coords[i,1] = yCoord[i]
-          atom_coords[i,2] = zCoord[i]
-       gIndexTmp = backend.openSection("section_system")
-       backend.addArrayValues("atom_positions", atom_coords)
-       self.skip_system_onclose = True
-       backend.closeSection("section_system", gIndexTmp)
-       self.skip_system_onclose = False
+         if(section["x_gamess_atom_x_coord"]):
+            xCoord = section["x_gamess_atom_x_coord"]
+            yCoord = section["x_gamess_atom_y_coord"]
+            zCoord = section["x_gamess_atom_z_coord"]
+            atom_coords = np.zeros((len(xCoord),3), dtype=float)
+            atom_numbers = np.zeros(len(xCoord), dtype=int)
+            for i in range(len(xCoord)):
+               atom_coords[i,0] = xCoord[i]
+               atom_coords[i,1] = yCoord[i]
+               atom_coords[i,2] = zCoord[i]
+            gIndexTmp = backend.openSection("section_system")
+            backend.addArrayValues("atom_positions", atom_coords)
+            self.skip_system_onclose = True
+            backend.closeSection("section_system", gIndexTmp)
+            self.skip_system_onclose = False
 
       def onClose_x_gamess_section_atom_forces(self, backend, gIndex, section):
         xForce = section["x_gamess_atom_x_force"]
@@ -371,26 +382,250 @@ class GAMESSParserContext(object):
           self.secSystemDescriptionIndex = gIndex
 
       def onClose_section_system(self, backend, gIndex, section):
-       if self.skip_system_onclose:
-         return
-       xCoord = section["x_gamess_atom_x_coord_initial"]
-       yCoord = section["x_gamess_atom_y_coord_initial"]
-       zCoord = section["x_gamess_atom_z_coord_initial"]
-       numbers = section["x_gamess_atomic_number"]
-       atom_coords = np.zeros((len(xCoord),3), dtype=float)
-       atom_numbers = np.zeros(len(xCoord), dtype=int)
-       atomic_symbols = np.empty((len(xCoord)), dtype=object)
-       for i in range(len(xCoord)):
-          atom_coords[i,0] = xCoord[i]
-          atom_coords[i,1] = yCoord[i]
-          atom_coords[i,2] = zCoord[i]
-       for i in range(len(xCoord)):
-         atom_numbers[i] = numbers[i]
-         atomic_symbols[i] = ase.data.chemical_symbols[atom_numbers[i]]
-       backend.addArrayValues("atom_labels", atomic_symbols)
-       backend.addArrayValues("atom_positions", atom_coords)
+        if self.skip_system_onclose:
+          return
+        if(section["x_gamess_atom_x_coord_initial"]):
+          xCoord = section["x_gamess_atom_x_coord_initial"]
+          yCoord = section["x_gamess_atom_y_coord_initial"]
+          zCoord = section["x_gamess_atom_z_coord_initial"]
+          numbers = section["x_gamess_atomic_number"]
+          atom_coords = np.zeros((len(xCoord),3), dtype=float)
+          atom_numbers = np.zeros(len(xCoord), dtype=int)
+          atomic_symbols = np.empty((len(xCoord)), dtype=object)
+          for i in range(len(xCoord)):
+             atom_coords[i,0] = xCoord[i]
+             atom_coords[i,1] = yCoord[i]
+             atom_coords[i,2] = zCoord[i]
+          for i in range(len(xCoord)):
+            atom_numbers[i] = numbers[i]
+            atomic_symbols[i] = ase.data.chemical_symbols[atom_numbers[i]]
+          backend.addArrayValues("atom_labels", atomic_symbols)
+          backend.addArrayValues("atom_positions", atom_coords)
 
-        #basis sets
+      def onOpen_section_method(self, backend, gIndex, section):
+        # keep track of the latest method section
+        self.secMethodIndex = gIndex
+
+      def onClose_section_method(self, backend, gIndex, section):
+       # handling of xc functional
+       # Dictionary for conversion of xc functional name in Gaussian to metadata format.
+       # The individual x and c components of the functional are given as dictionaries.
+       # Possible key of such a dictionary is 'name'.
+
+       #density functionals
+
+       xcDict = {
+              'SLATER':       [{'name': 'LDA_X'}],
+              'VWN':          [{'name': 'LDA_C_VWN_5'}],
+              'VWN3':         [{'name': 'LDA_C_VWN_3'}],
+              'VWN1RPA':      [{'name': 'LDA_C_VWN1RPA'}],
+              'BECKE':        [{'name': 'GGA_X_B88'}],
+              'OPTX':         [{'name': 'GGA_X_OPTX'}],
+              'GILL':         [{'name': 'GGA_X_G96'}],
+              'PW91X':        [{'name': 'GGA_X_PW91'}],
+              'PBEX':         [{'name': 'GGA_X_PBE'}],
+              'PZ81':         [{'name': 'GGA_C_PZ'}],
+              'P86':          [{'name': 'GGA_C_P86'}],
+              'LYP':          [{'name': 'GGA_C_LYP'}],
+              'PW91C':        [{'name': 'GGA_C_PW91'}],
+              'PBEC':         [{'name': 'GGA_C_PBE'}],
+              'OP':           [{'name': 'GGA_C_OP'}],
+              'SVWN':         [{'name': 'LDA_C_VWN_5'}, {'name': 'LDA_X'}],                  
+              'SVWN1RPA':     [{'name': 'LDA_C_VWN1RPA'}, {'name': 'LDA_X'}],
+              'SVWN3':        [{'name': 'LDA_C_VWN_3'}, {'name': 'LDA_X'}],
+              'SPZ81':        [{'name': 'GGA_C_PZ'}, {'name': 'LDA_X'}],
+              'SP86':         [{'name': 'GGA_C_P86'}, {'name': 'LDA_X'}],
+              'SLYP':         [{'name': 'GGA_C_LYP'}, {'name': 'LDA_X'}],
+              'SPW91':        [{'name': 'GGA_C_PW91'}, {'name': 'LDA_X'}],
+              'SPBE':         [{'name': 'GGA_C_PBE'}, {'name': 'LDA_X'}],
+              'SOP':          [{'name': 'GGA_C_OP'}, {'name': 'LDA_X'}],
+              'BVWN':         [{'name': 'LDA_C_VWN_5'}, {'name': 'LDA_X_B88'}],  
+              'BVWN1RPA':     [{'name': 'LDA_C_VWN1RPA'}, {'name': 'LDA_X_B88'}],
+              'BVWN3':        [{'name': 'LDA_C_VWN_3'}, {'name': 'LDA_X_B88'}],
+              'BPZ81':        [{'name': 'GGA_C_PZ'}, {'name': 'LDA_X_B88'}],
+              'BP86':         [{'name': 'GGA_C_P86'}, {'name': 'LDA_X_B88'}],
+              'BLYP':         [{'name': 'GGA_C_LYP'}, {'name': 'LDA_X_B88'}],
+              'BPW91':        [{'name': 'GGA_C_PW91'}, {'name': 'LDA_X_B88'}],
+              'BPBE':         [{'name': 'GGA_C_PBE'}, {'name': 'LDA_X_B88'}],
+              'BOP':          [{'name': 'GGA_C_OP'}, {'name': 'LDA_X_B88'}],
+              'GVWN':         [{'name': 'LDA_C_VWN_5'}, {'name': 'GGA_X_G96'}],
+              'GVWN1RPA':     [{'name': 'LDA_C_VWN1RPA'}, {'name': 'GGA_X_G96'}],
+              'GVWN3':        [{'name': 'LDA_C_VWN_3'}, {'name': 'GGA_X_G96'}],
+              'GPZ81':        [{'name': 'GGA_C_PZ'}, {'name': 'GGA_X_G96'}],
+              'GP86':         [{'name': 'GGA_C_P86'}, {'name': 'GGA_X_G96'}],
+              'GLYP':         [{'name': 'GGA_C_LYP'}, {'name': 'GGA_X_G96'}],
+              'GPW91':        [{'name': 'GGA_C_PW91'}, {'name': 'GGA_X_G96'}],
+              'GPBE':         [{'name': 'GGA_C_PBE'}, {'name': 'GGA_X_G96'}],
+              'GOP':          [{'name': 'GGA_C_OP'}, {'name': 'GGA_X_G96'}],
+              'OVWN':         [{'name': 'LDA_C_VWN_5'}, {'name': 'GGA_X_OPTX'}],
+              'OVWN1RPA':     [{'name': 'LDA_C_VWN1RPA'}, {'name': 'GGA_X_OPTX'}],
+              'OVWN3':        [{'name': 'LDA_C_VWN_3'}, {'name': 'GGA_X_OPTX'}],
+              'OPZ81':        [{'name': 'GGA_C_PZ'}, {'name': 'GGA_X_OPTX'}],
+              'OP86':         [{'name': 'GGA_C_P86'}, {'name': 'GGA_X_OPTX'}],
+              'OLYP':         [{'name': 'GGA_C_LYP'}, {'name': 'GGA_X_OPTX'}],
+              'OPW91':        [{'name': 'GGA_C_PW91'}, {'name': 'GGA_X_OPTX'}],
+              'OPBE':         [{'name': 'GGA_C_PBE'}, {'name': 'GGA_X_OPTX'}],
+              'OOP':          [{'name': 'GGA_C_OP'}, {'name': 'GGA_X_OPTX'}],
+              'PW91VWN':      [{'name': 'LDA_C_VWN_5'}, {'name': 'GGA_X_PW91'}],
+              'PW91VWN1RPA':  [{'name': 'LDA_C_VWN1RPA'}, {'name': 'GGA_X_PW91'}],
+              'PW91VWN3':     [{'name': 'LDA_C_VWN_3'}, {'name': 'GGA_X_PW91'}],
+              'PW91PZ81':     [{'name': 'GGA_C_PZ'}, {'name': 'GGA_X_PW91'}],
+              'PW91P86':      [{'name': 'GGA_C_P86'}, {'name': 'GGA_X_PW91'}],
+              'PW91LYP':      [{'name': 'GGA_C_LYP'}, {'name': 'GGA_X_PW91'}],
+              'PW91':         [{'name': 'GGA_C_PW91'}, {'name': 'GGA_X_PW91'}],
+              'PW91PBE':      [{'name': 'GGA_C_PBE'}, {'name': 'GGA_X_PW91'}],
+              'PW91OP':       [{'name': 'GGA_C_OP'}, {'name': 'GGA_X_PW91'}],
+              'PBEVWN':       [{'name': 'LDA_C_VWN_5'}, {'name': 'GGA_X_PBE'}],
+              'PBEVWN1RPA':   [{'name': 'LDA_C_VWN1RPA'}, {'name': 'GGA_X_PBE'}],
+              'PBEVWN3':      [{'name': 'LDA_C_VWN_3'}, {'name': 'GGA_X_PBE'}],
+              'PBEPZ81':      [{'name': 'GGA_C_PZ'}, {'name': 'GGA_X_PBE'}],
+              'PBEP86':       [{'name': 'GGA_C_P86'}, {'name': 'GGA_X_PBE'}],
+              'PBELYP':       [{'name': 'GGA_C_LYP'}, {'name': 'GGA_X_PBE'}],
+              'PBEPW91':      [{'name': 'GGA_C_PW91'}, {'name': 'GGA_X_PBE'}],
+              'PBE':          [{'name': 'GGA_C_PBE'}, {'name': 'GGA_X_PBE'}],
+              'PBEOP':        [{'name': 'GGA_C_OP'}, {'name': 'GGA_X_PBE'}],
+              'EDF1':         [{'name': 'GGA_XC_EDF1'}],
+              'REVPBE':       [{'name': 'GGA_XC_REVPBE'}],
+              'RPBE':         [{'name': 'GGA_XC_RPBE'}],
+              'PBESOL':       [{'name': 'GGA_XC_PBESOL'}],
+              'HCTH93':       [{'name': 'GGA_XC_HCTH_93'}],
+              'HCTH147':      [{'name': 'GGA_XC_HCTH_147'}],
+              'HCTH407':      [{'name': 'GGA_XC_HCTH_407'}],
+              'SOGGA':        [{'name': 'GGA_XC_SOGGA'}],
+              'SOGGA11':      [{'name': 'GGA_XC_SOGGA11'}],
+              'MOHLYP':       [{'name': 'GGA_XC_MOHLYP'}],
+              'B97-D':        [{'name': 'GGA_XC_B97D'}],
+              'BHHLYP':       [{'name': 'HYB_GGA_XC_BHANDHLYP'}],
+              'B3PW91':       [{'name': 'HYB_GGA_XC_B3PW91'}],
+              'B3LYP':        [{'name': 'HYB_GGA_XC_B3LYP'}],
+              'B3LYPV1R':     [{'name': 'HYB_GGA_XC_B3LYPVWN1RPA'}],
+              'B3LYPV3':      [{'name': 'HYB_GGA_XC_B3LYPVWN3'}],
+              'B3P86':        [{'name': 'HYB_GGA_XC_B3P86'}],
+              'B3P86V1R':     [{'name': 'HYB_GGA_XC_B3P86VWN1RPA'}],
+              'B3P86V5':      [{'name': 'HYB_GGA_XC_B3P86VWN5'}],
+              'B97':          [{'name': 'HYB_GGA_XC_B97'}],
+              'B97-1':        [{'name': 'HYB_GGA_XC_B971'}],
+              'B97-2':        [{'name': 'HYB_GGA_XC_B972'}],
+              'B97-3':        [{'name': 'HYB_GGA_XC_B973'}],
+              'B97-K':        [{'name': 'HYB_GGA_XC_B97K'}],
+              'B98':          [{'name': 'HYB_GGA_XC_B98'}],
+              'PBE0':         [{'name': 'HYB_GGA_XC_PBEH'}],
+              'X3LYP':        [{'name': 'HYB_GGA_XC_X3LYP'}],
+              'SOGGA11X':     [{'name': 'HYB_GGA_XC_SOGGA11X'}],
+              'CAMB3LYP':     [{'name': 'CAM-B3LYP'}],
+              'WB97':         [{'name': 'WB97'}],
+              'WB97X':        [{'name': 'WB97X'}],
+              'WB97X-D':      [{'name': 'WB97XD'}],
+              'B2-PLYP':      [{'name': 'B2PLYP'}],
+              'B2K-PLYP':     [{'name': 'B2KPLYP'}],
+              'B2T-PLYP':     [{'name': 'B2TPLYP'}],
+              'B2GP-PLYP':    [{'name': 'B2GPPLYP'}],
+              'WB97X-2':      [{'name': 'WB97X2'}],
+              'WB97X-2L':     [{'name': 'WB97X2L'}],
+              'VS98':         [{'name': 'MGGA_XC_VSXC'}],
+              'PKZB':         [{'name': 'MGGA_XC_PKZB'}],
+              'THCTH':        [{'name': 'MGGA_XC_TAU_HCTH'}],
+              'THCTHHYB':     [{'name': 'MGGA_XC_TAU_HCTHHYB'}],
+              'BMK':          [{'name': 'MGGA_XC_BMK'}],
+              'TPSS':         [{'name': 'MGGA_XC_TPSS'}],
+              'TPSSH':        [{'name': 'MGGA_XC_TPSSHYB'}],
+              'TPSSM':        [{'name': 'MGGA_XC_TPSSMOD'}],
+              'REVTPSS':      [{'name': 'MGGA_XC_REVISEDTPSS'}],
+              'DLDF':         [{'name': 'MGGA_XC_DLDF'}],
+              'M05':          [{'name': 'HYB_MGGA_XC_M05'}],
+              'M05-2X':       [{'name': 'HYB_MGGA_XC_M05_2X'}],
+              'M06':          [{'name': 'HYB_MGGA_XC_M06'}],
+              'M06-L':        [{'name': 'MGGA_C_M06_L'}, {'name': 'MGGA_X_M06_L'}],
+              'M06-2X':       [{'name': 'HYB_MGGA_XC_M06_2X'}],
+              'M06-HF':       [{'name': 'HYB_MGGA_XC_M06_HF'}],
+              'M08-HX':       [{'name': 'HYB_MGGA_XC_M08_HX'}],
+              'M08-SO':       [{'name': 'HYB_MGGA_XC_M08_SO'}],
+              'M11-L':        [{'name': 'MGGA_C_M11_L'}, {'name': 'MGGA_X_M11_L'}],
+              'M11':          [{'name': 'MGGA_C_M11_L'}, {'name': 'MGGA_X_M11'}],
+              'RHF':          [{'name': 'RHF_X'}],
+              'UHF':          [{'name': 'UHF_X'}],
+              'ROHF':         [{'name': 'ROHF_X'}],
+              'LCBOPLRD':     [{'name': 'HYB_GGA_XC_HSE03'}],
+              'XALPHA':       [{'name': 'XALPHA_X_GRIDFREE'}],
+              'DEPRISTO':     [{'name': 'DEPRISTO_X_GRIDFREE'}],
+              'CAMA':         [{'name': 'CAMA_X_GRIDFREE'}],
+              'HALF':         [{'name': 'HYB_GGA_XC_HALF_GRIDFREE'}],
+              'VWN':          [{'name': 'LDA_C_VWN5_GRIDFREE'}],
+              'PWLOC':        [{'name': 'PWLOC_C_GRIDFREE'}],
+              'BPWLOC':       [{'name': 'PWLOC_C_GRIDFREE'}, {'name': 'GGA_X_B88_GRIDFREE'}],
+              'CAMB':         [{'name': 'GGA_C_CAMBRIDGE_GRIDFREE'}, {'name': 'GGA_X_CAMA_GRIDFREE'}],
+              'XVWN':         [{'name': 'LDA_C_VWN5_GRIDFREE'}, {'name': 'XALPHA_X_GRIDFREE'}],
+              'XPWLOC':       [{'name': 'GGA_C_PW91_GRIDFREE'}, {'name': 'XALPHA_X_GRIDFREE'}],
+              'SPWLOC':       [{'name': 'PWLOC_C_GRIDFREE'}, {'name': 'LDA_X_GRIDFREE'}],
+              'WIGNER':       [{'name': 'GGA_XC_WIGNER_GRIDFREE'}],
+              'WS':           [{'name': 'GGA_XC_WIGNER_GRIDFREE'}],
+              'WIGEXP':       [{'name': 'GGA_XC_WIGNER_GRIDFREE'}],
+              'NONE':         [{'name': 'NONE'}], 
+             }      
+
+       methodDict = {
+              'RHF':       [{'name': 'RHF'}],
+              'UHF':       [{'name': 'UHF'}],
+              'ROHF':      [{'name': 'ROHF'}],
+              'GVB':       [{'name': 'GVB'}],
+              'MCSCF':     [{'name': 'MCSCF'}],
+              'EXCITE':    [{'name': 'TDDFT'}],
+              'SPNFLP':    [{'name': 'SF-TDDFT'}],
+              'POL':       [{'name': 'HYPERPOL'}],
+              'VB2000':    [{'name': 'VB'}],
+              'CIS':       [{'name': 'CIS'}],
+              'SFCIS':     [{'name': 'SF-CIS'}],
+              'ALDET':     [{'name': 'DET-MCSCF'}],
+              'ORMAS':     [{'name': 'ORMAS'}],
+              'FSOCI':     [{'name': 'SECONDORDER-CI'}],
+              'GENCI':     [{'name': 'GENERAL-CI'}],
+              'LCCD':      [{'name': 'L-CCSD'}],
+              'CCD':       [{'name': 'CCD'}],
+              'CCSD':      [{'name': 'CCSD'}],
+              'CCSD(T)':   [{'name': 'CCSD(T)'}],
+              'R-CC':      [{'name': 'R-CCSD(T)&R-CCSD[T]'}],
+              'CR-CC':     [{'name': 'CR-CCSD(T)&CR-CCSD[T]'}],
+              'CR-CCL':    [{'name': 'CR-CC(2,3)'}],
+              'CCSD(TQ)':  [{'name': 'CCSD(TQ)&R-CCSD(TQ)'}],
+              'CR-CC(Q)':  [{'name': 'CR-CCSD(TQ)'}],
+              'EOM-CCSD':  [{'name': 'EOM-CCSD'}],
+              'CR-EOM':    [{'name': 'CR-EOMCCSD(T)'}],
+              'CR-EOML':   [{'name': 'CR-EOMCC(2,3)'}],
+              'IP-EOM2':   [{'name': 'IP-EOMCCSD'}],
+              'IP-EOM3A':  [{'name': 'IP-EOMCCSDt'}],
+              'EA-EOM2':   [{'name': 'EA-EOMCCSD'}],
+              'EA-EOM3A':  [{'name': 'EA-EOMCCSDt'}],
+              'IOTC':      [{'name': 'SCALAR_RELATIVISTIC'}],
+              'DK':        [{'name': 'SCALAR_RELATIVISTIC'}],
+              'RESC':      [{'name': 'SCALAR_RELATIVISTIC'}],
+              'NESC':      [{'name': 'SCALAR_RELATIVISTIC'}],
+              'SBKJC':     [{'name': 'PSEUDO_SCALAR_RELATIVISTIC'}],
+              'HW':        [{'name': 'PSEUDO_SCALAR_RELATIVISTIC'}],
+              'MCP':       [{'name': 'PSEUDO_SCALAR_RELATIVISTIC'}],
+              'TAMMD':     [{'name': 'TAMM-DANCOFF'}],
+              'DFTB':      [{'name': 'DFTB'}],
+              'MP2':       [{'name': 'MP2'}],
+              'RIMP2':     [{'name': 'RESOLUTIONOFIDENTITY-MP2'}],
+              'CPHF':      [{'name': 'COUPLEDPERTURBED-HF'}],
+              'G3MP2':     [{'name': 'G3(MP2)'}],
+              'G32CCSD':   [{'name': 'G3(MP2,CCSD(T))'}],
+              'G4MP2':     [{'name': 'G4(MP2)'}],
+              'G4MP2-6X':  [{'name': 'G4(MP2)-6X'}],
+              'CCCA-S4':   [{'name': 'CCCA-S4'}],
+              'CCCA-CCL':  [{'name': 'CCCA-CC(2,3)'}],
+              'MCQDPT':    [{'name': 'MCQDPT2'}],
+              'DETMRPT':   [{'name': 'MRPT2'}],
+              'FORS':      [{'name': 'CASSCF'}],
+              'FOCI':      [{'name': 'FIRSTORDER-CI'}],
+              'SOCI':      [{'name': 'SECONDORDER-CI'}],
+              'DM':        [{'name': 'TRANSITIONMOMENTS'}],
+              'HSO1':      [{'name': 'ONEELEC-SOC'}],
+              'HSO2P':     [{'name': 'PARTIALTWOELEC-SOC'}],
+              'HSO2':      [{'name': 'TWOELEC-SOC'}],
+              'HSO2FF':    [{'name': 'TWOELECFORMFACTOR-SOC'}],
+              'GUGA':      [{'name': 'GUGA-CI'}],
+              'NONE':      [{'name': 'NOCORRELATEDMETHOD'}],
+             }
 
        basissetDict = {
               'STO':          [{'name': 'STO-2G'}],
@@ -732,230 +967,6 @@ class GAMESSParserContext(object):
                else:
                       logger.error("The basis set '%s' could not be converted for the metadata. Please add it to the dictionary basissetDict in %s." % (basisset[-1], os.path.basename(__file__)))
 
-      def onOpen_section_method(self, backend, gIndex, section):
-        # keep track of the latest method section
-        self.secMethodIndex = gIndex
-
-      def onClose_section_method(self, backend, gIndex, section):
-       # handling of xc functional
-       # Dictionary for conversion of xc functional name in Gaussian to metadata format.
-       # The individual x and c components of the functional are given as dictionaries.
-       # Possible key of such a dictionary is 'name'.
-
-       #density functionals
-
-       xcDict = {
-              'SLATER':       [{'name': 'LDA_X'}],
-              'VWN':          [{'name': 'LDA_C_VWN_5'}],
-              'VWN3':         [{'name': 'LDA_C_VWN_3'}],
-              'VWN1RPA':      [{'name': 'LDA_C_VWN1RPA'}],
-              'BECKE':        [{'name': 'GGA_X_B88'}],
-              'OPTX':         [{'name': 'GGA_X_OPTX'}],
-              'GILL':         [{'name': 'GGA_X_G96'}],
-              'PW91X':        [{'name': 'GGA_X_PW91'}],
-              'PBEX':         [{'name': 'GGA_X_PBE'}],
-              'PZ81':         [{'name': 'GGA_C_PZ'}],
-              'P86':          [{'name': 'GGA_C_P86'}],
-              'LYP':          [{'name': 'GGA_C_LYP'}],
-              'PW91C':        [{'name': 'GGA_C_PW91'}],
-              'PBEC':         [{'name': 'GGA_C_PBE'}],
-              'OP':           [{'name': 'GGA_C_OP'}],
-              'SVWN':         [{'name': 'LDA_C_VWN_5'}, {'name': 'LDA_X'}],                  
-              'SVWN1RPA':     [{'name': 'LDA_C_VWN1RPA'}, {'name': 'LDA_X'}],
-              'SVWN3':        [{'name': 'LDA_C_VWN_3'}, {'name': 'LDA_X'}],
-              'SPZ81':        [{'name': 'GGA_C_PZ'}, {'name': 'LDA_X'}],
-              'SP86':         [{'name': 'GGA_C_P86'}, {'name': 'LDA_X'}],
-              'SLYP':         [{'name': 'GGA_C_LYP'}, {'name': 'LDA_X'}],
-              'SPW91':        [{'name': 'GGA_C_PW91'}, {'name': 'LDA_X'}],
-              'SPBE':         [{'name': 'GGA_C_PBE'}, {'name': 'LDA_X'}],
-              'SOP':          [{'name': 'GGA_C_OP'}, {'name': 'LDA_X'}],
-              'BVWN':         [{'name': 'LDA_C_VWN_5'}, {'name': 'LDA_X_B88'}],  
-              'BVWN1RPA':     [{'name': 'LDA_C_VWN1RPA'}, {'name': 'LDA_X_B88'}],
-              'BVWN3':        [{'name': 'LDA_C_VWN_3'}, {'name': 'LDA_X_B88'}],
-              'BPZ81':        [{'name': 'GGA_C_PZ'}, {'name': 'LDA_X_B88'}],
-              'BP86':         [{'name': 'GGA_C_P86'}, {'name': 'LDA_X_B88'}],
-              'BLYP':         [{'name': 'GGA_C_LYP'}, {'name': 'LDA_X_B88'}],
-              'BPW91':        [{'name': 'GGA_C_PW91'}, {'name': 'LDA_X_B88'}],
-              'BPBE':         [{'name': 'GGA_C_PBE'}, {'name': 'LDA_X_B88'}],
-              'BOP':          [{'name': 'GGA_C_OP'}, {'name': 'LDA_X_B88'}],
-              'GVWN':         [{'name': 'LDA_C_VWN_5'}, {'name': 'GGA_X_G96'}],
-              'GVWN1RPA':     [{'name': 'LDA_C_VWN1RPA'}, {'name': 'GGA_X_G96'}],
-              'GVWN3':        [{'name': 'LDA_C_VWN_3'}, {'name': 'GGA_X_G96'}],
-              'GPZ81':        [{'name': 'GGA_C_PZ'}, {'name': 'GGA_X_G96'}],
-              'GP86':         [{'name': 'GGA_C_P86'}, {'name': 'GGA_X_G96'}],
-              'GLYP':         [{'name': 'GGA_C_LYP'}, {'name': 'GGA_X_G96'}],
-              'GPW91':        [{'name': 'GGA_C_PW91'}, {'name': 'GGA_X_G96'}],
-              'GPBE':         [{'name': 'GGA_C_PBE'}, {'name': 'GGA_X_G96'}],
-              'GOP':          [{'name': 'GGA_C_OP'}, {'name': 'GGA_X_G96'}],
-              'OVWN':         [{'name': 'LDA_C_VWN_5'}, {'name': 'GGA_X_OPTX'}],
-              'OVWN1RPA':     [{'name': 'LDA_C_VWN1RPA'}, {'name': 'GGA_X_OPTX'}],
-              'OVWN3':        [{'name': 'LDA_C_VWN_3'}, {'name': 'GGA_X_OPTX'}],
-              'OPZ81':        [{'name': 'GGA_C_PZ'}, {'name': 'GGA_X_OPTX'}],
-              'OP86':         [{'name': 'GGA_C_P86'}, {'name': 'GGA_X_OPTX'}],
-              'OLYP':         [{'name': 'GGA_C_LYP'}, {'name': 'GGA_X_OPTX'}],
-              'OPW91':        [{'name': 'GGA_C_PW91'}, {'name': 'GGA_X_OPTX'}],
-              'OPBE':         [{'name': 'GGA_C_PBE'}, {'name': 'GGA_X_OPTX'}],
-              'OOP':          [{'name': 'GGA_C_OP'}, {'name': 'GGA_X_OPTX'}],
-              'PW91VWN':      [{'name': 'LDA_C_VWN_5'}, {'name': 'GGA_X_PW91'}],
-              'PW91VWN1RPA':  [{'name': 'LDA_C_VWN1RPA'}, {'name': 'GGA_X_PW91'}],
-              'PW91VWN3':     [{'name': 'LDA_C_VWN_3'}, {'name': 'GGA_X_PW91'}],
-              'PW91PZ81':     [{'name': 'GGA_C_PZ'}, {'name': 'GGA_X_PW91'}],
-              'PW91P86':      [{'name': 'GGA_C_P86'}, {'name': 'GGA_X_PW91'}],
-              'PW91LYP':      [{'name': 'GGA_C_LYP'}, {'name': 'GGA_X_PW91'}],
-              'PW91':         [{'name': 'GGA_C_PW91'}, {'name': 'GGA_X_PW91'}],
-              'PW91PBE':      [{'name': 'GGA_C_PBE'}, {'name': 'GGA_X_PW91'}],
-              'PW91OP':       [{'name': 'GGA_C_OP'}, {'name': 'GGA_X_PW91'}],
-              'PBEVWN':       [{'name': 'LDA_C_VWN_5'}, {'name': 'GGA_X_PBE'}],
-              'PBEVWN1RPA':   [{'name': 'LDA_C_VWN1RPA'}, {'name': 'GGA_X_PBE'}],
-              'PBEVWN3':      [{'name': 'LDA_C_VWN_3'}, {'name': 'GGA_X_PBE'}],
-              'PBEPZ81':      [{'name': 'GGA_C_PZ'}, {'name': 'GGA_X_PBE'}],
-              'PBEP86':       [{'name': 'GGA_C_P86'}, {'name': 'GGA_X_PBE'}],
-              'PBELYP':       [{'name': 'GGA_C_LYP'}, {'name': 'GGA_X_PBE'}],
-              'PBEPW91':      [{'name': 'GGA_C_PW91'}, {'name': 'GGA_X_PBE'}],
-              'PBE':          [{'name': 'GGA_C_PBE'}, {'name': 'GGA_X_PBE'}],
-              'PBEOP':        [{'name': 'GGA_C_OP'}, {'name': 'GGA_X_PBE'}],
-              'EDF1':         [{'name': 'GGA_XC_EDF1'}],
-              'REVPBE':       [{'name': 'GGA_XC_REVPBE'}],
-              'RPBE':         [{'name': 'GGA_XC_RPBE'}],
-              'PBESOL':       [{'name': 'GGA_XC_PBESOL'}],
-              'HCTH93':       [{'name': 'GGA_XC_HCTH_93'}],
-              'HCTH147':      [{'name': 'GGA_XC_HCTH_147'}],
-              'HCTH407':      [{'name': 'GGA_XC_HCTH_407'}],
-              'SOGGA':        [{'name': 'GGA_XC_SOGGA'}],
-              'SOGGA11':      [{'name': 'GGA_XC_SOGGA11'}],
-              'MOHLYP':       [{'name': 'GGA_XC_MOHLYP'}],
-              'B97-D':        [{'name': 'GGA_XC_B97D'}],
-              'BHHLYP':       [{'name': 'HYB_GGA_XC_BHANDHLYP'}],
-              'B3PW91':       [{'name': 'HYB_GGA_XC_B3PW91'}],
-              'B3LYP':        [{'name': 'HYB_GGA_XC_B3LYP'}],
-              'B3LYPV1R':     [{'name': 'HYB_GGA_XC_B3LYPVWN1RPA'}],
-              'B3LYPV3':      [{'name': 'HYB_GGA_XC_B3LYPVWN3'}],
-              'B3P86':        [{'name': 'HYB_GGA_XC_B3P86'}],
-              'B3P86V1R':     [{'name': 'HYB_GGA_XC_B3P86VWN1RPA'}],
-              'B3P86V5':      [{'name': 'HYB_GGA_XC_B3P86VWN5'}],
-              'B97':          [{'name': 'HYB_GGA_XC_B97'}],
-              'B97-1':        [{'name': 'HYB_GGA_XC_B971'}],
-              'B97-2':        [{'name': 'HYB_GGA_XC_B972'}],
-              'B97-3':        [{'name': 'HYB_GGA_XC_B973'}],
-              'B97-K':        [{'name': 'HYB_GGA_XC_B97K'}],
-              'B98':          [{'name': 'HYB_GGA_XC_B98'}],
-              'PBE0':         [{'name': 'HYB_GGA_XC_PBEH'}],
-              'X3LYP':        [{'name': 'HYB_GGA_XC_X3LYP'}],
-              'SOGGA11X':     [{'name': 'HYB_GGA_XC_SOGGA11X'}],
-              'CAMB3LYP':     [{'name': 'CAM-B3LYP'}],
-              'WB97':         [{'name': 'WB97'}],
-              'WB97X':        [{'name': 'WB97X'}],
-              'WB97X-D':      [{'name': 'WB97XD'}],
-              'B2-PLYP':      [{'name': 'B2PLYP'}],
-              'B2K-PLYP':     [{'name': 'B2KPLYP'}],
-              'B2T-PLYP':     [{'name': 'B2TPLYP'}],
-              'B2GP-PLYP':    [{'name': 'B2GPPLYP'}],
-              'WB97X-2':      [{'name': 'WB97X2'}],
-              'WB97X-2L':     [{'name': 'WB97X2L'}],
-              'VS98':         [{'name': 'MGGA_XC_VSXC'}],
-              'PKZB':         [{'name': 'MGGA_XC_PKZB'}],
-              'THCTH':        [{'name': 'MGGA_XC_TAU_HCTH'}],
-              'THCTHHYB':     [{'name': 'MGGA_XC_TAU_HCTHHYB'}],
-              'BMK':          [{'name': 'MGGA_XC_BMK'}],
-              'TPSS':         [{'name': 'MGGA_XC_TPSS'}],
-              'TPSSH':        [{'name': 'MGGA_XC_TPSSHYB'}],
-              'TPSSM':        [{'name': 'MGGA_XC_TPSSMOD'}],
-              'REVTPSS':      [{'name': 'MGGA_XC_REVISEDTPSS'}],
-              'DLDF':         [{'name': 'MGGA_XC_DLDF'}],
-              'M05':          [{'name': 'HYB_MGGA_XC_M05'}],
-              'M05-2X':       [{'name': 'HYB_MGGA_XC_M05_2X'}],
-              'M06':          [{'name': 'HYB_MGGA_XC_M06'}],
-              'M06-L':        [{'name': 'MGGA_C_M06_L'}, {'name': 'MGGA_X_M06_L'}],
-              'M06-2X':       [{'name': 'HYB_MGGA_XC_M06_2X'}],
-              'M06-HF':       [{'name': 'HYB_MGGA_XC_M06_HF'}],
-              'M08-HX':       [{'name': 'HYB_MGGA_XC_M08_HX'}],
-              'M08-SO':       [{'name': 'HYB_MGGA_XC_M08_SO'}],
-              'M11-L':        [{'name': 'MGGA_C_M11_L'}, {'name': 'MGGA_X_M11_L'}],
-              'M11':          [{'name': 'MGGA_C_M11_L'}, {'name': 'MGGA_X_M11'}],
-              'RHF':          [{'name': 'RHF_X'}],
-              'UHF':          [{'name': 'UHF_X'}],
-              'ROHF':         [{'name': 'ROHF_X'}],
-              'LCBOPLRD':     [{'name': 'HYB_GGA_XC_HSE03'}],
-              'XALPHA':       [{'name': 'XALPHA_X_GRIDFREE'}],
-              'DEPRISTO':     [{'name': 'DEPRISTO_X_GRIDFREE'}],
-              'CAMA':         [{'name': 'CAMA_X_GRIDFREE'}],
-              'HALF':         [{'name': 'HYB_GGA_XC_HALF_GRIDFREE'}],
-              'VWN':          [{'name': 'LDA_C_VWN5_GRIDFREE'}],
-              'PWLOC':        [{'name': 'PWLOC_C_GRIDFREE'}],
-              'BPWLOC':       [{'name': 'PWLOC_C_GRIDFREE'}, {'name': 'GGA_X_B88_GRIDFREE'}],
-              'CAMB':         [{'name': 'GGA_C_CAMBRIDGE_GRIDFREE'}, {'name': 'GGA_X_CAMA_GRIDFREE'}],
-              'XVWN':         [{'name': 'LDA_C_VWN5_GRIDFREE'}, {'name': 'XALPHA_X_GRIDFREE'}],
-              'XPWLOC':       [{'name': 'GGA_C_PW91_GRIDFREE'}, {'name': 'XALPHA_X_GRIDFREE'}],
-              'SPWLOC':       [{'name': 'PWLOC_C_GRIDFREE'}, {'name': 'LDA_X_GRIDFREE'}],
-              'WIGNER':       [{'name': 'GGA_XC_WIGNER_GRIDFREE'}],
-              'WS':           [{'name': 'GGA_XC_WIGNER_GRIDFREE'}],
-              'WIGEXP':       [{'name': 'GGA_XC_WIGNER_GRIDFREE'}],
-              'NONE':         [{'name': 'NONE'}], 
-             }      
-
-       methodDict = {
-              'RHF':       [{'name': 'RHF'}],
-              'UHF':       [{'name': 'UHF'}],
-              'ROHF':      [{'name': 'ROHF'}],
-              'GVB':       [{'name': 'GVB'}],
-              'MCSCF':     [{'name': 'MCSCF'}],
-              'EXCITE':    [{'name': 'TDDFT'}],
-              'SPNFLP':    [{'name': 'SF-TDDFT'}],
-              'POL':       [{'name': 'HYPERPOL'}],
-              'VB2000':    [{'name': 'VB'}],
-              'CIS':       [{'name': 'CIS'}],
-              'SFCIS':     [{'name': 'SF-CIS'}],
-              'ALDET':     [{'name': 'DET-MCSCF'}],
-              'ORMAS':     [{'name': 'ORMAS'}],
-              'FSOCI':     [{'name': 'SECONDORDER-CI'}],
-              'GENCI':     [{'name': 'GENERAL-CI'}],
-              'LCCD':      [{'name': 'L-CCSD'}],
-              'CCD':       [{'name': 'CCD'}],
-              'CCSD':      [{'name': 'CCSD'}],
-              'CCSD(T)':   [{'name': 'CCSD(T)'}],
-              'R-CC':      [{'name': 'R-CCSD(T)&R-CCSD[T]'}],
-              'CR-CC':     [{'name': 'CR-CCSD(T)&CR-CCSD[T]'}],
-              'CR-CCL':    [{'name': 'CR-CC(2,3)'}],
-              'CCSD(TQ)':  [{'name': 'CCSD(TQ)&R-CCSD(TQ)'}],
-              'CR-CC(Q)':  [{'name': 'CR-CCSD(TQ)'}],
-              'EOM-CCSD':  [{'name': 'EOM-CCSD'}],
-              'CR-EOM':    [{'name': 'CR-EOMCCSD(T)'}],
-              'CR-EOML':   [{'name': 'CR-EOMCC(2,3)'}],
-              'IP-EOM2':   [{'name': 'IP-EOMCCSD'}],
-              'IP-EOM3A':  [{'name': 'IP-EOMCCSDt'}],
-              'EA-EOM2':   [{'name': 'EA-EOMCCSD'}],
-              'EA-EOM3A':  [{'name': 'EA-EOMCCSDt'}],
-              'IOTC':      [{'name': 'SCALAR_RELATIVISTIC'}],
-              'DK':        [{'name': 'SCALAR_RELATIVISTIC'}],
-              'RESC':      [{'name': 'SCALAR_RELATIVISTIC'}],
-              'NESC':      [{'name': 'SCALAR_RELATIVISTIC'}],
-              'SBKJC':     [{'name': 'PSEUDO_SCALAR_RELATIVISTIC'}],
-              'HW':        [{'name': 'PSEUDO_SCALAR_RELATIVISTIC'}],
-              'MCP':       [{'name': 'PSEUDO_SCALAR_RELATIVISTIC'}],
-              'TAMMD':     [{'name': 'TAMM-DANCOFF'}],
-              'DFTB':      [{'name': 'DFTB'}],
-              'MP2':       [{'name': 'MP2'}],
-              'RIMP2':     [{'name': 'RESOLUTIONOFIDENTITY-MP2'}],
-              'CPHF':      [{'name': 'COUPLEDPERTURBED-HF'}],
-              'G3MP2':     [{'name': 'G3(MP2)'}],
-              'G32CCSD':   [{'name': 'G3(MP2,CCSD(T))'}],
-              'G4MP2':     [{'name': 'G4(MP2)'}],
-              'G4MP2-6X':  [{'name': 'G4(MP2)-6X'}],
-              'CCCA-S4':   [{'name': 'CCCA-S4'}],
-              'CCCA-CCL':  [{'name': 'CCCA-CC(2,3)'}],
-              'MCQDPT':    [{'name': 'MCQDPT2'}],
-              'DETMRPT':   [{'name': 'MRPT2'}],
-              'FORS':      [{'name': 'CASSCF'}],
-              'FOCI':      [{'name': 'FIRSTORDER-CI'}],
-              'SOCI':      [{'name': 'SECONDORDER-CI'}],
-              'DM':        [{'name': 'TRANSITIONMOMENTS'}],
-              'HSO1':      [{'name': 'ONEELEC-SOC'}],
-              'HSO2P':     [{'name': 'PARTIALTWOELEC-SOC'}],
-              'HSO2':      [{'name': 'TWOELEC-SOC'}],
-              'HSO2FF':    [{'name': 'TWOELECFORMFACTOR-SOC'}],
-              'GUGA':      [{'name': 'GUGA-CI'}],
-              'NONE':      [{'name': 'NOCORRELATEDMETHOD'}],
-             }
 
        global xc, xcWrite, methodWrite, scfmethod, mplevel, casscfkey, relatmethod, relatpseudo, methodci, methodcc, methodvb, methodmr, methodtddft
 
@@ -1212,8 +1223,9 @@ class GAMESSParserContext(object):
          Check for convergence of geometry optimization.
         """
         # write SCF convergence and reset
-        backend.addValue('single_configuration_calculation_converged', self.scfConvergence)
-        self.scfConvergence = False
+        if(self.scfConvergence == 'True'):
+           backend.addValue('single_configuration_calculation_converged', self.scfConvergence)
+           self.scfConvergence = False
         # start with -1 since zeroth iteration is the initialization
         self.scfIterNr = -1
         # write the references to section_method and section_system
