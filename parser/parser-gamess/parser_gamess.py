@@ -114,7 +114,7 @@ mainFileDescription = SM(
                      SM(r"ITER EX DEM     TOTAL ENERGY"),
                      SM(r"(\s+[0-9^.]+)(\s+[0-9^.]+)(\s+[0-9^.])\s*(?P<x_gamess_energy_total_scf_iteration__hartree>(-\d+\.\d{10}))\s*[-+0-9.]+\s*[-+0-9.]+\s*[-+0-9.]+",repeats = True),
                      SM(r"\s*(?P<single_configuration_calculation_converged>DENSITY CONVERGED)"),
-                     SM(r"\s*FINAL\s*[-A-Z0-9]+\s*ENERGY IS\s*(?P<energy_total_scf__hartree>[-+0-9.]+)"),
+                     SM(r"\s*FINAL\s*[-A-Z0-9]+\s*ENERGY IS\s*(?P<x_gamess_energy_scf__hartree>[-+0-9.]+)"),
                     ]
                 ),
                     SM(name = 'OrbitalEnergies',
