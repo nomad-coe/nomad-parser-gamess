@@ -49,7 +49,7 @@ object GamessParser extends SimpleExternalParserGenerator(
     "parser-gamess/setup_paths.py",
     "nomad_meta_info/public.nomadmetainfo.json",
     "nomad_meta_info/common.nomadmetainfo.json",
-    "nomad_meta_info/meta_types.nomadmetainfo.json",
+    "nomad_meta_info/meta.nomadmetainfo.json",
     "nomad_meta_info/gamess.nomadmetainfo.json"
   ) ++ DefaultPythonInterpreter.commonFiles(),
   dirMap = Map(

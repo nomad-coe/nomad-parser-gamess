@@ -96,7 +96,7 @@ mainFileDescription = SM(
                    subMatchers = [
                        SM(r"\s*SCFTYP=(?P<x_gamess_scf_type>[A-Z]+)\s*RUNTYP=(?P<x_gamess_comp_method>[0-9a-zA-Z]+)\s*EXETYP=[A-Z]+"),
                        SM(r"\s*MPLEVL=\s*(?P<x_gamess_mplevel>[0-9])\s*CITYP =(?P<x_gamess_citype>[A-Z]+)\s*CCTYP =(?P<x_gamess_cctype>[-A-Z]+)\s*VBTYP =(?P<x_gamess_vbtype>[A-Z]+)"),
-                       SM(r"\s*DFTTYP=(?P<XC_functional>[-0-9A-Z]+)\s*TDDFT =(?P<x_gamess_tddfttype>[A-Z]+)"),
+                       SM(r"\s*DFTTYP=(?P<xc_functional>[-0-9A-Z]+)\s*TDDFT =(?P<x_gamess_tddfttype>[A-Z]+)"),
                        SM(r"\s*PP    =(?P<x_gamess_pptype>[A-Z]+)\s*RELWFN=(?P<x_gamess_relatmethod>[A-Z]+)"),
                        ]
              ),
@@ -353,8 +353,8 @@ class GAMESSParserContext(object):
           backend.addValue("sampling_method", sampling_method)
           backend.closeSection("section_sampling_method", samplingGIndex)
           frameSequenceGIndex = backend.openSection("section_frame_sequence")
-          backend.addValue("frame_sequence_to_sampling_ref", samplingGIndex)
-          backend.addArrayValues("frame_sequence_local_frames_ref", np.asarray(self.singleConfCalcs))
+          backend.addValue("frame_sequence_to_sampling_method_ref", samplingGIndex)
+          backend.addArrayValues("frame_sequence_to_frames_ref", np.asarray(self.singleConfCalcs))
           backend.closeSection("section_frame_sequence", frameSequenceGIndex)
           # reset all variables
           self.initialize_values()
@@ -389,7 +389,10 @@ class GAMESSParserContext(object):
            atom_forces[i,0] = -xForce[i]
            atom_forces[i,1] = -yForce[i]
            atom_forces[i,2] = -zForce[i]
-        backend.addArrayValues("atom_forces_raw", atom_forces)
+        fId = backend.openSection('section_atom_forces')
+        backend.addValue('atom_forces_constraints', 'raw')
+        backend.addArrayValues("atom_forces", atom_forces)
+        backend.closeSection('section_atom_forces', fId)
 
       def onOpen_section_system(self, backend, gIndex, section):
           # keep track of the latest system description section
@@ -999,7 +1002,7 @@ class GAMESSParserContext(object):
 
 # functionals where hybrid_xc_coeff are written
 
-       xc = str(section["XC_functional"]).replace("[","").replace("]","").replace("'","").upper()
+       xc = str(section["xc_functional"]).replace("[","").replace("]","").replace("'","").upper()
 
        if xc is not None:
           # check if only one xc keyword was found in output
@@ -1015,14 +1018,14 @@ class GAMESSParserContext(object):
                       for xcItem in xcList:
                           xcName = xcItem.get('name')
                           if xcName is not None:
-                          # write section and XC_functional_name
-                             gIndexTmp = backend.openSection('section_XC_functionals')
+                          # write section and xc_functional_name
+                             gIndexTmp = backend.openSection('section_xc_functionals')
                              if xcName != 'NONE':
-                                backend.addValue('XC_functional_name', xcName)
+                                backend.addValue('xc_functional_name', xcName)
                              else:
-                                backend.addValue('XC_functional_name', 'NONE')
-                             backend.closeSection('section_XC_functionals',gIndexTmp)
-                              # write hybrid_xc_coeff for PBE1PBE into XC_functional_parameters
+                                backend.addValue('xc_functional_name', 'NONE')
+                             backend.closeSection('section_xc_functionals',gIndexTmp)
+                              # write hybrid_xc_coeff for PBE1PBE into xc_functional_parameters
                           else:
                               logger.error("The dictionary for xc functional '%s' does not have the key 'name'. Please correct the dictionary xcDict in %s." % (xc[-1], os.path.basename(__file__)))
                   else:
@@ -1243,7 +1246,7 @@ class GAMESSParserContext(object):
         # start with -1 since zeroth iteration is the initialization
         self.scfIterNr = -1
         # write the references to section_method and section_system
-        backend.addValue('single_configuration_to_calculation_method_ref', self.secMethodIndex)
+        backend.addValue('single_configuration_calculation_to_method_ref', self.secMethodIndex)
         backend.addValue('single_configuration_calculation_to_system_ref', self.secSystemDescriptionIndex)
 
       def onClose_x_gamess_section_mrpt2(self, backend, gIndex, section):
@@ -1296,7 +1299,7 @@ cachingLevelForMetaName = {
         "x_gamess_atom_z_coord": CachingLevel.Cache,
         "x_gamess_atomic_number": CachingLevel.Cache,
         "x_gamess_section_geometry": CachingLevel.Forward,
-        "XC_functional_name": CachingLevel.ForwardAndCache,
+        "xc_functional_name": CachingLevel.ForwardAndCache,
         "x_gamess_scf_type": CachingLevel.ForwardAndCache,
         "x_gamess_method": CachingLevel.ForwardAndCache,
         "relativistic_method": CachingLevel.ForwardAndCache,
