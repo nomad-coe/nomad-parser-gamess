@@ -1,11 +1,11 @@
 # Copyright 2016-2018 Rosendo Valero, Fawzi Mohamed, Danio Brambila
-# 
+#
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
 #   You may obtain a copy of the License at
-# 
+#
 #     http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 #   Unless required by applicable law or agreed to in writing, software
 #   distributed under the License is distributed on an "AS IS" BASIS,
 #   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,7 +17,6 @@ from builtins import str
 from builtins import range
 from builtins import object
 from functools import reduce
-import setup_paths
 from nomadcore.simple_parser import mainFunction, SimpleMatcher as SM
 from nomadcore.local_meta_info import loadJsonFile, InfoKindEl
 from nomadcore.caching_backend import CachingLevel
@@ -37,7 +36,7 @@ logger = logging.getLogger("nomad.GAMESSParser")
 mainFileDescription = SM(
     name = 'root',
     weak = True,
-    forwardMatch = True, 
+    forwardMatch = True,
     startReStr = "",
     subMatchers = [
         SM(name = 'newRun',
@@ -159,7 +158,7 @@ mainFileDescription = SM(
                      SM(r"\s*CCSD    ENERGY:\s*(?P<energy_total__hartree>[-+0-9.]+)"),
                      SM(r"\s*CR-CC(2,3) OR CR-CCSD(T)_L ENERGY:\s*(?P<energy_total__hartree>[-+0-9.]+)"),
                      ]
-                ), 
+                ),
                     SM(name = 'MCSCFStates',
                     sections = ['x_gamess_section_mcscf'],
                     startReStr = r"\s*MCSCF CALCULATION",
@@ -172,7 +171,7 @@ mainFileDescription = SM(
                      SM(r"\s*NUMBER OF ACTIVE ORBITALS        =\s*(?P<x_gamess_mcscf_active_orbitals>[0-9]+)"),
                      SM(r"\s*NUMBER\s*OF\s*[A-Z]+\s*ELECTRONS\s*=\s*[0-9]+\s*\(\s*(?P<x_gamess_mcscf_active_electrons>[0-9]+)", repeats = True),
                      SM(r"\s*STATE #\s*[0-9]+\s*ENERGY =\s*[-+0-9.]+", repeats = True),
-                     SM(r"\s*STATE\s*[0-9]+\s*ENERGY=\s*", repeats = True), 
+                     SM(r"\s*STATE\s*[0-9]+\s*ENERGY=\s*", repeats = True),
                      SM(r"\s*ITER\s*TOTAL\s*ENERGY"),
                      SM(r"\s*[0-9^.]+\s*(?P<x_gamess_energy_mcscf_iteration__hartree>(-\d+\.\d{9}))", repeats = True),
                      SM(r"\s*(?P<single_configuration_calculation_converged>ENERGY CONVERGED)"),
@@ -184,15 +183,15 @@ mainFileDescription = SM(
                     SM(name = 'OrbitalEnergies',
                     sections = ['section_eigenvalues'],
                     startReStr = r"\s*MCSCF OPTIMIZED ORBITALS",
-                    endReStr = r"\s*MULLIKEN AND LOWDIN POPULATION ANALYSES", 
+                    endReStr = r"\s*MULLIKEN AND LOWDIN POPULATION ANALYSES",
                     forwardMatch = False,
                     subFlags = SM.SubFlags.Sequenced,
                     subMatchers = [
-                          SM(r"\s*(?P<x_gamess_alpha_eigenvalues_values>\s*(-?\d+\.\d{4})\s{2,}(-?\d+\.\d{4})?\s{2,}(-?\d+\.\d{4})?\s{2,}(-?\d+\.\d{4})?\s{2,}(-?\d+\.\d{4})?)", repeats = True),   
+                          SM(r"\s*(?P<x_gamess_alpha_eigenvalues_values>\s*(-?\d+\.\d{4})\s{2,}(-?\d+\.\d{4})?\s{2,}(-?\d+\.\d{4})?\s{2,}(-?\d+\.\d{4})?\s{2,}(-?\d+\.\d{4})?)", repeats = True),
                           SM(r"\s*\-\-\-\-\-\s*BETA SET"),
                           SM(r"\s*(?P<x_gamess_beta_eigenvalues_values>\s*(-?\d+\.\d{4})\s{2,}(-?\d+\.\d{4})?\s{2,}(-?\d+\.\d{4})?\s{2,}(-?\d+\.\d{4})?\s{2,}(-?\d+\.\d{4})?)", repeats = True),
                      ]
-                ), 
+                ),
                     SM(name = 'MRPT2States',
                     sections = ['x_gamess_section_mrpt2'],
                     startReStr = r"\s*MC-QDPT2|\s*DETERMINANTAL MULTIREFERENCE 2ND ORDER PERTURBATION THEORY",
@@ -211,8 +210,8 @@ mainFileDescription = SM(
                      SM(r"\s*NUMBER OF BETA ELECTRONS\s*=\s*[0-9]+\s*\(\s*[0-9]+\s*VALENCE\)\s*\(\s*(?P<x_gamess_mrpt2_active_electrons>[0-9]+)"),
                      SM(r"\s*###   MRMP2 RESULTS"),
                      SM(r"\s*AMES LABORATORY DETERMINANTAL FULL CI"),
-                     SM(r"\s*THE DETERMINANT\s*(?P<x_gamess_mrpt2_method_type>([MRPT]+))"), 
-                     SM(r"\s*\*\*\*\s*(?P<x_gamess_mrpt2_method_type>[0-9A-Z]+)\s*ENERGY"), 
+                     SM(r"\s*THE DETERMINANT\s*(?P<x_gamess_mrpt2_method_type>([MRPT]+))"),
+                     SM(r"\s*\*\*\*\s*(?P<x_gamess_mrpt2_method_type>[0-9A-Z]+)\s*ENERGY"),
                      SM(r"\s*[0-9]+\s*E\(MCSCF\)=\s*[-0-9.]+\s*E\(MP2\)=\s*(?P<energy_total__hartree>[-0-9.]+)", repeats = True),
                      SM(r"\s*TOTAL MRPT2, E\(MP2\) 0TH\s*\+\s*1ST\s*\+\s*2ND ORDER ENERGY =\s*(?P<energy_total__hartree>[-0-9.]+)", repeats = True),
                      ]
@@ -228,11 +227,11 @@ mainFileDescription = SM(
                        startReStr = r"\s*STATE #\s*[0-9]+\s*ENERGY =",
                        forwardMatch = True,
                        repeats = True,
-                       subMatchers = [ 
+                       subMatchers = [
                         SM(r"\s*STATE #\s*[0-9]+\s*ENERGY =\s*(?P<x_gamess_tddft_excitation_energy__eV>[-0-9.]+)"),
                         SM(r"\s*OSCILLATOR STRENGTH =\s*(?P<x_gamess_tddft_oscillator_strength>[0-9.]+)"),
                         ]
-                   ),   
+                   ),
                        SM(name = 'CISStates',
                        sections = ['x_gamess_section_cis'],
                        startReStr = r"\s*CI-SINGLES EXCITATION ENERGIES",
@@ -271,7 +270,7 @@ mainFileDescription = SM(
                        startReStr = r"\s*FREQUENCIES IN CM",
                        endReStr = r"\s*THERMOCHEMISTRY",
                        forwardMatch = False,
-                       repeats = False,         
+                       repeats = False,
                        subFlags = SM.SubFlags.Unordered,
                        subMatchers = [
                         SM(r"\s*FREQUENCY:\s*(?P<x_gamess_frequency_values>([0-9]+\.\d{2}\s*[A-Z]?)\s*([0-9]+\.\d{2})?\s*([0-9]+\.\d{2})?\s*([0-9]+\.\d{2})?\s*([0-9]+\.\d{2})?)", repeats = True),
@@ -283,10 +282,6 @@ mainFileDescription = SM(
         ])
       ])
     ])
-
-# loading metadata from nomad-meta-info/meta_info/nomad_meta_info/gamess.nomadmetainfo.json
-metaInfoPath = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)),"../../../../nomad-meta-info/meta_info/nomad_meta_info/gamess.nomadmetainfo.json"))
-metaInfoEnv, warnings = loadJsonFile(filePath = metaInfoPath, dependencyLoader = None, extraArgsHandling = InfoKindEl.ADD_EXTRA_ARGS, uri = None)
 
 parserInfo = {
   "name": "parser_gamess",
@@ -444,7 +439,7 @@ class GAMESSParserContext(object):
               'PW91C':        [{'name': 'GGA_C_PW91'}],
               'PBEC':         [{'name': 'GGA_C_PBE'}],
               'OP':           [{'name': 'GGA_C_OP'}],
-              'SVWN':         [{'name': 'LDA_C_VWN_5'}, {'name': 'LDA_X'}],                  
+              'SVWN':         [{'name': 'LDA_C_VWN_5'}, {'name': 'LDA_X'}],
               'SVWN1RPA':     [{'name': 'LDA_C_VWN1RPA'}, {'name': 'LDA_X'}],
               'SVWN3':        [{'name': 'LDA_C_VWN_3'}, {'name': 'LDA_X'}],
               'SPZ81':        [{'name': 'GGA_C_PZ'}, {'name': 'LDA_X'}],
@@ -453,7 +448,7 @@ class GAMESSParserContext(object):
               'SPW91':        [{'name': 'GGA_C_PW91'}, {'name': 'LDA_X'}],
               'SPBE':         [{'name': 'GGA_C_PBE'}, {'name': 'LDA_X'}],
               'SOP':          [{'name': 'GGA_C_OP'}, {'name': 'LDA_X'}],
-              'BVWN':         [{'name': 'LDA_C_VWN_5'}, {'name': 'LDA_X_B88'}],  
+              'BVWN':         [{'name': 'LDA_C_VWN_5'}, {'name': 'LDA_X_B88'}],
               'BVWN1RPA':     [{'name': 'LDA_C_VWN1RPA'}, {'name': 'LDA_X_B88'}],
               'BVWN3':        [{'name': 'LDA_C_VWN_3'}, {'name': 'LDA_X_B88'}],
               'BPZ81':        [{'name': 'GGA_C_PZ'}, {'name': 'LDA_X_B88'}],
@@ -574,8 +569,8 @@ class GAMESSParserContext(object):
               'WIGNER':       [{'name': 'GGA_XC_WIGNER_GRIDFREE'}],
               'WS':           [{'name': 'GGA_XC_WIGNER_GRIDFREE'}],
               'WIGEXP':       [{'name': 'GGA_XC_WIGNER_GRIDFREE'}],
-              'NONE':         [{'name': 'NONE'}], 
-             }      
+              'NONE':         [{'name': 'NONE'}],
+             }
 
        methodDict = {
               'RHF':       [{'name': 'RHF'}],
@@ -659,14 +654,14 @@ class GAMESSParserContext(object):
               'DZV':          [{'name': 'DZV'}],
               'DH':           [{'name': 'DH'}],
               'TZV':          [{'name': 'TZV'}],
-              'MC':           [{'name': 'MC'}], 
+              'MC':           [{'name': 'MC'}],
               'G3L':          [{'name': 'G3MP2LARGE'}],
               'G3LX':         [{'name': 'G3MP2LARGEXP'}],
               'CCD':          [{'name': 'CC_PVDZ'}],
               'CCT':          [{'name': 'CC_PVTZ'}],
               'CCQ':          [{'name': 'CC_PVQZ'}],
               'CC5':          [{'name': 'CC_PV5Z'}],
-              'CC6':          [{'name': 'CC_PV6Z'}],      
+              'CC6':          [{'name': 'CC_PV6Z'}],
               'ACCD':         [{'name': 'AUG-CC-PVDZ'}],
               'ACCT':         [{'name': 'AUG-CC-PVTZ'}],
               'ACCQ':         [{'name': 'AUG-CC-PVQZ'}],
@@ -773,12 +768,12 @@ class GAMESSParserContext(object):
         basisset = str(section['x_gamess_basis_set_gbasis']).replace("[","").replace("]","").replace("'","").upper()
         basissetreal = basissetDict.get([basisset][-1])
 
-        nrofgaussians = str(section['x_gamess_basis_set_igauss']).replace("[","").replace("]","").replace("'","") 
+        nrofgaussians = str(section['x_gamess_basis_set_igauss']).replace("[","").replace("]","").replace("'","")
         nrofdfunctions = int(str(section['x_gamess_basis_set_ndfunc']).replace("[","").replace("]","").replace("'",""))
         nrofffunctions = int(str(section['x_gamess_basis_set_nffunc']).replace("[","").replace("]","").replace("'",""))
         spdiffuselogical = str(section['x_gamess_basis_set_diffsp']).replace("[","").replace("]","").replace("'","")
         nrofpfunctionslight = int(str(section['x_gamess_basis_set_npfunc']).replace("[","").replace("]","").replace("'",""))
-        sdiffuselightlogical = str(section['x_gamess_basis_set_diffs']).replace("[","").replace("]","").replace("'","") 
+        sdiffuselightlogical = str(section['x_gamess_basis_set_diffs']).replace("[","").replace("]","").replace("'","")
 
         if(basisset == 'STO'):
             symbol = 'G'
@@ -791,16 +786,16 @@ class GAMESSParserContext(object):
             nrofgaussians = ''
             basissetname = basisset[:]
         if(nrofdfunctions == 0):
-            if(spdiffuselogical == 'T' or spdiffuselogical == 'TRUE'): 
-               basissetreal = nrofgaussians + '-' + basissetname + '+' + symbol 
+            if(spdiffuselogical == 'T' or spdiffuselogical == 'TRUE'):
+               basissetreal = nrofgaussians + '-' + basissetname + '+' + symbol
                if(sdiffuselightlogical == 'T' or sdiffuselightlogical == 'TRUE'):
-                   basissetreal = nrofgaussians + '-' + basissetname + '++' + symbol 
-        if(nrofdfunctions == 1): 
+                   basissetreal = nrofgaussians + '-' + basissetname + '++' + symbol
+        if(nrofdfunctions == 1):
             basissetreal = nrofgaussians + '-' + basissetname + symbol + '(d)'
             if(nrofffunctions == 1):
                 if(nrofpfunctionslight == 0):
-                   basissetreal = nrofgaussians + '-' + basissetname + symbol + '(df)' 
-                   if(spdiffuselogical == 'T' or spdiffuselogical == 'TRUE'): 
+                   basissetreal = nrofgaussians + '-' + basissetname + symbol + '(df)'
+                   if(spdiffuselogical == 'T' or spdiffuselogical == 'TRUE'):
                        basissetreal = nrofgaussians + '-' + basissetname + '+' + symbol + '(df)'
                        if(sdiffuselightlogical == 'T' or sdiffuselightlogical == 'TRUE'):
                            basissetreal = nrofgaussians + '-' + basissetname + '++' + symbol + '(df)'
@@ -995,7 +990,7 @@ class GAMESSParserContext(object):
        methodci = None
        methodcc = None
        methodvb = None
-       methodtddft = None 
+       methodtddft = None
 
 # functionals where hybrid_xc_coeff are written
 
@@ -1247,7 +1242,7 @@ class GAMESSParserContext(object):
         backend.addValue('single_configuration_calculation_to_system_ref', self.secSystemDescriptionIndex)
 
       def onClose_x_gamess_section_mrpt2(self, backend, gIndex, section):
-        
+
          mrpt2type = None
          mrpt2 = section['x_gamess_mrpt2_method_type']
 
@@ -1265,8 +1260,8 @@ class GAMESSParserContext(object):
           frequencies = frequencies.replace("'","").replace(",","").replace("[","").replace("]","").replace("\\n","").split()
           if(frequencies[1] == 'I'):
              frequencies[0] = -float(frequencies[0])
-            
-          if(frequencies[1] == 'I'): 
+
+          if(frequencies[1] == 'I'):
              for i in range(2,len(frequencies)):
                frequencies[i-1] = frequencies[i]
 
@@ -1285,7 +1280,7 @@ class GAMESSParserContext(object):
           vibreducedmasses = convert_unit(vibreducedmasses, "amu", "kilogram")
           backend.addArrayValues("x_gamess_red_masses", vibreducedmasses)
 
- 
+
 # which values to cache or forward (mapping meta name -> CachingLevel)
 
 cachingLevelForMetaName = {
@@ -1303,6 +1298,32 @@ cachingLevelForMetaName = {
         "x_gamess_section_geometry_optimization_info": CachingLevel.Forward,
         "x_gamess_geometry_optimization_converged": CachingLevel.ForwardAndCache,
 }
+
+import nomad_meta_info
+metaInfoPath = os.path.normpath(
+    os.path.join(os.path.dirname(os.path.abspath(nomad_meta_info.__file__)), "gamess.nomadmetainfo.json"))
+metaInfoEnv, warnings = loadJsonFile(filePath = metaInfoPath, dependencyLoader = None, extraArgsHandling = InfoKindEl.ADD_EXTRA_ARGS, uri = None)
+
+class GamessParser():
+   """ A proper class envolop for running this parser from within python. """
+   def __init__(self, backend, **kwargs):
+       self.backend_factory = backend
+
+   def parse(self, mainfile):
+       from unittest.mock import patch
+       logging.info('gamess parser started')
+       logging.getLogger('nomadcore').setLevel(logging.WARNING)
+       backend = self.backend_factory(metaInfoEnv)
+       with patch.object(sys, 'argv', ['<exe>', '--uri', 'nmd://uri', mainfile]):
+           mainFunction(
+               mainFileDescription,
+               metaInfoEnv,
+               parserInfo,
+               cachingLevelForMetaName = cachingLevelForMetaName,
+               superContext=GAMESSParserContext(),
+               superBackend=backend)
+
+       return backend
 
 if __name__ == "__main__":
     mainFunction(mainFileDescription, metaInfoEnv, parserInfo,
