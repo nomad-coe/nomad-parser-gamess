@@ -1014,8 +1014,6 @@ class GAMESSParserContext(object):
                              gIndexTmp = backend.openSection('section_XC_functionals')
                              if xcName != 'NONE':
                                 backend.addValue('XC_functional_name', xcName)
-                             else:
-                                backend.addValue('XC_functional_name', 'NONE')
                              backend.closeSection('section_XC_functionals',gIndexTmp)
                               # write hybrid_xc_coeff for PBE1PBE into XC_functional_parameters
                           else:
