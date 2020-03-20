@@ -1297,10 +1297,6 @@ cachingLevelForMetaName = {
         "x_gamess_geometry_optimization_converged": CachingLevel.ForwardAndCache,
 }
 
-import nomad_meta_info
-metaInfoPath = os.path.normpath(
-    os.path.join(os.path.dirname(os.path.abspath(nomad_meta_info.__file__)), "gamess.nomadmetainfo.json"))
-metaInfoEnv, warnings = loadJsonFile(filePath = metaInfoPath, dependencyLoader = None, extraArgsHandling = InfoKindEl.ADD_EXTRA_ARGS, uri = None)
 
 class GamessParser():
    """ A proper class envolop for running this parser from within python. """
@@ -1311,19 +1307,14 @@ class GamessParser():
        from unittest.mock import patch
        logging.info('gamess parser started')
        logging.getLogger('nomadcore').setLevel(logging.WARNING)
-       backend = self.backend_factory(metaInfoEnv)
+       backend = self.backend_factory("gamess.nomadmetainfo.json")
        with patch.object(sys, 'argv', ['<exe>', '--uri', 'nmd://uri', mainfile]):
            mainFunction(
                mainFileDescription,
-               metaInfoEnv,
+               None,
                parserInfo,
                cachingLevelForMetaName = cachingLevelForMetaName,
                superContext=GAMESSParserContext(),
                superBackend=backend)
 
        return backend
-
-if __name__ == "__main__":
-    mainFunction(mainFileDescription, metaInfoEnv, parserInfo,
-                 cachingLevelForMetaName = cachingLevelForMetaName,
-                 superContext = GAMESSParserContext())
