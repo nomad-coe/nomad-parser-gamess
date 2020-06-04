@@ -26,6 +26,9 @@ import numpy as np
 import ase
 import re
 
+import warnings
+warnings.simplefilter('ignore', category=FutureWarning)
+
 ############################################################
 # This is the parser for the output file of GAMESS.
 ############################################################
