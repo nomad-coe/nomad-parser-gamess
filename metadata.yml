@@ -1,7 +1,0 @@
-code-label: GAMESS
-code-label-style: All in capitals
-code-url: https://www.msg.chem.iastate.edu/
-parser-dir-name: dependencies/parsers/gamess/
-parser-git-url: https://gitlab.mpcdf.mpg.de/nomad-lab/parser-gamess
-parser-specific: ''
-table-of-files: ''
