@@ -17,4 +17,4 @@
 # limitations under the License.
 #
 
-from gamessparser.parser_gamess import GamessParser
+from .gamess_parser import GamessParser
