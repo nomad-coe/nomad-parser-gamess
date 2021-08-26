@@ -25,6 +25,9 @@ from nomad.metainfo import (  # pylint: disable=unused-import
 from nomad.datamodel.metainfo import run
 
 
+m_package = Package()
+
+
 class x_gamess_section_atom_forces(MSection):
     '''
     section that contains Cartesian forces of the system for a given geometry
