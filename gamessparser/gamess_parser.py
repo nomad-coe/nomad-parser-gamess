@@ -691,7 +691,7 @@ class GamessParser(FairdiParser):
                 if key.endswith('energy'):
                     key = key.rstrip('energy').strip()
                     potential = energies.get(f'{key} potential energy')
-                    kinetic = energies.get(f'{key} kinetic energy')
+                    # kinetic = energies.get(f'{key} kinetic energy')
                     key = self._metainfo_map.get(key, key).replace(' ', '_')
                     if hasattr(Energy, key) or key.startswith('x_gamess'):
                         setattr(sec_energy, key, EnergyEntry(
