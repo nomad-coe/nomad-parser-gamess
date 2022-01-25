@@ -20,7 +20,7 @@ import numpy as np            # pylint: disable=unused-import
 import typing                 # pylint: disable=unused-import
 from nomad.metainfo import (  # pylint: disable=unused-import
     MSection, MCategory, Category, Package, Quantity, Section, SubSection, SectionProxy,
-    Reference
+    Reference, JSON
 )
 from nomad.datamodel.metainfo import simulation
 
@@ -619,6 +619,24 @@ class Method(simulation.method.Method):
         wavefunctions.
         ''')
 
+    x_gamess_control_options = Quantity(
+        type=JSON,
+        shape=[],
+        description='''
+        ''')
+
+    x_gamess_system_options = Quantity(
+        type=JSON,
+        shape=[],
+        description='''
+        ''')
+
+    x_gamess_basis_options = Quantity(
+        type=JSON,
+        shape=[],
+        description='''
+        ''')
+
     x_gamess_section_elstruc_method = SubSection(
         sub_section=SectionProxy('x_gamess_section_elstruc_method'),
         repeats=True)
@@ -713,3 +731,29 @@ class Calculation(simulation.calculation.Calculation):
     x_gamess_section_mrpt2 = SubSection(
         sub_section=SectionProxy('x_gamess_section_mrpt2'),
         repeats=True)
+
+
+class Energy(simulation.calculation.Energy):
+
+    m_def = Section(validate=False, extends_base_section=True)
+
+    x_gamess_virial_ratio = Quantity(
+        type=np.dtype(np.float64),
+        shape=[],
+        description='''
+        ''')
+    x_gamess_wavefunction_normalization = Quantity(
+        type=np.dtype(np.float64),
+        shape=[],
+        description='''
+        ''')
+
+    x_gamess_one_electron = SubSection(
+        sub_section=simulation.calculation.EnergyEntry.m_def,
+        description='''
+        ''')
+
+    x_gamess_two_electron = SubSection(
+        sub_section=simulation.calculation.EnergyEntry.m_def,
+        description='''
+        ''')
