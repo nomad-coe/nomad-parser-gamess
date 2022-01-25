@@ -52,12 +52,12 @@ def test_dft(parser):
     assert sec_calc[5].charges[1].value[1].magnitude == approx(-3.41098599e-20)
     assert sec_calc[5].energy.total.value.magnitude == approx(-3.33887277e-16)
     assert sec_calc[5].energy.total.potential.magnitude == approx(-6.65370978e-16)
-    assert sec_calc[5].energy.total.kinetic.magnitude == approx(3.31483701e-16)
+    # assert sec_calc[5].energy.total.kinetic.magnitude == approx(3.31483701e-16)
     assert sec_calc[5].energy.x_gamess_two_electron.value.magnitude == approx(2.19797148e-16)
     assert sec_calc[5].energy.x_gamess_virial_ratio == approx(2.0072509638)
     assert len(sec_calc[5].energy.contributions) == 5
     assert sec_calc[5].energy.contributions[1].kind == 'nucleus-electron_potential'
-    assert sec_calc[5].multipoles[0].dipole.origin[1].magnitude == 0
+    # assert sec_calc[5].multipoles[0].dipole.origin[1].magnitude == 0
     assert sec_calc[5].multipoles[0].dipole.value[2] == 0
 
 

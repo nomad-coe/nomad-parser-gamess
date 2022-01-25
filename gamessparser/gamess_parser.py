@@ -76,7 +76,7 @@ class OutParser(TextParser):
                         sub_parser=TextParser(quantities=[
                             Quantity(
                                 'iter',
-                                rf'({re_f} +{re_f})',
+                                rf'({re_f} +{re_f}).+',
                                 dtype=np.dtype(np.float64), repeats=True
                             )
                         ])
@@ -697,7 +697,8 @@ class GamessParser(FairdiParser):
                         setattr(sec_energy, key, EnergyEntry(
                             value=val * ureg.hartree,
                             potential=potential * ureg.hartree if potential else potential,
-                            kinetic=kinetic * ureg.hartree if kinetic else kinetic))
+                            # kinetic=kinetic * ureg.hartree if kinetic else kinetic
+                        ))
                     else:
                         sec_energy.contributions.append(EnergyEntry(kind=key, value=val * ureg.hartree))
                 else:
@@ -736,7 +737,8 @@ class GamessParser(FairdiParser):
                     sec_multipoles = sec_scc.m_create(Multipoles)
                     sec_multipoles.kind = 'electrostatic'
                     sec_multipoles.dipole = MultipolesEntry(
-                        origin=dipole.get('origin'), value=dipole.get('value'))
+                        # origin=dipole.get('origin'),
+                        value=dipole.get('value'))
 
         if source.get('gradient') is not None:
             sec_scc.forces = Forces(total=ForcesEntry(value=source.gradient))
